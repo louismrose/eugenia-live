@@ -8,6 +8,7 @@ class paper.Toolbox
     window.tools =
       node:   new paper.NodeTool()
       select: new paper.SelectTool()
+      link:   new paper.LinkTool()
     
   reactToToolSelection: ->
     $('body').on('click', 'a[data-tool]', (event) ->

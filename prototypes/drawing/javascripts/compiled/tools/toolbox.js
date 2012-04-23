@@ -15,7 +15,8 @@
     Toolbox.prototype.createTools = function() {
       return window.tools = {
         node: new paper.NodeTool(),
-        select: new paper.SelectTool()
+        select: new paper.SelectTool(),
+        link: new paper.LinkTool()
       };
     };
 
