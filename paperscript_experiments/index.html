@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="paper.js"></script>
+<script type="text/paperscript" canvas="myCanvas">
+    var myCircle = new Path.Circle(new Point(100, 80), 50);
+    myCircle.fillColor = 'black';
+    
+    var dragging = false;
+    
+    function onMouseDown(event) {
+        if (myCircle.contains(event.point)) {
+          myCircle.fillColor = 'red';
+          dragging = true;
+        }
+    }
+    
+    function onMouseDrag(event) {
+      if (dragging) {
+        myCircle.position = event.point;
+      }
+    }
+    
+    function onMouseUp(event) {
+      if (dragging) {
+        myCircle.fillColor = 'black';
+        dragging = false;
+      }
+    }
+</script>
+</head>
+<body>
+    <div id="toolbox">
+      <ul>
+        <li><a href="#select">Select</a></li>
+        <li><a href="#circle">Circle</a></li>
+      </ul>
+    </div>
+    <canvas id="myCanvas" resize></canvas>
+</body>
+</html>

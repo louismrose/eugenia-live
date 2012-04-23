@@ -1,0 +1,7 @@
+.container-fluid {
+  padding-top: 50px;
+}
+
+canvas {
+  border:1px solid #ccc;
+}

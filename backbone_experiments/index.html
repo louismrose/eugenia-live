@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+    <meta charset="utf-8">
+    <title>hello-backbonejs</title>
+  </head>
+  <body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+    <script src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+    <script src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.6/underscore-min.js"></script>
+    <script src="http://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
+
+    <script type="text/javascript">
+    (function($){
+      
+      Backbone.sync = function(method, model, success, error){ 
+          success();
+      }
+
+      var Item = Backbone.Model.extend({
+          defaults: {
+            part1: 'hello',
+            part2: 'world'
+          }
+        });
+        
+       var List = Backbone.Collection.extend({
+         model: Item
+       });
+       
+       var ItemView = Backbone.View.extend({
+           tagName: 'li', // name of (orphan) root tag in this.el
+           
+           events: { 
+             'click span.swap':  'swap',
+             'click span.delete': 'remove'
+           },
+           
+           initialize: function(){
+             _.bindAll(this, 'render', 'unrender', 'swap', 'remove'); // every function that uses 'this' as the current object should be in here
+             
+             this.model.bind('change', this.render);
+             this.model.bind('remove', this.unrender);
+           },
+           render: function(){
+             $(this.el).html('<span style="color:black;">'+this.model.get('part1')+' '+this.model.get('part2')+'</span> &nbsp; &nbsp; <span class="swap" style="font-family:sans-serif; color:blue; cursor:pointer;">[swap]</span> <span class="delete" style="cursor:pointer; color:red; font-family:sans-serif;">[delete]</span>');
+             return this; // for chainable calls, like .render().el
+           },
+           unrender: function(){
+             $(this.el).remove();
+           },
+           swap: function(){
+             var swapped = {
+               part1: this.model.get('part2'), 
+               part2: this.model.get('part1')
+             };
+             this.model.set(swapped);
+           },
+           remove: function(){
+             this.model.destroy();
+           }
+         });
+
+      var ListView = Backbone.View.extend({    
+        el: $('body'), // attaches `this.el` to an existing element.
+
+        events: {
+          'click button#add': 'addItem'
+        },
+
+        initialize: function(){
+          _.bindAll(this, 'render', 'addItem', 'appendItem'); // fixes loss of context for 'this' within methods
+
+          this.collection = new List();
+          this.collection.bind('add', this.appendItem);
+
+          this.counter = 0; // total number of items added thus far
+           this.render(); // not all views are self-rendering. This one is.
+        },
+
+        render: function(){
+          var self = this;
+          $(this.el).append("<button id='add'>Add list item</button>");
+          $(this.el).append("<ul></ul>");
+          _(this.collection.models).each(function(item){ // in case collection is not empty
+                  self.appendItem(item);
+          }, this);
+        },
+        
+        addItem: function(){
+          this.counter++;
+          var item = new Item();
+          item.set({
+              part2: item.get('part2') + this.counter // modify item defaults
+          });
+          this.collection.add(item); // add item to collection; view is updated via event 'add'
+        },
+        
+        appendItem: function(item){
+          var itemView = new ItemView({
+            model: item
+          });
+          $('ul', this.el).append(itemView.render().el);
+        }
+      });
+
+      var listView = new ListView();      
+    })(jQuery);
+    </script>
+  </body>
+  </html>

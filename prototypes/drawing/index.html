@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+    <meta charset="utf-8">
+    <title>Prototypes > Drawing</title>
+    <link rel="stylesheet" href="css/all.css" type="text/css"/>
+    <script type="text/javascript" src="javascripts/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="javascripts/libraries.js"></script>
+    <script type="text/javascript" src="javascripts/application.js"></script>
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="#">Grumble</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+          <div class="btn-group" data-toggle="buttons-radio">
+            <a class="btn" href="#select_detail" data-toggle="tab" data-tool="select" title="Select"><i class="icon-move"></i></a>
+            <a class="btn active" href="#node_detail" data-toggle="tab" data-tool="node" title="Create Node"><i class="icon-pencil"></i></a>
+            <a class="btn" href="#link_detail" data-toggle="tab" data-tool="select" title="Create Link"><i class="icon-magnet"></i></a>
+            <a class="btn" href="#port_detail" data-toggle="tab" data-tool="select" title="Create Port"><i class="icon-search"></i></a>
+            <a class="btn" href="#compartment_detail" data-toggle="tab" data-tool="select" title="Create Compartment"><i class="icon-plus"></i></a>
+          </div>
+          <div class="tab-content">
+            <div class="tab-pane" id="select_detail">
+            </div>
+            <div class="tab-pane active well" id="node_detail">
+              <div class="btn-group" data-tool-parameter="shape" data-toggle="buttons-radio">
+                <button class="btn active" data-tool-parameter-value="rectangle">Rect</button>
+                <button class="btn" data-tool-parameter-value="circle">Circle</button>
+                <button class="btn" data-tool-parameter-value="star">Star</button>
+              </div>
+              <br/>
+              <div class="btn-group" data-tool-parameter="fill_colour" data-toggle="buttons-radio">
+                <button class="btn active" data-tool-parameter-value="white">White</button>
+                <button class="btn" data-tool-parameter-value="red">Red</button>
+                <button class="btn" data-tool-parameter-value="green">Green</button>
+                <button class="btn" data-tool-parameter-value="blue">Blue</button>
+              </div>
+              <br/>
+              <div class="btn-group" data-tool-parameter="stroke_style" data-toggle="buttons-radio">
+                <button class="btn active" data-tool-parameter-value="solid">Solid</button>
+                <button class="btn" data-tool-parameter-value="dashed">Dashed</button>
+              </div>
+              <br/>
+              <div class="btn-group" data-tool-parameter="stroke_colour" data-toggle="buttons-radio">
+                <button class="btn active" data-tool-parameter-value="black">Black</button>
+                <button class="btn" data-tool-parameter-value="red">Red</button>
+                <button class="btn" data-tool-parameter-value="green">Green</button>
+                <button class="btn" data-tool-parameter-value="blue">Blue</button>
+              </div>
+            </div>
+            <div class="tab-pane" id="link_detail">
+            </div>
+            <div class="tab-pane" id="port_detail">
+            </div>
+            <div class="tab-pane" id="compartment_detail">
+            </div>
+          </div>
+        </div>
+        <div class="span5">
+          <canvas id="myCanvas" resize></canvas>
+        </div>
+      </div>
+    </div>
+  </body>
+  </html>
