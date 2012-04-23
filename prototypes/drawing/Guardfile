@@ -3,7 +3,7 @@
 
 guard 'coffeescript', :input => 'coffeescripts', :output => 'javascripts/compiled'
 
-guard 'process', :name => 'Combine compiled Javascripts', :command => 'juicer merge -s -f -o javascripts/application.js javascripts/compiled/*' do
+guard 'process', :name => 'Combine compiled Javascripts', :command => 'juicer merge -s -f -o javascripts/application.js javascripts/compiled/tools/*.js javascripts/compiled/*.js' do
   watch %r{javascripts/compiled/.+\.js}
 end
 

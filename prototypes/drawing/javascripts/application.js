@@ -1,36 +1,67 @@
 (function() {
+  var __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
-  window.onload = function() {
-    var canvas;
-    canvas = document.getElementById('myCanvas');
-    paper.setup(canvas);
-    paper.view.draw();
-    $('body').on('click', 'a[data-tool]', function(event) {
-      var tool, tool_name;
-      tool_name = $(this).attr('data-tool');
-      tool = window.tools[tool_name];
-      if (tool) {
-        return tool.activate();
+  paper.GrumbleTool = (function(_super) {
+
+    __extends(GrumbleTool, _super);
+
+    GrumbleTool.name = 'GrumbleTool';
+
+    function GrumbleTool() {
+      return GrumbleTool.__super__.constructor.apply(this, arguments);
+    }
+
+    GrumbleTool.prototype.onKeyDown = function(event) {
+      var copy;
+      if (event.key === 'delete') {
+        if (paper.project.selectedItems[0]) {
+          return paper.project.selectedItems[0].remove();
+        }
+      } else if (event.modifiers.command && event.key === 'c') {
+        return window.clipboard = paper.project.selectedItems[0];
+      } else if (event.modifiers.command && event.key === 'v') {
+        if (window.clipboard) {
+          if (paper.project.selectedItems[0]) {
+            paper.project.selectedItems[0].selected = false;
+          }
+          copy = window.clipboard.clone();
+          copy.position.x += 10;
+          copy.position.y += 10;
+          copy.selected = true;
+          return window.clipboard = copy;
+        }
       }
-    });
-    $('body').on('click', 'button[data-tool-parameter-value]', function(event) {
-      var key, value;
-      value = $(this).attr('data-tool-parameter-value');
-      key = $(this).parent().attr('data-tool-parameter');
-      if (!paper.tool.parameters) {
-        paper.tool.parameters = {};
-      }
-      return paper.tool.parameters[key] = value;
-    });
-    window.tools = {};
-    window.tools['node'] = new paper.Tool();
-    window.tools['node'].parameters = {
+    };
+
+    return GrumbleTool;
+
+  })(paper.Tool);
+
+}).call(this);
+
+(function() {
+  var __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+
+  paper.NodeTool = (function(_super) {
+
+    __extends(NodeTool, _super);
+
+    NodeTool.name = 'NodeTool';
+
+    function NodeTool() {
+      return NodeTool.__super__.constructor.apply(this, arguments);
+    }
+
+    NodeTool.prototype.parameters = {
       'shape': 'rectangle',
       'fill_colour': 'white',
       'stroke_colour': 'black',
       'stroke_style': 'solid'
     };
-    window.tools['node'].onMouseDown = function(event) {
+
+    NodeTool.prototype.onMouseDown = function(event) {
       var n;
       switch (this.parameters['shape']) {
         case "rectangle":
@@ -44,10 +75,35 @@
       }
       n.fillColor = this.parameters['fill_colour'];
       n.strokeColor = this.parameters['stroke_colour'];
-      return n.dashArray = this.parameters['stroke_style'] === 'solid' ? [10, 0] : [10, 4];
+      n.dashArray = this.parameters['stroke_style'] === 'solid' ? [10, 0] : [10, 4];
+      if (paper.project.selectedItems[0]) {
+        return paper.project.selectedItems[0].selected = false;
+      }
     };
-    window.tools['select'] = new paper.Tool();
-    window.tools['select'].onMouseDown = function(event) {
+
+    return NodeTool;
+
+  })(paper.GrumbleTool);
+
+}).call(this);
+
+(function() {
+  var __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+
+  paper.SelectTool = (function(_super) {
+
+    __extends(SelectTool, _super);
+
+    SelectTool.name = 'SelectTool';
+
+    function SelectTool() {
+      return SelectTool.__super__.constructor.apply(this, arguments);
+    }
+
+    SelectTool.prototype.parameters = {};
+
+    SelectTool.prototype.onMouseDown = function(event) {
       var hitResult;
       hitResult = paper.project.hitTest(event.point);
       paper.project.activeLayer.selected = false;
@@ -55,31 +111,76 @@
         return hitResult.item.selected = true;
       }
     };
-    window.tools['select'].onMouseDrag = function(event) {
+
+    SelectTool.prototype.onMouseDrag = function(event) {
       if (paper.project.selectedItems[0]) {
         return paper.project.selectedItems[0].position = event.point;
       }
     };
-    return window.tools['select'].onKeyDown = function(event) {
-      var copy;
-      if (event.key === 'delete') {
-        if (paper.project.selectedItems[0]) {
-          return paper.project.selectedItems[0].remove();
-        }
-      } else if (event.modifiers.command && event.key === 'c') {
-        return window.clipboard = paper.project.selectedItems[0];
-      } else if (event.modifiers.command && event.key === 'v') {
-        if (window.clipboard) {
-          if (paper.project.selectedItems[0]) {
-            paper.project.selectedItems[0].selected = false;
-          }
-          copy = clipboard.clone();
-          copy.position.x += 10;
-          copy.position.y += 10;
-          return copy.selected = true;
-        }
-      }
+
+    return SelectTool;
+
+  })(paper.GrumbleTool);
+
+}).call(this);
+
+(function() {
+
+  paper.Toolbox = (function() {
+
+    Toolbox.name = 'Toolbox';
+
+    function Toolbox() {}
+
+    Toolbox.prototype.install = function() {
+      this.createTools();
+      this.reactToToolSelection();
+      return this.reactToToolConfiguration();
     };
+
+    Toolbox.prototype.createTools = function() {
+      return window.tools = {
+        node: new paper.NodeTool(),
+        select: new paper.SelectTool()
+      };
+    };
+
+    Toolbox.prototype.reactToToolSelection = function() {
+      return $('body').on('click', 'a[data-tool]', function(event) {
+        var tool, tool_name;
+        tool_name = $(this).attr('data-tool');
+        tool = window.tools[tool_name];
+        if (tool) {
+          return tool.activate();
+        }
+      });
+    };
+
+    Toolbox.prototype.reactToToolConfiguration = function() {
+      return $('body').on('click', 'button[data-tool-parameter-value]', function(event) {
+        var key, value;
+        value = $(this).attr('data-tool-parameter-value');
+        key = $(this).parent().attr('data-tool-parameter');
+        if (!paper.tool.parameters) {
+          paper.tool.parameters = {};
+        }
+        return paper.tool.parameters[key] = value;
+      });
+    };
+
+    return Toolbox;
+
+  })();
+
+}).call(this);
+
+(function() {
+
+  window.onload = function() {
+    paper.setup($('canvas')[0]);
+    paper.view.draw();
+    paper.toolbox = new paper.Toolbox();
+    return paper.toolbox.install();
   };
 
 }).call(this);
