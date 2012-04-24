@@ -3,35 +3,72 @@
 ###
 class paper.LinkTool extends grumble.Tool
   parameters: {}
-  currentLink: null
-  linkLayer: null
+  draftLink: null
+  draftingLayer: null
+  drafting: false
   
   onMouseMove: (event) ->
-    hitResult = paper.project.hitTest(event.point)    
+    hitResult = paper.project.hitTest(event.point)
     paper.project.activeLayer.selected = false
-    hitResult.item.selected = true if hitResult
+    hitResult.item.selected = true if hitResult and hitResult.item.closed
   
+  onMouseDown: (event) ->
+    hitResult = paper.project.activeLayer.hitTest(event.point)
+    if hitResult
+      @drafting = true
+      @draftingLayer = new DraftingLayer(paper.project.activeLayer)
+      @draftLink = new DraftLink(event.point)
+
   onMouseDrag: (event) ->
-    unless @currentLink
-      @linkLayer = new paper.Layer();
-      @currentLink = new paper.Path([event.point])
-      @currentLink.strokeColor = 'black'
-    @currentLink.add(event.point)
-    
-    hitResult = paper.project.layers[0].hitTest(event.point)
-    if (hitResult)
-      paper.project.layers[0].selected = false
-      hitResult.item.selected = true
+    if @drafting
+      @draftLink.extendTo(event.point)
+      hitResult = @draftingLayer.hitTest(event.point)
+      if hitResult and hitResult.item.closed
+        paper.project.layers[0].selected = false
+        hitResult.item.selected = true
   
   onMouseUp: (event) ->
-    if @currentLink
-      @currentLink.simplify()
-      # TODO: don't draw currentLink, but instead draw a straight line between the source and target nodes
-      # TODO: moving a node should extend the line
-      paper.project.layers[0].activate()
-      hitResult = paper.project.activeLayer.hitTest(event.point)
-      paper.project.activeLayer.insertChild(0, @currentLink) if (hitResult)
+    if @drafting 
+      hitResult = @draftingLayer.hitTest(event.point)
+      if hitResult and hitResult.item.closed 
+        @draftLink.finalise()
+        @draftingLayer.commit()
+      @draftingLayer.dispose()
       paper.project.activeLayer.selected = false
-      @linkLayer.remove()
-      @currentLink = null
-      @linkLayer = null
+      @drafting = false
+
+
+  class DraftingLayer
+    parent: null
+    layer: null
+    
+    constructor: (parent) ->
+      @parent = parent
+      @layer = new paper.Layer()
+    
+    hitTest: (point) ->
+      @parent.hitTest(point)
+    
+    commit: ->
+      @parent.insertChildren(0, @layer.children)
+      
+    dispose: ->
+      @layer.remove()
+      @parent.activate()
+      
+
+  class DraftLink
+    path: null
+
+    constructor: (origin) ->
+      @path = new paper.Path([origin])
+      @path.strokeColor = 'black'
+      @path.dashArray = [10, 4] # dashed
+
+    extendTo: (point) ->
+      @path.add(point)
+
+    finalise: ->
+      @path.simplify(100)
+      @path.dashArray = [10, 0] # solid
+      # TODO trim the draft line, rather than hiding the overlap behind the nodes

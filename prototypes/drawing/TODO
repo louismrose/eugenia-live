@@ -1,4 +1,7 @@
-- Link tool
+x Link tool
+-- Links should be deleted when their source/target node is deleted
+-- Links should be moved when their source/target node is moved
+- Label tool
 - Port tool
 - Compartment tool
 x Select tool
