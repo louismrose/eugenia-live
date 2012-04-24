@@ -1,6 +1,6 @@
-exports = this
-exports.grumble = {}
-
+###
+  @depend ../namespace.js
+###
 class grumble.Tool extends paper.Tool
   onKeyDown: (event) ->
     if (event.key is 'delete')

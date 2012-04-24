@@ -1,3 +1,6 @@
+###
+  @depend tool.js
+###
 class paper.SelectTool extends grumble.Tool
   parameters: {}
   

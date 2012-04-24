@@ -1,8 +1,8 @@
 class grumble.Toolbox
   install: ->
-    this.createTools()
-    this.reactToToolSelection()
-    this.reactToToolConfiguration()
+    @createTools()
+    @reactToToolSelection()
+    @reactToToolConfiguration()
     
   createTools: ->
     window.tools =
