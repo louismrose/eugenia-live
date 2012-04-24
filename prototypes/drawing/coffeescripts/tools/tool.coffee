@@ -1,4 +1,7 @@
-class paper.GrumbleTool extends paper.Tool
+exports = this
+exports.grumble = {}
+
+class grumble.Tool extends paper.Tool
   onKeyDown: (event) ->
     if (event.key is 'delete')
       paper.project.selectedItems[0].remove() if paper.project.selectedItems[0]

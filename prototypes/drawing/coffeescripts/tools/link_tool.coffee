@@ -1,4 +1,4 @@
-class paper.LinkTool extends paper.GrumbleTool
+class paper.LinkTool extends grumble.Tool
   parameters: {}
   currentLink: null
   linkLayer: null

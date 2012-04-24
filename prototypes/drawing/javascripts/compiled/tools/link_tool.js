@@ -60,6 +60,6 @@
 
     return LinkTool;
 
-  })(paper.GrumbleTool);
+  })(grumble.Tool);
 
 }).call(this);

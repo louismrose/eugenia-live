@@ -1,6 +1,6 @@
 (function() {
 
-  paper.Toolbox = (function() {
+  grumble.Toolbox = (function() {
 
     Toolbox.name = 'Toolbox';
 

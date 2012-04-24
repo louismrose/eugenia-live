@@ -1,18 +1,23 @@
 (function() {
-  var __hasProp = {}.hasOwnProperty,
+  var exports,
+    __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
-  paper.GrumbleTool = (function(_super) {
+  exports = this;
 
-    __extends(GrumbleTool, _super);
+  exports.grumble = {};
 
-    GrumbleTool.name = 'GrumbleTool';
+  grumble.Tool = (function(_super) {
 
-    function GrumbleTool() {
-      return GrumbleTool.__super__.constructor.apply(this, arguments);
+    __extends(Tool, _super);
+
+    Tool.name = 'Tool';
+
+    function Tool() {
+      return Tool.__super__.constructor.apply(this, arguments);
     }
 
-    GrumbleTool.prototype.onKeyDown = function(event) {
+    Tool.prototype.onKeyDown = function(event) {
       var copy;
       if (event.key === 'delete') {
         if (paper.project.selectedItems[0]) {
@@ -34,7 +39,7 @@
       }
     };
 
-    return GrumbleTool;
+    return Tool;
 
   })(paper.Tool);
 
@@ -102,7 +107,7 @@
 
     return LinkTool;
 
-  })(paper.GrumbleTool);
+  })(grumble.Tool);
 
 }).call(this);
 
@@ -149,7 +154,7 @@
 
     return NodeTool;
 
-  })(paper.GrumbleTool);
+  })(grumble.Tool);
 
 }).call(this);
 
@@ -186,13 +191,60 @@
 
     return SelectTool;
 
-  })(paper.GrumbleTool);
+  })(grumble.Tool);
+
+}).call(this);
+
+(function() {
+  var exports,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+
+  exports = this;
+
+  exports.grumble = {};
+
+  grumble.Tool = (function(_super) {
+
+    __extends(Tool, _super);
+
+    Tool.name = 'Tool';
+
+    function Tool() {
+      return Tool.__super__.constructor.apply(this, arguments);
+    }
+
+    Tool.prototype.onKeyDown = function(event) {
+      var copy;
+      if (event.key === 'delete') {
+        if (paper.project.selectedItems[0]) {
+          return paper.project.selectedItems[0].remove();
+        }
+      } else if (event.modifiers.command && event.key === 'c') {
+        return window.clipboard = paper.project.selectedItems[0];
+      } else if (event.modifiers.command && event.key === 'v') {
+        if (window.clipboard) {
+          if (paper.project.selectedItems[0]) {
+            paper.project.selectedItems[0].selected = false;
+          }
+          copy = window.clipboard.clone();
+          copy.position.x += 10;
+          copy.position.y += 10;
+          copy.selected = true;
+          return window.clipboard = copy;
+        }
+      }
+    };
+
+    return Tool;
+
+  })(paper.Tool);
 
 }).call(this);
 
 (function() {
 
-  paper.Toolbox = (function() {
+  grumble.Toolbox = (function() {
 
     Toolbox.name = 'Toolbox';
 
@@ -246,8 +298,7 @@
   window.onload = function() {
     paper.setup($('canvas')[0]);
     paper.view.draw();
-    paper.toolbox = new paper.Toolbox();
-    return paper.toolbox.install();
+    return new grumble.Toolbox().install();
   };
 
 }).call(this);

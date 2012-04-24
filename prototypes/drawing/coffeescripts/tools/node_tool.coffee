@@ -1,4 +1,4 @@
-class paper.NodeTool extends paper.GrumbleTool
+class paper.NodeTool extends grumble.Tool
   parameters: {'shape' : 'rectangle', 'fill_colour' : 'white', 'stroke_colour' : 'black', 'stroke_style' : 'solid'}
   
   onMouseDown: (event) ->

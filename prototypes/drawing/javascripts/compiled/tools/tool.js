@@ -1,18 +1,23 @@
 (function() {
-  var __hasProp = {}.hasOwnProperty,
+  var exports,
+    __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
-  paper.GrumbleTool = (function(_super) {
+  exports = this;
 
-    __extends(GrumbleTool, _super);
+  exports.grumble = {};
 
-    GrumbleTool.name = 'GrumbleTool';
+  grumble.Tool = (function(_super) {
 
-    function GrumbleTool() {
-      return GrumbleTool.__super__.constructor.apply(this, arguments);
+    __extends(Tool, _super);
+
+    Tool.name = 'Tool';
+
+    function Tool() {
+      return Tool.__super__.constructor.apply(this, arguments);
     }
 
-    GrumbleTool.prototype.onKeyDown = function(event) {
+    Tool.prototype.onKeyDown = function(event) {
       var copy;
       if (event.key === 'delete') {
         if (paper.project.selectedItems[0]) {
@@ -34,7 +39,7 @@
       }
     };
 
-    return GrumbleTool;
+    return Tool;
 
   })(paper.Tool);
 

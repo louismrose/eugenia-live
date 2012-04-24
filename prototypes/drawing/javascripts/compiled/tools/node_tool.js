@@ -41,6 +41,6 @@
 
     return NodeTool;
 
-  })(paper.GrumbleTool);
+  })(grumble.Tool);
 
 }).call(this);

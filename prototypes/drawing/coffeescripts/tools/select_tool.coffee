@@ -1,4 +1,4 @@
-class paper.SelectTool extends paper.GrumbleTool
+class paper.SelectTool extends grumble.Tool
   parameters: {}
   
   onMouseDown: (event) ->

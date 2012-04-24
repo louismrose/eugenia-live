@@ -31,6 +31,6 @@
 
     return SelectTool;
 
-  })(paper.GrumbleTool);
+  })(grumble.Tool);
 
 }).call(this);

@@ -1,4 +1,4 @@
-class paper.Toolbox
+class grumble.Toolbox
   install: ->
     this.createTools()
     this.reactToToolSelection()
