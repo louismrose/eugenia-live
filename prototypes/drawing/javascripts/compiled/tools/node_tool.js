@@ -37,6 +37,7 @@
         case "star":
           n = new paper.Path.Star(event.point, 5, 20, 50);
       }
+      n.links = [];
       n.fillColor = this.parameters['fill_colour'];
       n.strokeColor = this.parameters['stroke_colour'];
       n.dashArray = this.parameters['stroke_style'] === 'solid' ? [10, 0] : [10, 4];

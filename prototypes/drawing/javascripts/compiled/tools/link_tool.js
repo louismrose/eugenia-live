@@ -59,12 +59,21 @@
     };
 
     LinkTool.prototype.onMouseUp = function(event) {
-      var hitResult;
+      var hitResult, link, source, target;
       if (this.drafting) {
         hitResult = this.draftingLayer.hitTest(event.point);
         if (hitResult && hitResult.item.closed) {
-          this.draftLink.finalise();
+          link = this.draftLink.finalise();
+          source = this.draftingLayer.hitTest(link.firstSegment.point).item;
+          target = this.draftingLayer.hitTest(link.lastSegment.point).item;
+          source.links.push(link);
+          if (source !== target) {
+            target.links.push(link);
+          }
+          link.source = source;
+          link.target = target;
           this.draftingLayer.commit();
+          this.draftingLayer.dispose();
         }
         this.draftingLayer.dispose();
         paper.project.activeLayer.selected = false;
@@ -120,7 +129,8 @@
 
       DraftLink.prototype.finalise = function() {
         this.path.simplify(100);
-        return this.path.dashArray = [10, 0];
+        this.path.dashArray = [10, 0];
+        return this.path;
       };
 
       return DraftLink;

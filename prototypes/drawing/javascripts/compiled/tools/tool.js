@@ -19,10 +19,20 @@
     }
 
     Tool.prototype.onKeyDown = function(event) {
-      var copy;
+      var copy, item, link, _i, _len, _ref, _results;
       if (event.key === 'delete') {
-        if (paper.project.selectedItems[0]) {
-          return paper.project.selectedItems[0].remove();
+        item = paper.project.selectedItems[0];
+        if (item) {
+          item.remove();
+          if (item.links) {
+            _ref = item.links;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              link = _ref[_i];
+              _results.push(link.remove());
+            }
+            return _results;
+          }
         }
       } else if (event.modifiers.command && event.key === 'c') {
         return window.clipboard = paper.project.selectedItems[0];

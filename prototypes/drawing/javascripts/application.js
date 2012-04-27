@@ -28,10 +28,20 @@
     }
 
     Tool.prototype.onKeyDown = function(event) {
-      var copy;
+      var copy, item, link, _i, _len, _ref, _results;
       if (event.key === 'delete') {
-        if (paper.project.selectedItems[0]) {
-          return paper.project.selectedItems[0].remove();
+        item = paper.project.selectedItems[0];
+        if (item) {
+          item.remove();
+          if (item.links) {
+            _ref = item.links;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              link = _ref[_i];
+              _results.push(link.remove());
+            }
+            return _results;
+          }
         }
       } else if (event.modifiers.command && event.key === 'c') {
         return window.clipboard = paper.project.selectedItems[0];
@@ -116,12 +126,21 @@
     };
 
     LinkTool.prototype.onMouseUp = function(event) {
-      var hitResult;
+      var hitResult, link, source, target;
       if (this.drafting) {
         hitResult = this.draftingLayer.hitTest(event.point);
         if (hitResult && hitResult.item.closed) {
-          this.draftLink.finalise();
+          link = this.draftLink.finalise();
+          source = this.draftingLayer.hitTest(link.firstSegment.point).item;
+          target = this.draftingLayer.hitTest(link.lastSegment.point).item;
+          source.links.push(link);
+          if (source !== target) {
+            target.links.push(link);
+          }
+          link.source = source;
+          link.target = target;
           this.draftingLayer.commit();
+          this.draftingLayer.dispose();
         }
         this.draftingLayer.dispose();
         paper.project.activeLayer.selected = false;
@@ -177,7 +196,8 @@
 
       DraftLink.prototype.finalise = function() {
         this.path.simplify(100);
-        return this.path.dashArray = [10, 0];
+        this.path.dashArray = [10, 0];
+        return this.path;
       };
 
       return DraftLink;
@@ -229,6 +249,7 @@
         case "star":
           n = new paper.Path.Star(event.point, 5, 20, 50);
       }
+      n.links = [];
       n.fillColor = this.parameters['fill_colour'];
       n.strokeColor = this.parameters['stroke_colour'];
       n.dashArray = this.parameters['stroke_style'] === 'solid' ? [10, 0] : [10, 4];
@@ -265,19 +286,53 @@
 
     SelectTool.prototype.parameters = {};
 
+    SelectTool.prototype.origin = null;
+
     SelectTool.prototype.onMouseDown = function(event) {
       var hitResult;
       hitResult = paper.project.hitTest(event.point);
       paper.project.activeLayer.selected = false;
       if (hitResult) {
-        return hitResult.item.selected = true;
+        hitResult.item.selected = true;
+        return this.origin = hitResult.item.position;
       }
     };
 
     SelectTool.prototype.onMouseDrag = function(event) {
-      if (paper.project.selectedItems[0]) {
-        return paper.project.selectedItems[0].position = event.point;
+      var item;
+      item = paper.project.selectedItems[0];
+      if (item && item.closed) {
+        return item.position = event.point;
       }
+    };
+
+    SelectTool.prototype.onMouseUp = function(event) {
+      var item, link, _i, _len, _ref, _results;
+      item = paper.project.selectedItems[0];
+      if (item && item.links) {
+        _ref = item.links;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          link = _ref[_i];
+          _results.push(this.reconnect(link, item));
+        }
+        return _results;
+      }
+    };
+
+    SelectTool.prototype.reconnect = function(link, item) {
+      var offset;
+      if (link.source === item) {
+        offset = link.firstSegment.point.subtract(this.origin);
+        link.removeSegment(0);
+        link.insert(0, item.position.add(offset));
+      }
+      if (link.target === item) {
+        offset = link.lastSegment.point.subtract(this.origin);
+        link.removeSegment(link.segments.size - 1);
+        link.add(item.position.add(offset));
+      }
+      return link.simplify(100);
     };
 
     return SelectTool;

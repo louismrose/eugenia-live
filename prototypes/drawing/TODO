@@ -1,6 +1,7 @@
 x Link tool
--- Links should be deleted when their source/target node is deleted
--- Links should be moved when their source/target node is moved
+xx Links should be deleted when their source/target node is deleted
+xx Links should be moved when their source/target node is moved
+- Separate domain model from view model
 - Label tool
 - Port tool
 - Compartment tool

@@ -31,8 +31,17 @@ class paper.LinkTool extends grumble.Tool
     if @drafting 
       hitResult = @draftingLayer.hitTest(event.point)
       if hitResult and hitResult.item.closed 
-        @draftLink.finalise()
+        link = @draftLink.finalise()
+        source = @draftingLayer.hitTest(link.firstSegment.point).item
+        target = @draftingLayer.hitTest(link.lastSegment.point).item
+        source.links.push link
+        target.links.push link if source isnt target
+        link.source = source
+        link.target = target
+      
         @draftingLayer.commit()
+        @draftingLayer.dispose()
+        
       @draftingLayer.dispose()
       paper.project.activeLayer.selected = false
       @drafting = false
@@ -71,4 +80,5 @@ class paper.LinkTool extends grumble.Tool
     finalise: ->
       @path.simplify(100)
       @path.dashArray = [10, 0] # solid
+      @path
       # TODO trim the draft line, rather than hiding the overlap behind the nodes
