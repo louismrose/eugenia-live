@@ -19,7 +19,10 @@
       return LinkTool.__super__.constructor.apply(this, arguments);
     }
 
-    LinkTool.prototype.parameters = {};
+    LinkTool.prototype.parameters = {
+      'strokeColor': 'black',
+      'strokeStyle': 'solid'
+    };
 
     LinkTool.prototype.draftLink = null;
 
@@ -59,21 +62,43 @@
     };
 
     LinkTool.prototype.onMouseUp = function(event) {
-      var hitResult, link, source, target;
+      var attributes, hitResult, l, link, s;
       if (this.drafting) {
         hitResult = this.draftingLayer.hitTest(event.point);
         if (hitResult && hitResult.item.closed) {
+          attributes = this.parameters;
           link = this.draftLink.finalise();
-          source = this.draftingLayer.hitTest(link.firstSegment.point).item;
-          target = this.draftingLayer.hitTest(link.lastSegment.point).item;
-          source.links.push(link);
-          if (source !== target) {
-            target.links.push(link);
-          }
-          link.source = source;
-          link.target = target;
-          this.draftingLayer.commit();
+          attributes.source_id = this.draftingLayer.hitTest(link.firstSegment.point).item.spine_id;
+          attributes.target_id = this.draftingLayer.hitTest(link.lastSegment.point).item.spine_id;
           this.draftingLayer.dispose();
+          attributes.segments = (function() {
+            var _i, _len, _ref, _results;
+            _ref = link.segments;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              s = _ref[_i];
+              _results.push({
+                point: {
+                  x: s.point.x,
+                  y: s.point.y
+                },
+                handleIn: {
+                  x: s.handleIn.x,
+                  y: s.handleIn.y
+                },
+                handleOut: {
+                  x: s.handleOut.x,
+                  y: s.handleOut.y
+                }
+              });
+            }
+            return _results;
+          })();
+          console.log("creating link");
+          l = new grumble.Link(attributes);
+          console.log("created: " + l);
+          l.save();
+          console.log("saved");
         }
         this.draftingLayer.dispose();
         paper.project.activeLayer.selected = false;
@@ -96,10 +121,6 @@
 
       DraftingLayer.prototype.hitTest = function(point) {
         return this.parent.hitTest(point);
-      };
-
-      DraftingLayer.prototype.commit = function() {
-        return this.parent.insertChildren(0, this.layer.children);
       };
 
       DraftingLayer.prototype.dispose = function() {
@@ -129,7 +150,6 @@
 
       DraftLink.prototype.finalise = function() {
         this.path.simplify(100);
-        this.path.dashArray = [10, 0];
         return this.path;
       };
 

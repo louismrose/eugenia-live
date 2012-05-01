@@ -4,11 +4,13 @@
 class grumble.Tool extends paper.Tool
   onKeyDown: (event) ->
     if (event.key is 'delete')
-      item = paper.project.selectedItems[0]
-      if item
-        item.remove()
-        link.remove() for link in item.links if item.links
-
+      selection = paper.project.selectedItems[0]
+      if selection 
+        if selection.closed
+          grumble.Node.destroy(selection.spine_id)
+        else
+          grumble.Link.destroy(selection.spine_id)
+        
     else if (event.modifiers.command and event.key is 'c')
         window.clipboard = paper.project.selectedItems[0]
 

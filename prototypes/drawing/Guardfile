@@ -7,6 +7,6 @@ guard 'process', :name => 'Combine compiled Javascripts', :command => 'juicer me
   watch %r{javascripts/compiled/.+\.js}
 end
 
-guard 'process', :name => 'Combine library Javascripts', :command => 'juicer merge -s -f -o javascripts/libraries.js javascripts/lib/*' do
+guard 'process', :name => 'Combine library Javascripts', :command => 'juicer merge -s -f -o javascripts/libraries.js javascripts/lib/*.js javascripts/lib/*/*' do
   watch %r{javascripts/lib/.+\.js}
 end

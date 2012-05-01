@@ -2,7 +2,7 @@
   @depend tool.js
 ###
 class paper.LinkTool extends grumble.Tool
-  parameters: {}
+  parameters: {'strokeColor' : 'black', 'strokeStyle' : 'solid'}
   draftLink: null
   draftingLayer: null
   drafting: false
@@ -31,17 +31,28 @@ class paper.LinkTool extends grumble.Tool
     if @drafting 
       hitResult = @draftingLayer.hitTest(event.point)
       if hitResult and hitResult.item.closed 
+        attributes = @parameters
+
         link = @draftLink.finalise()
-        source = @draftingLayer.hitTest(link.firstSegment.point).item
-        target = @draftingLayer.hitTest(link.lastSegment.point).item
-        source.links.push link
-        target.links.push link if source isnt target
-        link.source = source
-        link.target = target
-      
-        @draftingLayer.commit()
+        attributes.source_id = @draftingLayer.hitTest(link.firstSegment.point).item.spine_id
+        attributes.target_id = @draftingLayer.hitTest(link.lastSegment.point).item.spine_id
+          
         @draftingLayer.dispose()
+                
         
+        # extract the information needed to reconstruct
+        # this path (and nothing more)
+        attributes.segments = for s in link.segments
+          point: {x: s.point.x, y: s.point.y}
+          handleIn: {x: s.handleIn.x, y: s.handleIn.y}
+          handleOut: {x: s.handleOut.x, y: s.handleOut.y}
+        
+        console.log("creating link")
+        l = new grumble.Link(attributes)
+        console.log("created: " + l)
+        l.save()
+        console.log("saved")
+      
       @draftingLayer.dispose()
       paper.project.activeLayer.selected = false
       @drafting = false
@@ -57,9 +68,6 @@ class paper.LinkTool extends grumble.Tool
     
     hitTest: (point) ->
       @parent.hitTest(point)
-    
-    commit: ->
-      @parent.insertChildren(0, @layer.children)
       
     dispose: ->
       @layer.remove()
@@ -79,6 +87,4 @@ class paper.LinkTool extends grumble.Tool
 
     finalise: ->
       @path.simplify(100)
-      @path.dashArray = [10, 0] # solid
       @path
-      # TODO trim the draft line, rather than hiding the overlap behind the nodes

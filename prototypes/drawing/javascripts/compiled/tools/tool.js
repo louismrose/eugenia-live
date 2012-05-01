@@ -19,19 +19,14 @@
     }
 
     Tool.prototype.onKeyDown = function(event) {
-      var copy, item, link, _i, _len, _ref, _results;
+      var copy, selection;
       if (event.key === 'delete') {
-        item = paper.project.selectedItems[0];
-        if (item) {
-          item.remove();
-          if (item.links) {
-            _ref = item.links;
-            _results = [];
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              link = _ref[_i];
-              _results.push(link.remove());
-            }
-            return _results;
+        selection = paper.project.selectedItems[0];
+        if (selection) {
+          if (selection.closed) {
+            return grumble.Node.destroy(selection.spine_id);
+          } else {
+            return grumble.Link.destroy(selection.spine_id);
           }
         }
       } else if (event.modifiers.command && event.key === 'c') {

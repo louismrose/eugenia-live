@@ -17,6 +17,277 @@
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
+  grumble.Element = (function(_super) {
+
+    __extends(Element, _super);
+
+    Element.name = 'Element';
+
+    function Element() {
+      return Element.__super__.constructor.apply(this, arguments);
+    }
+
+    Element.extend(Spine.Model.Local);
+
+    return Element;
+
+  })(Spine.Model);
+
+}).call(this);
+
+
+/*
+  @depend element.js
+*/
+
+
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+
+  grumble.Link = (function(_super) {
+
+    __extends(Link, _super);
+
+    Link.name = 'Link';
+
+    Link.configure("Link", "segments", "strokeColor", "strokeStyle");
+
+    Link.extend(Spine.Model.Local);
+
+    function Link(attributes) {
+      this.target = __bind(this.target, this);
+
+      this.source = __bind(this.source, this);
+
+      this.updateNodes = __bind(this.updateNodes, this);
+
+      var k, v;
+      Link.__super__.constructor.apply(this, arguments);
+      for (k in attributes) {
+        v = attributes[k];
+        this[k] = v;
+      }
+      this.bind("save", this.updateNodes);
+    }
+
+    Link.prototype.updateNodes = function() {
+      if (this.source_id) {
+        this.source().addLink(this.id);
+      }
+      if (this.source_id !== this.target_id) {
+        return this.target().addLink(this.id);
+      }
+    };
+
+    Link.prototype.source = function() {
+      return grumble.Node.find(this.source_id);
+    };
+
+    Link.prototype.target = function() {
+      return grumble.Node.find(this.target_id);
+    };
+
+    return Link;
+
+  })(Spine.Model);
+
+}).call(this);
+
+
+/*
+  @depend element.js
+*/
+
+
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+
+  grumble.Node = (function(_super) {
+
+    __extends(Node, _super);
+
+    Node.name = 'Node';
+
+    Node.configure("Node", "link_ids", "shape", "position", "fillColor", "strokeColor", "strokeStyle");
+
+    Node.extend(Spine.Model.Local);
+
+    function Node(attributes) {
+      this.destroyLinks = __bind(this.destroyLinks, this);
+
+      this.addLink = __bind(this.addLink, this);
+
+      var k, v;
+      Node.__super__.constructor.apply(this, arguments);
+      for (k in attributes) {
+        v = attributes[k];
+        this[k] = v;
+      }
+      this.link_ids = [];
+      this.bind("destroy", this.destroyLinks);
+    }
+
+    Node.prototype.addLink = function(id) {
+      return this.link_ids.push(id);
+    };
+
+    Node.prototype.destroyLinks = function() {
+      var id, _i, _len, _ref, _results;
+      _ref = this.link_ids;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        id = _ref[_i];
+        _results.push(grumble.Link.destroy(id));
+      }
+      return _results;
+    };
+
+    return Node;
+
+  })(Spine.Model);
+
+}).call(this);
+
+
+/*
+  @depend ../namespace.js
+*/
+
+
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  grumble.NodesRenderer = (function() {
+
+    NodesRenderer.name = 'NodesRenderer';
+
+    function NodesRenderer() {
+      this.addAllLinks = __bind(this.addAllLinks, this);
+
+      this.addAllNodes = __bind(this.addAllNodes, this);
+
+      this.addOne = __bind(this.addOne, this);
+      grumble.Node.bind("refresh", this.addAllNodes);
+      grumble.Link.bind("refresh", this.addAllLinks);
+      grumble.Node.bind("create", this.addOne);
+      grumble.Link.bind("create", this.addOne);
+      grumble.Node.fetch();
+      grumble.Link.fetch();
+    }
+
+    NodesRenderer.prototype.addOne = function(element) {
+      console.log("one element added");
+      return new grumble.NodeRenderer(element).render();
+    };
+
+    NodesRenderer.prototype.addAllNodes = function() {
+      console.log("adding all " + grumble.Node.count() + " nodes");
+      return grumble.Node.each(this.addOne);
+    };
+
+    NodesRenderer.prototype.addAllLinks = function() {
+      console.log("adding all " + grumble.Link.count() + " links");
+      return grumble.Link.each(this.addOne);
+    };
+
+    return NodesRenderer;
+
+  })();
+
+  grumble.NodeRenderer = (function() {
+
+    NodeRenderer.name = 'NodeRenderer';
+
+    NodeRenderer.prototype.item = null;
+
+    NodeRenderer.prototype.el = null;
+
+    function NodeRenderer(item) {
+      this.remove = __bind(this.remove, this);
+
+      this.renderLink = __bind(this.renderLink, this);
+
+      this.renderNode = __bind(this.renderNode, this);
+
+      this.render = __bind(this.render, this);
+      this.item = item;
+      this.item.bind("update", this.render);
+      this.item.bind("destroy", this.remove);
+    }
+
+    NodeRenderer.prototype.render = function() {
+      console.log("rendering " + this.item);
+      if (this.item instanceof grumble.Node) {
+        return this.renderNode();
+      } else {
+        return this.renderLink();
+      }
+    };
+
+    NodeRenderer.prototype.renderNode = function() {
+      switch (this.item.shape) {
+        case "rectangle":
+          this.el = new paper.Path.Rectangle(this.item.position, new paper.Size(100, 50));
+          break;
+        case "circle":
+          this.el = new paper.Path.Circle(this.item.position, 50);
+          break;
+        case "star":
+          this.el = new paper.Path.Star(this.item.position, 5, 20, 50);
+      }
+      this.el.links = [];
+      this.el.spine_id = this.item.id;
+      this.el.fillColor = this.item.fillColor;
+      this.el.strokeColor = this.item.strokeColor;
+      return this.el.dashArray = this.item.strokeStyle === 'solid' ? [10, 0] : [10, 4];
+    };
+
+    NodeRenderer.prototype.renderLink = function() {
+      var s, segments;
+      console.log("there are now " + grumble.Link.count() + " links");
+      console.log(this.item);
+      segments = (function() {
+        var _i, _len, _ref, _results;
+        _ref = this.item.segments;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          s = _ref[_i];
+          _results.push(new paper.Segment(s.point, s.handleIn, s.handleOut));
+        }
+        return _results;
+      }).call(this);
+      this.el = new paper.Path(segments);
+      this.el.spine_id = this.item.id;
+      this.el.strokeColor = this.item.strokeColor;
+      this.el.dashArray = this.item.strokeStyle === 'solid' ? [10, 0] : [10, 4];
+      this.el.layer.insertChild(0, this.el);
+      return paper.view.draw();
+    };
+
+    NodeRenderer.prototype.remove = function(node) {
+      return this.el.remove();
+    };
+
+    return NodeRenderer;
+
+  })();
+
+}).call(this);
+
+
+/*
+  @depend ../namespace.js
+*/
+
+
+(function() {
+  var __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+
   grumble.Tool = (function(_super) {
 
     __extends(Tool, _super);
@@ -28,19 +299,14 @@
     }
 
     Tool.prototype.onKeyDown = function(event) {
-      var copy, item, link, _i, _len, _ref, _results;
+      var copy, selection;
       if (event.key === 'delete') {
-        item = paper.project.selectedItems[0];
-        if (item) {
-          item.remove();
-          if (item.links) {
-            _ref = item.links;
-            _results = [];
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              link = _ref[_i];
-              _results.push(link.remove());
-            }
-            return _results;
+        selection = paper.project.selectedItems[0];
+        if (selection) {
+          if (selection.closed) {
+            return grumble.Node.destroy(selection.spine_id);
+          } else {
+            return grumble.Link.destroy(selection.spine_id);
           }
         }
       } else if (event.modifiers.command && event.key === 'c') {
@@ -86,7 +352,10 @@
       return LinkTool.__super__.constructor.apply(this, arguments);
     }
 
-    LinkTool.prototype.parameters = {};
+    LinkTool.prototype.parameters = {
+      'strokeColor': 'black',
+      'strokeStyle': 'solid'
+    };
 
     LinkTool.prototype.draftLink = null;
 
@@ -126,21 +395,43 @@
     };
 
     LinkTool.prototype.onMouseUp = function(event) {
-      var hitResult, link, source, target;
+      var attributes, hitResult, l, link, s;
       if (this.drafting) {
         hitResult = this.draftingLayer.hitTest(event.point);
         if (hitResult && hitResult.item.closed) {
+          attributes = this.parameters;
           link = this.draftLink.finalise();
-          source = this.draftingLayer.hitTest(link.firstSegment.point).item;
-          target = this.draftingLayer.hitTest(link.lastSegment.point).item;
-          source.links.push(link);
-          if (source !== target) {
-            target.links.push(link);
-          }
-          link.source = source;
-          link.target = target;
-          this.draftingLayer.commit();
+          attributes.source_id = this.draftingLayer.hitTest(link.firstSegment.point).item.spine_id;
+          attributes.target_id = this.draftingLayer.hitTest(link.lastSegment.point).item.spine_id;
           this.draftingLayer.dispose();
+          attributes.segments = (function() {
+            var _i, _len, _ref, _results;
+            _ref = link.segments;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              s = _ref[_i];
+              _results.push({
+                point: {
+                  x: s.point.x,
+                  y: s.point.y
+                },
+                handleIn: {
+                  x: s.handleIn.x,
+                  y: s.handleIn.y
+                },
+                handleOut: {
+                  x: s.handleOut.x,
+                  y: s.handleOut.y
+                }
+              });
+            }
+            return _results;
+          })();
+          console.log("creating link");
+          l = new grumble.Link(attributes);
+          console.log("created: " + l);
+          l.save();
+          console.log("saved");
         }
         this.draftingLayer.dispose();
         paper.project.activeLayer.selected = false;
@@ -163,10 +454,6 @@
 
       DraftingLayer.prototype.hitTest = function(point) {
         return this.parent.hitTest(point);
-      };
-
-      DraftingLayer.prototype.commit = function() {
-        return this.parent.insertChildren(0, this.layer.children);
       };
 
       DraftingLayer.prototype.dispose = function() {
@@ -196,7 +483,6 @@
 
       DraftLink.prototype.finalise = function() {
         this.path.simplify(100);
-        this.path.dashArray = [10, 0];
         return this.path;
       };
 
@@ -232,27 +518,20 @@
 
     NodeTool.prototype.parameters = {
       'shape': 'rectangle',
-      'fill_colour': 'white',
-      'stroke_colour': 'black',
-      'stroke_style': 'solid'
+      'fillColor': 'white',
+      'strokeColor': 'black',
+      'strokeStyle': 'solid'
     };
 
     NodeTool.prototype.onMouseDown = function(event) {
-      var n;
-      switch (this.parameters['shape']) {
-        case "rectangle":
-          n = new paper.Path.Rectangle(event.point, new paper.Size(100, 50));
-          break;
-        case "circle":
-          n = new paper.Path.Circle(event.point, 50);
-          break;
-        case "star":
-          n = new paper.Path.Star(event.point, 5, 20, 50);
-      }
-      n.links = [];
-      n.fillColor = this.parameters['fill_colour'];
-      n.strokeColor = this.parameters['stroke_colour'];
-      n.dashArray = this.parameters['stroke_style'] === 'solid' ? [10, 0] : [10, 4];
+      var attributes, node;
+      attributes = this.parameters;
+      attributes['position'] = event.point;
+      node = new grumble.Node(this.parameters);
+      console.log("created:");
+      console.log(node);
+      node.save();
+      console.log("saved");
       if (paper.project.selectedItems[0]) {
         return paper.project.selectedItems[0].selected = false;
       }
@@ -395,6 +674,7 @@
 
 /*
   @depend tools/toolbox.js
+  @depend models/node.js
 */
 
 
@@ -402,8 +682,9 @@
 
   window.onload = function() {
     paper.setup($('canvas')[0]);
-    paper.view.draw();
-    return new grumble.Toolbox().install();
+    new grumble.Toolbox().install();
+    new grumble.NodesRenderer;
+    return paper.view.draw();
   };
 
 }).call(this);

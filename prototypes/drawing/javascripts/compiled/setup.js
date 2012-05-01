@@ -1,6 +1,7 @@
 
 /*
   @depend tools/toolbox.js
+  @depend models/node.js
 */
 
 
@@ -8,8 +9,9 @@
 
   window.onload = function() {
     paper.setup($('canvas')[0]);
-    paper.view.draw();
-    return new grumble.Toolbox().install();
+    new grumble.Toolbox().install();
+    new grumble.NodesRenderer;
+    return paper.view.draw();
   };
 
 }).call(this);
