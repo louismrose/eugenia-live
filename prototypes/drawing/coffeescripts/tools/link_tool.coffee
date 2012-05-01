@@ -34,8 +34,8 @@ class paper.LinkTool extends grumble.Tool
         attributes = @parameters
 
         link = @draftLink.finalise()
-        attributes.source_id = @draftingLayer.hitTest(link.firstSegment.point).item.spine_id
-        attributes.target_id = @draftingLayer.hitTest(link.lastSegment.point).item.spine_id
+        attributes.sourceId = @draftingLayer.hitTest(link.firstSegment.point).item.spine_id
+        attributes.targetId = @draftingLayer.hitTest(link.lastSegment.point).item.spine_id
           
         @draftingLayer.dispose()
                 

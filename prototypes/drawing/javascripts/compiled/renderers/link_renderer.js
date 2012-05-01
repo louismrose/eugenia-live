@@ -21,10 +21,9 @@
     }
 
     LinkRenderer.prototype.render = function() {
-      var s, segments;
+      var old_el, s, segments;
       console.log("rendering " + this.item);
-      console.log("there are now " + grumble.Link.count() + " links");
-      console.log(this.item);
+      old_el = this.el;
       segments = (function() {
         var _i, _len, _ref, _results;
         _ref = this.item.segments;
@@ -40,7 +39,10 @@
       this.el.strokeColor = this.item.strokeColor;
       this.el.dashArray = this.item.strokeStyle === 'solid' ? [10, 0] : [10, 4];
       this.el.layer.insertChild(0, this.el);
-      return paper.view.draw();
+      if (old_el) {
+        this.el.selected = old_el.selected;
+        return old_el.remove();
+      }
     };
 
     LinkRenderer.prototype.remove = function() {

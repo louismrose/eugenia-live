@@ -10,12 +10,12 @@ class grumble.LinkRenderer
 
   render: =>
     console.log("rendering " + @item)
-    console.log("there are now " + grumble.Link.count() + " links")
-    console.log(@item)
+    
+    old_el =  @el
     
     segments = for s in @item.segments
       new paper.Segment(s.point, s.handleIn, s.handleOut)
-    
+  
     @el = new paper.Path(segments)
     @el.spine_id = @item.id
     @el.strokeColor = @item.strokeColor
@@ -24,7 +24,10 @@ class grumble.LinkRenderer
     # TODO trim the line in the tool
     # rather than hiding the overlap behind the nodes here
     @el.layer.insertChild(0, @el)
-    paper.view.draw()
+    
+    if old_el
+      @el.selected = old_el.selected
+      old_el.remove()
         
   remove: =>
     @el.remove()

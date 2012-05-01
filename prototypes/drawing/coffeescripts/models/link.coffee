@@ -2,21 +2,26 @@
   @depend element.js
 ###
 class grumble.Link extends Spine.Model
-  @configure "Link", "segments", "strokeColor", "strokeStyle"
+  @configure "Link", "sourceId", "targetId", "segments", "strokeColor", "strokeStyle"
   @extend Spine.Model.Local
   
   # TODO duplication with grumble.Node
   constructor: (attributes) ->
     super
     this[k] = v for k,v of attributes
-    this.bind "save", @updateNodes
+    this.bind "save", @addToNodes
+    this.bind "destroy", @removeFromNodes
   
-  updateNodes: =>
-    @source().addLink(@id) if @source_id
-    @target().addLink(@id) if @source_id isnt @target_id
+  addToNodes: =>
+    @source().addLink(@id)
+    @target().addLink(@id)
+    
+  removeFromNodes: =>
+    @source().removeLink(@id) if grumble.Node.exists(@sourceId)
+    @target().removeLink(@id) if grumble.Node.exists(@targetId)
 
   source: =>
-    grumble.Node.find(@source_id)
+    grumble.Node.find(@sourceId)
   
   target: =>
-    grumble.Node.find(@target_id)
+    grumble.Node.find(@targetId)

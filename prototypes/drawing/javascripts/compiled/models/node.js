@@ -16,11 +16,13 @@
 
     Node.name = 'Node';
 
-    Node.configure("Node", "link_ids", "shape", "position", "fillColor", "strokeColor", "strokeStyle");
+    Node.configure("Node", "linkIds", "shape", "position", "fillColor", "strokeColor", "strokeStyle");
 
     Node.extend(Spine.Model.Local);
 
     function Node(attributes) {
+      this.links = __bind(this.links, this);
+
       this.destroyLinks = __bind(this.destroyLinks, this);
 
       this.addLink = __bind(this.addLink, this);
@@ -31,24 +33,39 @@
         v = attributes[k];
         this[k] = v;
       }
-      this.link_ids || (this.link_ids = []);
+      this.linkIds || (this.linkIds = []);
       this.bind("destroy", this.destroyLinks);
     }
 
     Node.prototype.addLink = function(id) {
-      if (__indexOf.call(this.link_ids, id) < 0) {
-        this.link_ids.push(id);
+      if (__indexOf.call(this.linkIds, id) < 0) {
+        this.linkIds.push(id);
       }
       return this.save();
     };
 
+    Node.prototype.removeLink = function(id) {
+      return this.linkIds.remove(id);
+    };
+
     Node.prototype.destroyLinks = function() {
       var id, _i, _len, _ref, _results;
-      _ref = this.link_ids;
+      _ref = this.linkIds;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         id = _ref[_i];
         _results.push(grumble.Link.destroy(id));
+      }
+      return _results;
+    };
+
+    Node.prototype.links = function() {
+      var id, _i, _len, _ref, _results;
+      _ref = this.linkIds;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        id = _ref[_i];
+        _results.push(grumble.Link.find(id));
       }
       return _results;
     };

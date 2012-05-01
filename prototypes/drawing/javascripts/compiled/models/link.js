@@ -15,7 +15,7 @@
 
     Link.name = 'Link';
 
-    Link.configure("Link", "segments", "strokeColor", "strokeStyle");
+    Link.configure("Link", "sourceId", "targetId", "segments", "strokeColor", "strokeStyle");
 
     Link.extend(Spine.Model.Local);
 
@@ -24,7 +24,9 @@
 
       this.source = __bind(this.source, this);
 
-      this.updateNodes = __bind(this.updateNodes, this);
+      this.removeFromNodes = __bind(this.removeFromNodes, this);
+
+      this.addToNodes = __bind(this.addToNodes, this);
 
       var k, v;
       Link.__super__.constructor.apply(this, arguments);
@@ -32,24 +34,30 @@
         v = attributes[k];
         this[k] = v;
       }
-      this.bind("save", this.updateNodes);
+      this.bind("save", this.addToNodes);
+      this.bind("destroy", this.removeFromNodes);
     }
 
-    Link.prototype.updateNodes = function() {
-      if (this.source_id) {
-        this.source().addLink(this.id);
+    Link.prototype.addToNodes = function() {
+      this.source().addLink(this.id);
+      return this.target().addLink(this.id);
+    };
+
+    Link.prototype.removeFromNodes = function() {
+      if (grumble.Node.exists(this.sourceId)) {
+        this.source().removeLink(this.id);
       }
-      if (this.source_id !== this.target_id) {
-        return this.target().addLink(this.id);
+      if (grumble.Node.exists(this.targetId)) {
+        return this.target().removeLink(this.id);
       }
     };
 
     Link.prototype.source = function() {
-      return grumble.Node.find(this.source_id);
+      return grumble.Node.find(this.sourceId);
     };
 
     Link.prototype.target = function() {
-      return grumble.Node.find(this.target_id);
+      return grumble.Node.find(this.targetId);
     };
 
     return Link;

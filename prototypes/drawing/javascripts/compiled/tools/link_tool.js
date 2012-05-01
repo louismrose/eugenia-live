@@ -68,8 +68,8 @@
         if (hitResult && hitResult.item.closed) {
           attributes = this.parameters;
           link = this.draftLink.finalise();
-          attributes.source_id = this.draftingLayer.hitTest(link.firstSegment.point).item.spine_id;
-          attributes.target_id = this.draftingLayer.hitTest(link.lastSegment.point).item.spine_id;
+          attributes.sourceId = this.draftingLayer.hitTest(link.firstSegment.point).item.spine_id;
+          attributes.targetId = this.draftingLayer.hitTest(link.lastSegment.point).item.spine_id;
           this.draftingLayer.dispose();
           attributes.segments = (function() {
             var _i, _len, _ref, _results;

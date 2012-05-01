@@ -52,7 +52,7 @@
 
     Link.name = 'Link';
 
-    Link.configure("Link", "segments", "strokeColor", "strokeStyle");
+    Link.configure("Link", "sourceId", "targetId", "segments", "strokeColor", "strokeStyle");
 
     Link.extend(Spine.Model.Local);
 
@@ -61,7 +61,9 @@
 
       this.source = __bind(this.source, this);
 
-      this.updateNodes = __bind(this.updateNodes, this);
+      this.removeFromNodes = __bind(this.removeFromNodes, this);
+
+      this.addToNodes = __bind(this.addToNodes, this);
 
       var k, v;
       Link.__super__.constructor.apply(this, arguments);
@@ -69,24 +71,30 @@
         v = attributes[k];
         this[k] = v;
       }
-      this.bind("save", this.updateNodes);
+      this.bind("save", this.addToNodes);
+      this.bind("destroy", this.removeFromNodes);
     }
 
-    Link.prototype.updateNodes = function() {
-      if (this.source_id) {
-        this.source().addLink(this.id);
+    Link.prototype.addToNodes = function() {
+      this.source().addLink(this.id);
+      return this.target().addLink(this.id);
+    };
+
+    Link.prototype.removeFromNodes = function() {
+      if (grumble.Node.exists(this.sourceId)) {
+        this.source().removeLink(this.id);
       }
-      if (this.source_id !== this.target_id) {
-        return this.target().addLink(this.id);
+      if (grumble.Node.exists(this.targetId)) {
+        return this.target().removeLink(this.id);
       }
     };
 
     Link.prototype.source = function() {
-      return grumble.Node.find(this.source_id);
+      return grumble.Node.find(this.sourceId);
     };
 
     Link.prototype.target = function() {
-      return grumble.Node.find(this.target_id);
+      return grumble.Node.find(this.targetId);
     };
 
     return Link;
@@ -113,11 +121,13 @@
 
     Node.name = 'Node';
 
-    Node.configure("Node", "link_ids", "shape", "position", "fillColor", "strokeColor", "strokeStyle");
+    Node.configure("Node", "linkIds", "shape", "position", "fillColor", "strokeColor", "strokeStyle");
 
     Node.extend(Spine.Model.Local);
 
     function Node(attributes) {
+      this.links = __bind(this.links, this);
+
       this.destroyLinks = __bind(this.destroyLinks, this);
 
       this.addLink = __bind(this.addLink, this);
@@ -128,24 +138,39 @@
         v = attributes[k];
         this[k] = v;
       }
-      this.link_ids || (this.link_ids = []);
+      this.linkIds || (this.linkIds = []);
       this.bind("destroy", this.destroyLinks);
     }
 
     Node.prototype.addLink = function(id) {
-      if (__indexOf.call(this.link_ids, id) < 0) {
-        this.link_ids.push(id);
+      if (__indexOf.call(this.linkIds, id) < 0) {
+        this.linkIds.push(id);
       }
       return this.save();
     };
 
+    Node.prototype.removeLink = function(id) {
+      return this.linkIds.remove(id);
+    };
+
     Node.prototype.destroyLinks = function() {
       var id, _i, _len, _ref, _results;
-      _ref = this.link_ids;
+      _ref = this.linkIds;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         id = _ref[_i];
         _results.push(grumble.Link.destroy(id));
+      }
+      return _results;
+    };
+
+    Node.prototype.links = function() {
+      var id, _i, _len, _ref, _results;
+      _ref = this.linkIds;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        id = _ref[_i];
+        _results.push(grumble.Link.find(id));
       }
       return _results;
     };
@@ -179,7 +204,9 @@
     }
 
     NodeRenderer.prototype.render = function() {
+      var old_el;
       console.log("rendering " + this.item);
+      old_el = this.el;
       switch (this.item.shape) {
         case "rectangle":
           this.el = new paper.Path.Rectangle(this.item.position, new paper.Size(100, 50));
@@ -190,10 +217,15 @@
         case "star":
           this.el = new paper.Path.Star(this.item.position, 5, 20, 50);
       }
+      this.el.position = this.item.position;
       this.el.spine_id = this.item.id;
       this.el.fillColor = this.item.fillColor;
       this.el.strokeColor = this.item.strokeColor;
-      return this.el.dashArray = this.item.strokeStyle === 'solid' ? [10, 0] : [10, 4];
+      this.el.dashArray = this.item.strokeStyle === 'solid' ? [10, 0] : [10, 4];
+      if (old_el) {
+        this.el.selected = old_el.selected;
+        return old_el.remove();
+      }
     };
 
     NodeRenderer.prototype.remove = function() {
@@ -229,10 +261,9 @@
     }
 
     LinkRenderer.prototype.render = function() {
-      var s, segments;
+      var old_el, s, segments;
       console.log("rendering " + this.item);
-      console.log("there are now " + grumble.Link.count() + " links");
-      console.log(this.item);
+      old_el = this.el;
       segments = (function() {
         var _i, _len, _ref, _results;
         _ref = this.item.segments;
@@ -248,7 +279,10 @@
       this.el.strokeColor = this.item.strokeColor;
       this.el.dashArray = this.item.strokeStyle === 'solid' ? [10, 0] : [10, 4];
       this.el.layer.insertChild(0, this.el);
-      return paper.view.draw();
+      if (old_el) {
+        this.el.selected = old_el.selected;
+        return old_el.remove();
+      }
     };
 
     LinkRenderer.prototype.remove = function() {
@@ -256,62 +290,6 @@
     };
 
     return LinkRenderer;
-
-  })();
-
-}).call(this);
-
-
-/*
-  @depend ../namespace.js
-  @depend node_renderer.js
-  @depend link_renderer.js
-*/
-
-
-(function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-  grumble.AppRenderer = (function() {
-
-    AppRenderer.name = 'AppRenderer';
-
-    AppRenderer.prototype.renderers = {};
-
-    function AppRenderer() {
-      this.addOne = __bind(this.addOne, this);
-
-      this.addAll = __bind(this.addAll, this);
-
-      var _this = this;
-      grumble.Node.bind("refresh", function() {
-        return _this.addAll(grumble.Node);
-      });
-      grumble.Link.bind("refresh", function() {
-        return _this.addAll(grumble.Link);
-      });
-      grumble.Node.bind("create", this.addOne);
-      grumble.Link.bind("create", this.addOne);
-      grumble.Node.fetch();
-      grumble.Link.fetch();
-    }
-
-    AppRenderer.prototype.addAll = function(type) {
-      console.log("adding all " + type.count() + " " + type.name + "s");
-      return type.each(this.addOne);
-    };
-
-    AppRenderer.prototype.addOne = function(element) {
-      var renderer;
-      renderer = grumble[element.constructor.name + "Renderer"];
-      if (renderer) {
-        return new renderer(element).render();
-      } else {
-        return console.warn("no renderer attached for " + element);
-      }
-    };
-
-    return AppRenderer;
 
   })();
 
@@ -340,8 +318,6 @@
       this.install = __bind(this.install, this);
 
     }
-
-    CanvasRenderer.prototype.renderers = {};
 
     CanvasRenderer.prototype.install = function() {
       var _this = this;
@@ -373,246 +349,6 @@
     };
 
     return CanvasRenderer;
-
-  })();
-
-}).call(this);
-
-
-/*
-  @depend ../namespace.js
-*/
-
-
-(function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-  grumble.LinkRenderer = (function() {
-
-    LinkRenderer.name = 'LinkRenderer';
-
-    LinkRenderer.prototype.item = null;
-
-    LinkRenderer.prototype.el = null;
-
-    function LinkRenderer(item) {
-      this.remove = __bind(this.remove, this);
-
-      this.render = __bind(this.render, this);
-      this.item = item;
-      this.item.bind("update", this.render);
-      this.item.bind("destroy", this.remove);
-    }
-
-    LinkRenderer.prototype.render = function() {
-      var s, segments;
-      console.log("rendering " + this.item);
-      console.log("there are now " + grumble.Link.count() + " links");
-      console.log(this.item);
-      segments = (function() {
-        var _i, _len, _ref, _results;
-        _ref = this.item.segments;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          s = _ref[_i];
-          _results.push(new paper.Segment(s.point, s.handleIn, s.handleOut));
-        }
-        return _results;
-      }).call(this);
-      this.el = new paper.Path(segments);
-      this.el.spine_id = this.item.id;
-      this.el.strokeColor = this.item.strokeColor;
-      this.el.dashArray = this.item.strokeStyle === 'solid' ? [10, 0] : [10, 4];
-      this.el.layer.insertChild(0, this.el);
-      return paper.view.draw();
-    };
-
-    LinkRenderer.prototype.remove = function(node) {
-      return this.el.remove();
-    };
-
-    return LinkRenderer;
-
-  })();
-
-}).call(this);
-
-
-/*
-  @depend ../namespace.js
-*/
-
-
-(function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-  grumble.NodesRenderer = (function() {
-
-    NodesRenderer.name = 'NodesRenderer';
-
-    function NodesRenderer() {
-      this.addAllLinks = __bind(this.addAllLinks, this);
-
-      this.addAllNodes = __bind(this.addAllNodes, this);
-
-      this.addOne = __bind(this.addOne, this);
-      grumble.Node.bind("refresh", this.addAllNodes);
-      grumble.Link.bind("refresh", this.addAllLinks);
-      grumble.Node.bind("create", this.addOne);
-      grumble.Link.bind("create", this.addOne);
-      grumble.Node.fetch();
-      grumble.Link.fetch();
-    }
-
-    NodesRenderer.prototype.addOne = function(element) {
-      console.log("one element added");
-      return new grumble.NodeRenderer(element).render();
-    };
-
-    NodesRenderer.prototype.addAllNodes = function() {
-      console.log("adding all " + grumble.Node.count() + " nodes");
-      return grumble.Node.each(this.addOne);
-    };
-
-    NodesRenderer.prototype.addAllLinks = function() {
-      console.log("adding all " + grumble.Link.count() + " links");
-      return grumble.Link.each(this.addOne);
-    };
-
-    return NodesRenderer;
-
-  })();
-
-  grumble.NodeRenderer = (function() {
-
-    NodeRenderer.name = 'NodeRenderer';
-
-    NodeRenderer.prototype.item = null;
-
-    NodeRenderer.prototype.el = null;
-
-    function NodeRenderer(item) {
-      this.remove = __bind(this.remove, this);
-
-      this.renderLink = __bind(this.renderLink, this);
-
-      this.renderNode = __bind(this.renderNode, this);
-
-      this.render = __bind(this.render, this);
-      this.item = item;
-      this.item.bind("update", this.render);
-      this.item.bind("destroy", this.remove);
-    }
-
-    NodeRenderer.prototype.render = function() {
-      console.log("rendering " + this.item);
-      if (this.item instanceof grumble.Node) {
-        return this.renderNode();
-      } else {
-        return this.renderLink();
-      }
-    };
-
-    NodeRenderer.prototype.renderNode = function() {
-      switch (this.item.shape) {
-        case "rectangle":
-          this.el = new paper.Path.Rectangle(this.item.position, new paper.Size(100, 50));
-          break;
-        case "circle":
-          this.el = new paper.Path.Circle(this.item.position, 50);
-          break;
-        case "star":
-          this.el = new paper.Path.Star(this.item.position, 5, 20, 50);
-      }
-      this.el.links = [];
-      this.el.spine_id = this.item.id;
-      this.el.fillColor = this.item.fillColor;
-      this.el.strokeColor = this.item.strokeColor;
-      return this.el.dashArray = this.item.strokeStyle === 'solid' ? [10, 0] : [10, 4];
-    };
-
-    NodeRenderer.prototype.renderLink = function() {
-      var s, segments;
-      console.log("there are now " + grumble.Link.count() + " links");
-      console.log(this.item);
-      segments = (function() {
-        var _i, _len, _ref, _results;
-        _ref = this.item.segments;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          s = _ref[_i];
-          _results.push(new paper.Segment(s.point, s.handleIn, s.handleOut));
-        }
-        return _results;
-      }).call(this);
-      this.el = new paper.Path(segments);
-      this.el.spine_id = this.item.id;
-      this.el.strokeColor = this.item.strokeColor;
-      this.el.dashArray = this.item.strokeStyle === 'solid' ? [10, 0] : [10, 4];
-      this.el.layer.insertChild(0, this.el);
-      return paper.view.draw();
-    };
-
-    NodeRenderer.prototype.remove = function(node) {
-      return this.el.remove();
-    };
-
-    return NodeRenderer;
-
-  })();
-
-}).call(this);
-
-
-/*
-  @depend ../namespace.js
-*/
-
-
-(function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-  grumble.NodeRenderer = (function() {
-
-    NodeRenderer.name = 'NodeRenderer';
-
-    NodeRenderer.prototype.item = null;
-
-    NodeRenderer.prototype.el = null;
-
-    function NodeRenderer(item) {
-      this.remove = __bind(this.remove, this);
-
-      this.render = __bind(this.render, this);
-      this.item = item;
-      this.item.bind("update", this.render);
-      this.item.bind("destroy", this.remove);
-    }
-
-    NodeRenderer.prototype.render = function() {
-      console.log("rendering " + this.item);
-      switch (this.item.shape) {
-        case "rectangle":
-          this.el = new paper.Path.Rectangle(this.item.position, new paper.Size(100, 50));
-          break;
-        case "circle":
-          this.el = new paper.Path.Circle(this.item.position, 50);
-          break;
-        case "star":
-          this.el = new paper.Path.Star(this.item.position, 5, 20, 50);
-      }
-      this.el.links = [];
-      this.el.spine_id = this.item.id;
-      this.el.fillColor = this.item.fillColor;
-      this.el.strokeColor = this.item.strokeColor;
-      return this.el.dashArray = this.item.strokeStyle === 'solid' ? [10, 0] : [10, 4];
-    };
-
-    NodeRenderer.prototype.remove = function(node) {
-      return this.el.remove();
-    };
-
-    return NodeRenderer;
 
   })();
 
@@ -741,8 +477,8 @@
         if (hitResult && hitResult.item.closed) {
           attributes = this.parameters;
           link = this.draftLink.finalise();
-          attributes.source_id = this.draftingLayer.hitTest(link.firstSegment.point).item.spine_id;
-          attributes.target_id = this.draftingLayer.hitTest(link.lastSegment.point).item.spine_id;
+          attributes.sourceId = this.draftingLayer.hitTest(link.firstSegment.point).item.spine_id;
+          attributes.targetId = this.draftingLayer.hitTest(link.lastSegment.point).item.spine_id;
           this.draftingLayer.dispose();
           attributes.segments = (function() {
             var _i, _len, _ref, _results;
@@ -886,6 +622,7 @@
 
 /*
   @depend tool.js
+  @depend ../models/node.js
 */
 
 
@@ -907,6 +644,8 @@
 
     SelectTool.prototype.origin = null;
 
+    SelectTool.prototype.destination = null;
+
     SelectTool.prototype.onMouseDown = function(event) {
       var hitResult;
       hitResult = paper.project.hitTest(event.point);
@@ -926,32 +665,78 @@
     };
 
     SelectTool.prototype.onMouseUp = function(event) {
-      var item, link, _i, _len, _ref, _results;
+      var item, link, node, _i, _len, _ref;
       item = paper.project.selectedItems[0];
-      if (item && item.links) {
-        _ref = item.links;
-        _results = [];
+      if (item && item.closed) {
+        this.destination = event.point;
+        node = grumble.Node.find(item.spine_id);
+        node.position = this.destination;
+        _ref = node.links();
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           link = _ref[_i];
-          _results.push(this.reconnect(link, item));
+          this.reconnect(link, node);
         }
-        return _results;
+        return node.save();
       }
     };
 
-    SelectTool.prototype.reconnect = function(link, item) {
-      var offset;
-      if (link.source === item) {
-        offset = link.firstSegment.point.subtract(this.origin);
-        link.removeSegment(0);
-        link.insert(0, item.position.add(offset));
+    SelectTool.prototype.reconnect = function(link, node) {
+      var el, offset, s;
+      el = this.elementFor(link);
+      console.log("Reconnecting " + link + " to " + node);
+      console.log("Using " + el);
+      if (link.sourceId === node.id) {
+        offset = el.firstSegment.point.subtract(this.origin);
+        el.removeSegment(0);
+        el.insert(0, this.destination.add(offset));
       }
-      if (link.target === item) {
-        offset = link.lastSegment.point.subtract(this.origin);
-        link.removeSegment(link.segments.size - 1);
-        link.add(item.position.add(offset));
+      if (link.targetId === node.id) {
+        offset = el.lastSegment.point.subtract(this.origin);
+        el.removeSegment(link.segments.size - 1);
+        el.add(this.destination.add(offset));
       }
-      return link.simplify(100);
+      el.simplify(100);
+      link.segments = (function() {
+        var _i, _len, _ref, _results;
+        _ref = el.segments;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          s = _ref[_i];
+          _results.push({
+            point: {
+              x: s.point.x,
+              y: s.point.y
+            },
+            handleIn: {
+              x: s.handleIn.x,
+              y: s.handleIn.y
+            },
+            handleOut: {
+              x: s.handleOut.x,
+              y: s.handleOut.y
+            }
+          });
+        }
+        return _results;
+      })();
+      return link.save();
+    };
+
+    SelectTool.prototype.elementFor = function(link) {
+      var el, matches;
+      matches = (function() {
+        var _i, _len, _ref, _results;
+        _ref = paper.project.activeLayer.children;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          el = _ref[_i];
+          if (el.spine_id === link.id && !el.closed) {
+            _results.push(el);
+          }
+        }
+        return _results;
+      })();
+      return matches[0];
     };
 
     return SelectTool;
@@ -1020,10 +805,17 @@
 
 (function() {
 
+  Array.prototype.remove = function(e) {
+    var t, _ref;
+    if ((t = this.indexOf(e)) > -1) {
+      return ([].splice.apply(this, [t, t - t + 1].concat(_ref = [])), _ref);
+    }
+  };
+
   window.onload = function() {
     paper.setup($('canvas')[0]);
-    new grumble.Toolbox().install();
     new grumble.CanvasRenderer().install();
+    new grumble.Toolbox().install();
     return paper.view.draw();
   };
 

@@ -1,6 +1,7 @@
 
 /*
   @depend tool.js
+  @depend ../models/node.js
 */
 
 
@@ -22,6 +23,8 @@
 
     SelectTool.prototype.origin = null;
 
+    SelectTool.prototype.destination = null;
+
     SelectTool.prototype.onMouseDown = function(event) {
       var hitResult;
       hitResult = paper.project.hitTest(event.point);
@@ -41,32 +44,78 @@
     };
 
     SelectTool.prototype.onMouseUp = function(event) {
-      var item, link, _i, _len, _ref, _results;
+      var item, link, node, _i, _len, _ref;
       item = paper.project.selectedItems[0];
-      if (item && item.links) {
-        _ref = item.links;
-        _results = [];
+      if (item && item.closed) {
+        this.destination = event.point;
+        node = grumble.Node.find(item.spine_id);
+        node.position = this.destination;
+        _ref = node.links();
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           link = _ref[_i];
-          _results.push(this.reconnect(link, item));
+          this.reconnect(link, node);
         }
-        return _results;
+        return node.save();
       }
     };
 
-    SelectTool.prototype.reconnect = function(link, item) {
-      var offset;
-      if (link.source === item) {
-        offset = link.firstSegment.point.subtract(this.origin);
-        link.removeSegment(0);
-        link.insert(0, item.position.add(offset));
+    SelectTool.prototype.reconnect = function(link, node) {
+      var el, offset, s;
+      el = this.elementFor(link);
+      console.log("Reconnecting " + link + " to " + node);
+      console.log("Using " + el);
+      if (link.sourceId === node.id) {
+        offset = el.firstSegment.point.subtract(this.origin);
+        el.removeSegment(0);
+        el.insert(0, this.destination.add(offset));
       }
-      if (link.target === item) {
-        offset = link.lastSegment.point.subtract(this.origin);
-        link.removeSegment(link.segments.size - 1);
-        link.add(item.position.add(offset));
+      if (link.targetId === node.id) {
+        offset = el.lastSegment.point.subtract(this.origin);
+        el.removeSegment(link.segments.size - 1);
+        el.add(this.destination.add(offset));
       }
-      return link.simplify(100);
+      el.simplify(100);
+      link.segments = (function() {
+        var _i, _len, _ref, _results;
+        _ref = el.segments;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          s = _ref[_i];
+          _results.push({
+            point: {
+              x: s.point.x,
+              y: s.point.y
+            },
+            handleIn: {
+              x: s.handleIn.x,
+              y: s.handleIn.y
+            },
+            handleOut: {
+              x: s.handleOut.x,
+              y: s.handleOut.y
+            }
+          });
+        }
+        return _results;
+      })();
+      return link.save();
+    };
+
+    SelectTool.prototype.elementFor = function(link) {
+      var el, matches;
+      matches = (function() {
+        var _i, _len, _ref, _results;
+        _ref = paper.project.activeLayer.children;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          el = _ref[_i];
+          if (el.spine_id === link.id && !el.closed) {
+            _results.push(el);
+          }
+        }
+        return _results;
+      })();
+      return matches[0];
     };
 
     return SelectTool;

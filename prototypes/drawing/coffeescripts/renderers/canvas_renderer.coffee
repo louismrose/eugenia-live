@@ -4,8 +4,6 @@
   @depend link_renderer.js
 ###
 class grumble.CanvasRenderer
-  renderers: {}
-
   install: =>
     grumble.Node.bind("refresh", => @addAll(grumble.Node))
     grumble.Link.bind("refresh", => @addAll(grumble.Link))

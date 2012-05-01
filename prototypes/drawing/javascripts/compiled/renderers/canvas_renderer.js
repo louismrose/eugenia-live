@@ -22,8 +22,6 @@
 
     }
 
-    CanvasRenderer.prototype.renderers = {};
-
     CanvasRenderer.prototype.install = function() {
       var _this = this;
       grumble.Node.bind("refresh", function() {
