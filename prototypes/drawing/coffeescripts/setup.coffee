@@ -1,12 +1,12 @@
 ###
   @depend tools/toolbox.js
-  @depend models/node.js
+  @depend renderers/canvas_renderer.js
 ###
 window.onload = ->
   paper.setup($('canvas')[0])
 
   new grumble.Toolbox().install()
-  new grumble.NodesRenderer
+  new grumble.CanvasRenderer().install()
   
   paper.view.draw()
   

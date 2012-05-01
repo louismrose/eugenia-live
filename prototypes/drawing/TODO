@@ -3,12 +3,17 @@
 
 - Refactoring
 -- Revisit tools and tidy up
--- Split out node and link rendering
+xx Split out node and link rendering
+-- Duplication in renderers?
 -- Duplication in models? (Remove model/element?)
 
-- Label tool
-- Port tool
-- Compartment tool
+- Features
+-- Customisable palettes
+--- Separate "shape definitions" ("templates"?) from node and link models and renderers
+-- Tools
+--- Label tool
+--- Port tool
+--- Compartment tool
 
 x Link tool
 xx Links should be deleted when their source/target node is deleted
