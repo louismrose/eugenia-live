@@ -7,7 +7,8 @@
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
+    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   grumble.Node = (function(_super) {
 
@@ -30,12 +31,15 @@
         v = attributes[k];
         this[k] = v;
       }
-      this.link_ids = [];
+      this.link_ids || (this.link_ids = []);
       this.bind("destroy", this.destroyLinks);
     }
 
     Node.prototype.addLink = function(id) {
-      return this.link_ids.push(id);
+      if (__indexOf.call(this.link_ids, id) < 0) {
+        this.link_ids.push(id);
+      }
+      return this.save();
     };
 
     Node.prototype.destroyLinks = function() {

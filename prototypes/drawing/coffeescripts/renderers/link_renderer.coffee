@@ -26,6 +26,6 @@ class grumble.LinkRenderer
     @el.layer.insertChild(0, @el)
     paper.view.draw()
         
-  remove: (node) =>
+  remove: =>
     @el.remove()
     

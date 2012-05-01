@@ -8,11 +8,12 @@ class grumble.Node extends Spine.Model
   constructor: (attributes) ->
     super
     this[k] = v for k,v of attributes
-    @link_ids = []
+    @link_ids or= []
     this.bind("destroy", @destroyLinks)
   
   addLink: (id) =>
-    @link_ids.push id
+    @link_ids.push id unless id in @link_ids
+    @save()
   
   destroyLinks: =>
     grumble.Link.destroy(id) for id in @link_ids

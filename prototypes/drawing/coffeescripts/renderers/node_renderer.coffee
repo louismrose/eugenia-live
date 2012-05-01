@@ -16,12 +16,11 @@ class grumble.NodeRenderer
       when "circle" then @el = new paper.Path.Circle(@item.position, 50)
       when "star" then @el = new paper.Path.Star(@item.position, 5, 20, 50)
 
-    @el.links = [] # Domain model (FIXME: separate from node, which is part of the view)
     @el.spine_id = @item.id
     @el.fillColor = @item.fillColor
     @el.strokeColor = @item.strokeColor
     @el.dashArray = if @item.strokeStyle is 'solid' then [10, 0] else [10, 4]
   
-  remove: (node) =>
+  remove: =>
     @el.remove()
     

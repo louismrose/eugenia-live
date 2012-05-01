@@ -32,14 +32,13 @@
         case "star":
           this.el = new paper.Path.Star(this.item.position, 5, 20, 50);
       }
-      this.el.links = [];
       this.el.spine_id = this.item.id;
       this.el.fillColor = this.item.fillColor;
       this.el.strokeColor = this.item.strokeColor;
       return this.el.dashArray = this.item.strokeStyle === 'solid' ? [10, 0] : [10, 4];
     };
 
-    NodeRenderer.prototype.remove = function(node) {
+    NodeRenderer.prototype.remove = function() {
       return this.el.remove();
     };
 

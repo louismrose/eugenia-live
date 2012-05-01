@@ -43,7 +43,7 @@
       return paper.view.draw();
     };
 
-    LinkRenderer.prototype.remove = function(node) {
+    LinkRenderer.prototype.remove = function() {
       return this.el.remove();
     };
 
