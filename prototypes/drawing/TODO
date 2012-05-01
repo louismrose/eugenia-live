@@ -3,6 +3,7 @@
 --- I think we need to wait until the drawing has been fully loaded before enabling the drawing tools. Seems to be better now that I've tweaked setup.coffee to install the canvas_renderer first, but there's still a race condition (try creating nodes really quickly when they are already quite a few nodes being loaded).
 xx Select tool seems to move nodes in a strange way
 xx Select tool does not reconnect links
+-- Tool's clipboard features need to updated to use the new Spine domain model
 
 - Refactoring
 -- Revisit tools and tidy up
