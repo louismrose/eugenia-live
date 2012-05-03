@@ -13,10 +13,10 @@
     };
 
     Toolbox.prototype.createTools = function() {
-      return window.tools = {
-        node: new paper.NodeTool(),
-        select: new paper.SelectTool(),
-        link: new paper.LinkTool()
+      return grumble.tools = {
+        node: new grumble.NodeTool(),
+        select: new grumble.SelectTool(),
+        link: new grumble.LinkTool()
       };
     };
 
@@ -24,7 +24,7 @@
       return $('body').on('click', 'a[data-tool]', function(event) {
         var tool, tool_name;
         tool_name = $(this).attr('data-tool');
-        tool = window.tools[tool_name];
+        tool = grumble.tools[tool_name];
         if (tool) {
           return tool.activate();
         }
@@ -33,13 +33,11 @@
 
     Toolbox.prototype.reactToToolConfiguration = function() {
       return $('body').on('click', 'button[data-tool-parameter-value]', function(event) {
-        var key, value;
+        var key, value, _base;
         value = $(this).attr('data-tool-parameter-value');
         key = $(this).parent().attr('data-tool-parameter');
-        if (!paper.tool.parameters) {
-          paper.tool.parameters = {};
-        }
-        return paper.tool.parameters[key] = value;
+        (_base = grumble.tool).parameters || (_base.parameters = {});
+        return grumble.tool.parameters[key] = value;
       });
     };
 

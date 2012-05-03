@@ -5,15 +5,15 @@ class grumble.Toolbox
     @reactToToolConfiguration()
     
   createTools: ->
-    window.tools =
-      node:   new paper.NodeTool()
-      select: new paper.SelectTool()
-      link:   new paper.LinkTool()
+    grumble.tools =
+      node:   new grumble.NodeTool()
+      select: new grumble.SelectTool()
+      link:   new grumble.LinkTool()
     
   reactToToolSelection: ->
     $('body').on('click', 'a[data-tool]', (event) ->
       tool_name = $(this).attr('data-tool')    
-      tool = window.tools[tool_name]    
+      tool = grumble.tools[tool_name]    
       tool.activate() if tool
     )
 
@@ -21,6 +21,6 @@ class grumble.Toolbox
     $('body').on('click', 'button[data-tool-parameter-value]', (event) ->
       value = $(this).attr('data-tool-parameter-value')
       key = $(this).parent().attr('data-tool-parameter')
-      paper.tool.parameters = {} unless paper.tool.parameters
-      paper.tool.parameters[key] = value
+      grumble.tool.parameters or= {}
+      grumble.tool.parameters[key] = value
     )

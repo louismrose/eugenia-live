@@ -2,7 +2,7 @@
   @depend tool.js
   @depend ../models/node.js
 ###
-class paper.SelectTool extends grumble.Tool
+class grumble.SelectTool extends grumble.Tool
   parameters: {}
   origin: null
   destination: null

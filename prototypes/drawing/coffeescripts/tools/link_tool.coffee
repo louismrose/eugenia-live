@@ -1,7 +1,7 @@
 ###
   @depend tool.js
 ###
-class paper.LinkTool extends grumble.Tool
+class grumble.LinkTool extends grumble.Tool
   parameters: {'strokeColor' : 'black', 'strokeStyle' : 'solid'}
   draftLink: null
   draftingLayer: null

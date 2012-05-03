@@ -1,7 +1,7 @@
 ###
   @depend tool.js
 ###
-class paper.NodeTool extends grumble.Tool
+class grumble.NodeTool extends grumble.Tool
   parameters: {'shape' : 'rectangle', 'fillColor' : 'white', 'strokeColor' : 'black', 'strokeStyle' : 'solid'}
   
   onMouseDown: (event) ->
