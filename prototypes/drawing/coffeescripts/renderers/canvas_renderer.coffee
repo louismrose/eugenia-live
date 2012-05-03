@@ -5,10 +5,16 @@
 ###
 class grumble.CanvasRenderer
   install: =>
+    @bindToChangeEvents()
+    @fetchDrawing()
+  
+  bindToChangeEvents: =>
     grumble.Node.bind("refresh", => @addAll(grumble.Node))
     grumble.Link.bind("refresh", => @addAll(grumble.Link))
     grumble.Node.bind("create", @addOne)
     grumble.Link.bind("create", @addOne)
+  
+  fetchDrawing: (client) =>
     grumble.Node.fetch()
     grumble.Link.fetch()
   
