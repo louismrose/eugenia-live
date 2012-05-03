@@ -315,11 +315,20 @@
 
       this.addAll = __bind(this.addAll, this);
 
+      this.fetchDrawing = __bind(this.fetchDrawing, this);
+
+      this.bindToChangeEvents = __bind(this.bindToChangeEvents, this);
+
       this.install = __bind(this.install, this);
 
     }
 
     CanvasRenderer.prototype.install = function() {
+      this.bindToChangeEvents();
+      return this.fetchDrawing();
+    };
+
+    CanvasRenderer.prototype.bindToChangeEvents = function() {
       var _this = this;
       grumble.Node.bind("refresh", function() {
         return _this.addAll(grumble.Node);
@@ -328,7 +337,10 @@
         return _this.addAll(grumble.Link);
       });
       grumble.Node.bind("create", this.addOne);
-      grumble.Link.bind("create", this.addOne);
+      return grumble.Link.bind("create", this.addOne);
+    };
+
+    CanvasRenderer.prototype.fetchDrawing = function(client) {
       grumble.Node.fetch();
       return grumble.Link.fetch();
     };
@@ -417,7 +429,7 @@
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
-  paper.LinkTool = (function(_super) {
+  grumble.LinkTool = (function(_super) {
     var DraftLink, DraftingLayer;
 
     __extends(LinkTool, _super);
@@ -582,7 +594,7 @@
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
-  paper.NodeTool = (function(_super) {
+  grumble.NodeTool = (function(_super) {
 
     __extends(NodeTool, _super);
 
@@ -630,7 +642,7 @@
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
-  paper.SelectTool = (function(_super) {
+  grumble.SelectTool = (function(_super) {
 
     __extends(SelectTool, _super);
 
@@ -760,10 +772,10 @@
     };
 
     Toolbox.prototype.createTools = function() {
-      return window.tools = {
-        node: new paper.NodeTool(),
-        select: new paper.SelectTool(),
-        link: new paper.LinkTool()
+      return grumble.tools = {
+        node: new grumble.NodeTool(),
+        select: new grumble.SelectTool(),
+        link: new grumble.LinkTool()
       };
     };
 
@@ -771,7 +783,7 @@
       return $('body').on('click', 'a[data-tool]', function(event) {
         var tool, tool_name;
         tool_name = $(this).attr('data-tool');
-        tool = window.tools[tool_name];
+        tool = grumble.tools[tool_name];
         if (tool) {
           return tool.activate();
         }
@@ -780,13 +792,11 @@
 
     Toolbox.prototype.reactToToolConfiguration = function() {
       return $('body').on('click', 'button[data-tool-parameter-value]', function(event) {
-        var key, value;
+        var key, value, _base;
         value = $(this).attr('data-tool-parameter-value');
         key = $(this).parent().attr('data-tool-parameter');
-        if (!paper.tool.parameters) {
-          paper.tool.parameters = {};
-        }
-        return paper.tool.parameters[key] = value;
+        (_base = grumble.tool).parameters || (_base.parameters = {});
+        return grumble.tool.parameters[key] = value;
       });
     };
 
