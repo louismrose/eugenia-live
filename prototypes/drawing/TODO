@@ -1,6 +1,5 @@
 - Issues
-xx Seems to be a conflict of IDs when drawing while loading is occurring (prevent drawing until model has been restored from memory?). This also seems to happen with links sometimes too... clash of ids?
-xxx This was a bug in Spine 1.0.6
+xx Seems to be a conflict of IDs when drawing while loading is occurring (this was a bug in Spine 1.0.6)
 xx Select tool seems to move nodes in a strange way
 xx Select tool does not reconnect links
 -- Tool's clipboard features need to updated to use the new Spine domain model
