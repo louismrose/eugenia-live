@@ -1,6 +1,6 @@
 
 /*
-  @depend element.js
+  @depend ../namespace.js
 */
 
 

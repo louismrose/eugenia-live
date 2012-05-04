@@ -1,5 +1,5 @@
 ###
-  @depend element.js
+  @depend ../namespace.js
 ###
 class grumble.Node extends Spine.Model
   @configure "Node", "linkIds", "shape", "position", "fillColor", "strokeColor", "strokeStyle"
