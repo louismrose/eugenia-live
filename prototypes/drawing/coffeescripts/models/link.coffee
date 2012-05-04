@@ -8,9 +8,9 @@ class grumble.Link extends Spine.Model
   # TODO duplication with grumble.Node
   constructor: (attributes) ->
     super
-    this[k] = v for k,v of attributes
-    this.bind "save", @addToNodes
-    this.bind "destroy", @removeFromNodes
+    @k = v for k,v of attributes
+    @bind "save", @addToNodes
+    @bind "destroy", @removeFromNodes
   
   addToNodes: =>
     @source().addLink(@id)

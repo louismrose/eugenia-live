@@ -32,7 +32,7 @@
       Link.__super__.constructor.apply(this, arguments);
       for (k in attributes) {
         v = attributes[k];
-        this[k] = v;
+        this.k = v;
       }
       this.bind("save", this.addToNodes);
       this.bind("destroy", this.removeFromNodes);
