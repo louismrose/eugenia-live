@@ -9,12 +9,13 @@ class grumble.Toolbox
       node:   new grumble.NodeTool()
       select: new grumble.SelectTool()
       link:   new grumble.LinkTool()
+    grumble.tool = grumble.tools.node
     
   reactToToolSelection: ->
     $('body').on('click', 'a[data-tool]', (event) ->
       tool_name = $(this).attr('data-tool')    
-      tool = grumble.tools[tool_name]    
-      tool.activate() if tool
+      grumble.tool = grumble.tools[tool_name]    
+      grumble.tool.activate() if grumble.tool
     )
 
   reactToToolConfiguration: ->

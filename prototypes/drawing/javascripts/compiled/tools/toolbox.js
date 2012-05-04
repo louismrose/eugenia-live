@@ -13,20 +13,21 @@
     };
 
     Toolbox.prototype.createTools = function() {
-      return grumble.tools = {
+      grumble.tools = {
         node: new grumble.NodeTool(),
         select: new grumble.SelectTool(),
         link: new grumble.LinkTool()
       };
+      return grumble.tool = grumble.tools.node;
     };
 
     Toolbox.prototype.reactToToolSelection = function() {
       return $('body').on('click', 'a[data-tool]', function(event) {
-        var tool, tool_name;
+        var tool_name;
         tool_name = $(this).attr('data-tool');
-        tool = grumble.tools[tool_name];
-        if (tool) {
-          return tool.activate();
+        grumble.tool = grumble.tools[tool_name];
+        if (grumble.tool) {
+          return grumble.tool.activate();
         }
       });
     };
