@@ -8,6 +8,7 @@ xx Select tool does not reconnect links
 xx Split out node and link rendering
 -- Duplication in renderers?
 -- Duplication in models? (Remove model/element?)
+-- Consider javascript dependency options (Hem / Sprockets)
 
 - Features
 -- Customisable palettes
