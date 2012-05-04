@@ -13,8 +13,10 @@ class grumble.Link extends Spine.Model
     @bind "save", @addToNodes
     @bind "destroy", @removeFromNodes
   
-  # extract the information needed to reconstruct
-  # the path used to draw this link (and nothing more)
+  # Spine.Model.Local uses JSON for seralisation and hence
+  # cannot contain cyclic structures. Paper.js's paths 
+  # are sometimes cyclic, so we filter the Paper.js structure
+  # to the bare essentials (which will be acyclic)
   moveTo: (segments) =>
     @segments = (for s in segments
       point: {x: s.point.x, y: s.point.y}
