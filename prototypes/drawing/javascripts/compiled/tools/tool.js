@@ -32,6 +32,30 @@
       }
     };
 
+    Tool.prototype.filterPath = function(path) {
+      var s, _i, _len, _ref, _results;
+      _ref = path.segments;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        s = _ref[_i];
+        _results.push({
+          point: {
+            x: s.point.x,
+            y: s.point.y
+          },
+          handleIn: {
+            x: s.handleIn.x,
+            y: s.handleIn.y
+          },
+          handleOut: {
+            x: s.handleOut.x,
+            y: s.handleOut.y
+          }
+        });
+      }
+      return _results;
+    };
+
     Tool.prototype.changeSelectionTo = function(item) {
       this.clearSelection();
       return this.select(item);

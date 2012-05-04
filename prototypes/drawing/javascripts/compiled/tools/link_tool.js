@@ -61,7 +61,7 @@
     };
 
     LinkTool.prototype.onMouseUp = function(event) {
-      var attributes, hitResult, l, link, s;
+      var attributes, hitResult, l, link;
       if (this.drafting) {
         hitResult = this.draftingLayer.hitTest(event.point);
         if (hitResult && hitResult.item.closed) {
@@ -70,29 +70,7 @@
           attributes.sourceId = this.draftingLayer.hitTest(link.firstSegment.point).item.spine_id;
           attributes.targetId = this.draftingLayer.hitTest(link.lastSegment.point).item.spine_id;
           this.draftingLayer.dispose();
-          attributes.segments = (function() {
-            var _i, _len, _ref, _results;
-            _ref = link.segments;
-            _results = [];
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              s = _ref[_i];
-              _results.push({
-                point: {
-                  x: s.point.x,
-                  y: s.point.y
-                },
-                handleIn: {
-                  x: s.handleIn.x,
-                  y: s.handleIn.y
-                },
-                handleOut: {
-                  x: s.handleOut.x,
-                  y: s.handleOut.y
-                }
-              });
-            }
-            return _results;
-          })();
+          attributes.segments = this.filterPath(link);
           l = new grumble.Link(attributes);
           l.save();
         }

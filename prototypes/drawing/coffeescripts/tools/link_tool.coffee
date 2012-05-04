@@ -42,10 +42,7 @@ class grumble.LinkTool extends grumble.Tool
         
         # extract the information needed to reconstruct
         # this path (and nothing more)
-        attributes.segments = for s in link.segments
-          point: {x: s.point.x, y: s.point.y}
-          handleIn: {x: s.handleIn.x, y: s.handleIn.y}
-          handleOut: {x: s.handleOut.x, y: s.handleOut.y}
+        attributes.segments = @filterPath(link)
         
         l = new grumble.Link(attributes)
         l.save()

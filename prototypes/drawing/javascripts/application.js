@@ -14,34 +14,6 @@
 
 
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-
-  grumble.Element = (function(_super) {
-
-    __extends(Element, _super);
-
-    Element.name = 'Element';
-
-    function Element() {
-      return Element.__super__.constructor.apply(this, arguments);
-    }
-
-    Element.extend(Spine.Model.Local);
-
-    return Element;
-
-  })(Spine.Model);
-
-}).call(this);
-
-
-/*
-  @depend element.js
-*/
-
-
-(function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
@@ -105,7 +77,7 @@
 
 
 /*
-  @depend element.js
+  @depend ../namespace.js
 */
 
 
@@ -400,6 +372,30 @@
       }
     };
 
+    Tool.prototype.filterPath = function(path) {
+      var s, _i, _len, _ref, _results;
+      _ref = path.segments;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        s = _ref[_i];
+        _results.push({
+          point: {
+            x: s.point.x,
+            y: s.point.y
+          },
+          handleIn: {
+            x: s.handleIn.x,
+            y: s.handleIn.y
+          },
+          handleOut: {
+            x: s.handleOut.x,
+            y: s.handleOut.y
+          }
+        });
+      }
+      return _results;
+    };
+
     Tool.prototype.changeSelectionTo = function(item) {
       this.clearSelection();
       return this.select(item);
@@ -482,7 +478,7 @@
     };
 
     LinkTool.prototype.onMouseUp = function(event) {
-      var attributes, hitResult, l, link, s;
+      var attributes, hitResult, l, link;
       if (this.drafting) {
         hitResult = this.draftingLayer.hitTest(event.point);
         if (hitResult && hitResult.item.closed) {
@@ -491,29 +487,7 @@
           attributes.sourceId = this.draftingLayer.hitTest(link.firstSegment.point).item.spine_id;
           attributes.targetId = this.draftingLayer.hitTest(link.lastSegment.point).item.spine_id;
           this.draftingLayer.dispose();
-          attributes.segments = (function() {
-            var _i, _len, _ref, _results;
-            _ref = link.segments;
-            _results = [];
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              s = _ref[_i];
-              _results.push({
-                point: {
-                  x: s.point.x,
-                  y: s.point.y
-                },
-                handleIn: {
-                  x: s.handleIn.x,
-                  y: s.handleIn.y
-                },
-                handleOut: {
-                  x: s.handleOut.x,
-                  y: s.handleOut.y
-                }
-              });
-            }
-            return _results;
-          })();
+          attributes.segments = this.filterPath(link);
           l = new grumble.Link(attributes);
           l.save();
         }
@@ -681,44 +655,20 @@
     };
 
     SelectTool.prototype.reconnect = function(link, node) {
-      var el, offset, s;
+      var el, offset;
       el = this.elementFor(link);
-      console.log("Reconnecting " + link + " to " + node);
-      console.log("Using " + el);
       if (link.sourceId === node.id) {
         offset = el.firstSegment.point.subtract(this.origin);
-        el.removeSegment(0);
+        el.removeSegments(0, link.segments.size - 2);
         el.insert(0, this.destination.add(offset));
       }
       if (link.targetId === node.id) {
         offset = el.lastSegment.point.subtract(this.origin);
-        el.removeSegment(link.segments.size - 1);
+        el.removeSegments(1, link.segments.size - 1);
         el.add(this.destination.add(offset));
       }
       el.simplify(100);
-      link.segments = (function() {
-        var _i, _len, _ref, _results;
-        _ref = el.segments;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          s = _ref[_i];
-          _results.push({
-            point: {
-              x: s.point.x,
-              y: s.point.y
-            },
-            handleIn: {
-              x: s.handleIn.x,
-              y: s.handleIn.y
-            },
-            handleOut: {
-              x: s.handleOut.x,
-              y: s.handleOut.y
-            }
-          });
-        }
-        return _results;
-      })();
+      link.segments = this.filterPath(el);
       return link.save();
     };
 

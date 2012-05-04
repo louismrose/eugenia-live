@@ -60,44 +60,20 @@
     };
 
     SelectTool.prototype.reconnect = function(link, node) {
-      var el, offset, s;
+      var el, offset;
       el = this.elementFor(link);
-      console.log("Reconnecting " + link + " to " + node);
-      console.log("Using " + el);
       if (link.sourceId === node.id) {
         offset = el.firstSegment.point.subtract(this.origin);
-        el.removeSegment(0);
+        el.removeSegments(0, link.segments.size - 2);
         el.insert(0, this.destination.add(offset));
       }
       if (link.targetId === node.id) {
         offset = el.lastSegment.point.subtract(this.origin);
-        el.removeSegment(link.segments.size - 1);
+        el.removeSegments(1, link.segments.size - 1);
         el.add(this.destination.add(offset));
       }
       el.simplify(100);
-      link.segments = (function() {
-        var _i, _len, _ref, _results;
-        _ref = el.segments;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          s = _ref[_i];
-          _results.push({
-            point: {
-              x: s.point.x,
-              y: s.point.y
-            },
-            handleIn: {
-              x: s.handleIn.x,
-              y: s.handleIn.y
-            },
-            handleOut: {
-              x: s.handleOut.x,
-              y: s.handleOut.y
-            }
-          });
-        }
-        return _results;
-      })();
+      link.segments = this.filterPath(el);
       return link.save();
     };
 

@@ -31,28 +31,19 @@ class grumble.SelectTool extends grumble.Tool
   reconnect: (link, node) ->
     el = @elementFor(link)
 
-    console.log("Reconnecting " + link + " to " + node)
-    console.log("Using " + el)
-
     if link.sourceId is node.id
       offset = el.firstSegment.point.subtract(@origin)
-      el.removeSegment(0)
+      el.removeSegments(0, link.segments.size - 2)
       el.insert(0, @destination.add(offset))
       
     if link.targetId is node.id
       offset = el.lastSegment.point.subtract(@origin)
-      el.removeSegment(link.segments.size - 1)
+      el.removeSegments(1, link.segments.size - 1)
       el.add(@destination.add(offset))
       
     el.simplify(100)
     
-    # FIXME remove duplication with link_tool
-    # extract the information needed to reconstruct
-    # this path (and nothing more)
-    link.segments = for s in el.segments
-      point: {x: s.point.x, y: s.point.y}
-      handleIn: {x: s.handleIn.x, y: s.handleIn.y}
-      handleOut: {x: s.handleOut.x, y: s.handleOut.y}
+    link.segments = @filterPath(el)
     link.save()
     
   elementFor: (link) ->
