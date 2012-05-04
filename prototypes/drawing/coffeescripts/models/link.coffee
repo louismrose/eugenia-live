@@ -9,15 +9,18 @@ class grumble.Link extends Spine.Model
   constructor: (attributes) ->
     super
     @k = v for k,v of attributes
-    @moveTo(attributes.segments)
+    @updateSegments(attributes.segments)
     @bind "save", @addToNodes
     @bind "destroy", @removeFromNodes
+  
+  updateSegments: (segments) =>
+    @removePossibleCyclesFromSegments(segments)
   
   # Spine.Model.Local uses JSON for seralisation and hence
   # cannot contain cyclic structures. Paper.js's paths 
   # are sometimes cyclic, so we filter the Paper.js structure
   # to the bare essentials (which will be acyclic)
-  moveTo: (segments) =>
+  removePossibleCyclesFromSegments: (segments) =>
     @segments = (for s in segments
       point: {x: s.point.x, y: s.point.y}
       handleIn: {x: s.handleIn.x, y: s.handleIn.y}

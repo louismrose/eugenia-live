@@ -37,7 +37,9 @@
 
       this.addToNodes = __bind(this.addToNodes, this);
 
-      this.moveTo = __bind(this.moveTo, this);
+      this.removePossibleCyclesFromSegments = __bind(this.removePossibleCyclesFromSegments, this);
+
+      this.updateSegments = __bind(this.updateSegments, this);
 
       var k, v;
       Link.__super__.constructor.apply(this, arguments);
@@ -45,12 +47,16 @@
         v = attributes[k];
         this.k = v;
       }
-      this.moveTo(attributes.segments);
+      this.updateSegments(attributes.segments);
       this.bind("save", this.addToNodes);
       this.bind("destroy", this.removeFromNodes);
     }
 
-    Link.prototype.moveTo = function(segments) {
+    Link.prototype.updateSegments = function(segments) {
+      return this.removePossibleCyclesFromSegments(segments);
+    };
+
+    Link.prototype.removePossibleCyclesFromSegments = function(segments) {
       var s;
       return this.segments = (function() {
         var _i, _len, _results;
@@ -645,7 +651,7 @@
         el.add(this.destination.add(offset));
       }
       el.simplify(100);
-      link.moveTo(el.segments);
+      link.updateSegments(el.segments);
       return link.save();
     };
 
