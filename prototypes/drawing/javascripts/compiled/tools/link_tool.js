@@ -33,9 +33,9 @@
     LinkTool.prototype.onMouseMove = function(event) {
       var hitResult;
       hitResult = paper.project.hitTest(event.point);
-      paper.project.activeLayer.selected = false;
+      this.clearSelection();
       if (hitResult && hitResult.item.closed) {
-        return hitResult.item.selected = true;
+        return this.select(hitResult.item);
       }
     };
 
@@ -55,8 +55,7 @@
         this.draftLink.extendTo(event.point);
         hitResult = this.draftingLayer.hitTest(event.point);
         if (hitResult && hitResult.item.closed) {
-          paper.project.layers[0].selected = false;
-          return hitResult.item.selected = true;
+          return this.changeSelectionTo(hitResult.item);
         }
       }
     };
@@ -94,14 +93,11 @@
             }
             return _results;
           })();
-          console.log("creating link");
           l = new grumble.Link(attributes);
-          console.log("created: " + l);
           l.save();
-          console.log("saved");
         }
         this.draftingLayer.dispose();
-        paper.project.activeLayer.selected = false;
+        this.clearSelection();
         return this.drafting = false;
       }
     };

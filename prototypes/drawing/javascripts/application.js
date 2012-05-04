@@ -69,7 +69,7 @@
       Link.__super__.constructor.apply(this, arguments);
       for (k in attributes) {
         v = attributes[k];
-        this[k] = v;
+        this.k = v;
       }
       this.bind("save", this.addToNodes);
       this.bind("destroy", this.removeFromNodes);
@@ -136,7 +136,7 @@
       Node.__super__.constructor.apply(this, arguments);
       for (k in attributes) {
         v = attributes[k];
-        this[k] = v;
+        this.k = v;
       }
       this.linkIds || (this.linkIds = []);
       this.bind("destroy", this.destroyLinks);
@@ -387,7 +387,7 @@
     }
 
     Tool.prototype.onKeyDown = function(event) {
-      var copy, selection;
+      var selection;
       if (event.key === 'delete') {
         selection = paper.project.selectedItems[0];
         if (selection) {
@@ -397,20 +397,20 @@
             return grumble.Link.destroy(selection.spine_id);
           }
         }
-      } else if (event.modifiers.command && event.key === 'c') {
-        return window.clipboard = paper.project.selectedItems[0];
-      } else if (event.modifiers.command && event.key === 'v') {
-        if (window.clipboard) {
-          if (paper.project.selectedItems[0]) {
-            paper.project.selectedItems[0].selected = false;
-          }
-          copy = window.clipboard.clone();
-          copy.position.x += 10;
-          copy.position.y += 10;
-          copy.selected = true;
-          return window.clipboard = copy;
-        }
       }
+    };
+
+    Tool.prototype.changeSelectionTo = function(item) {
+      this.clearSelection();
+      return this.select(item);
+    };
+
+    Tool.prototype.clearSelection = function() {
+      return paper.project.activeLayer.selected = false;
+    };
+
+    Tool.prototype.select = function(item) {
+      return item.selected = true;
     };
 
     return Tool;
@@ -454,9 +454,9 @@
     LinkTool.prototype.onMouseMove = function(event) {
       var hitResult;
       hitResult = paper.project.hitTest(event.point);
-      paper.project.activeLayer.selected = false;
+      this.clearSelection();
       if (hitResult && hitResult.item.closed) {
-        return hitResult.item.selected = true;
+        return this.select(hitResult.item);
       }
     };
 
@@ -476,8 +476,7 @@
         this.draftLink.extendTo(event.point);
         hitResult = this.draftingLayer.hitTest(event.point);
         if (hitResult && hitResult.item.closed) {
-          paper.project.layers[0].selected = false;
-          return hitResult.item.selected = true;
+          return this.changeSelectionTo(hitResult.item);
         }
       }
     };
@@ -515,14 +514,11 @@
             }
             return _results;
           })();
-          console.log("creating link");
           l = new grumble.Link(attributes);
-          console.log("created: " + l);
           l.save();
-          console.log("saved");
         }
         this.draftingLayer.dispose();
-        paper.project.activeLayer.selected = false;
+        this.clearSelection();
         return this.drafting = false;
       }
     };
@@ -612,17 +608,9 @@
     };
 
     NodeTool.prototype.onMouseDown = function(event) {
-      var attributes, node;
-      attributes = this.parameters;
-      attributes['position'] = event.point;
-      node = new grumble.Node(this.parameters);
-      console.log("created:");
-      console.log(node);
-      node.save();
-      console.log("saved");
-      if (paper.project.selectedItems[0]) {
-        return paper.project.selectedItems[0].selected = false;
-      }
+      this.parameters.position = event.point;
+      new grumble.Node(this.parameters).save();
+      return this.clearSelection();
     };
 
     return NodeTool;
@@ -661,9 +649,9 @@
     SelectTool.prototype.onMouseDown = function(event) {
       var hitResult;
       hitResult = paper.project.hitTest(event.point);
-      paper.project.activeLayer.selected = false;
+      this.clearSelection();
       if (hitResult) {
-        hitResult.item.selected = true;
+        this.select(hitResult.item);
         return this.origin = hitResult.item.position;
       }
     };
@@ -772,20 +760,21 @@
     };
 
     Toolbox.prototype.createTools = function() {
-      return grumble.tools = {
+      grumble.tools = {
         node: new grumble.NodeTool(),
         select: new grumble.SelectTool(),
         link: new grumble.LinkTool()
       };
+      return grumble.tool = grumble.tools.node;
     };
 
     Toolbox.prototype.reactToToolSelection = function() {
       return $('body').on('click', 'a[data-tool]', function(event) {
-        var tool, tool_name;
+        var tool_name;
         tool_name = $(this).attr('data-tool');
-        tool = grumble.tools[tool_name];
-        if (tool) {
-          return tool.activate();
+        grumble.tool = grumble.tools[tool_name];
+        if (grumble.tool) {
+          return grumble.tool.activate();
         }
       });
     };

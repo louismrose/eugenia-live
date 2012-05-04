@@ -19,7 +19,7 @@
     }
 
     Tool.prototype.onKeyDown = function(event) {
-      var copy, selection;
+      var selection;
       if (event.key === 'delete') {
         selection = paper.project.selectedItems[0];
         if (selection) {
@@ -29,20 +29,20 @@
             return grumble.Link.destroy(selection.spine_id);
           }
         }
-      } else if (event.modifiers.command && event.key === 'c') {
-        return window.clipboard = paper.project.selectedItems[0];
-      } else if (event.modifiers.command && event.key === 'v') {
-        if (window.clipboard) {
-          if (paper.project.selectedItems[0]) {
-            paper.project.selectedItems[0].selected = false;
-          }
-          copy = window.clipboard.clone();
-          copy.position.x += 10;
-          copy.position.y += 10;
-          copy.selected = true;
-          return window.clipboard = copy;
-        }
       }
+    };
+
+    Tool.prototype.changeSelectionTo = function(item) {
+      this.clearSelection();
+      return this.select(item);
+    };
+
+    Tool.prototype.clearSelection = function() {
+      return paper.project.activeLayer.selected = false;
+    };
+
+    Tool.prototype.select = function(item) {
+      return item.selected = true;
     };
 
     return Tool;

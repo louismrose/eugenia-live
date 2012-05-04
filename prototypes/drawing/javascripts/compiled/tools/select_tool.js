@@ -28,9 +28,9 @@
     SelectTool.prototype.onMouseDown = function(event) {
       var hitResult;
       hitResult = paper.project.hitTest(event.point);
-      paper.project.activeLayer.selected = false;
+      this.clearSelection();
       if (hitResult) {
-        hitResult.item.selected = true;
+        this.select(hitResult.item);
         return this.origin = hitResult.item.position;
       }
     };

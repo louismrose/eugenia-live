@@ -9,8 +9,8 @@ class grumble.LinkTool extends grumble.Tool
   
   onMouseMove: (event) ->
     hitResult = paper.project.hitTest(event.point)
-    paper.project.activeLayer.selected = false
-    hitResult.item.selected = true if hitResult and hitResult.item.closed
+    @clearSelection()
+    @select(hitResult.item) if hitResult and hitResult.item.closed
   
   onMouseDown: (event) ->
     hitResult = paper.project.activeLayer.hitTest(event.point)
@@ -24,8 +24,8 @@ class grumble.LinkTool extends grumble.Tool
       @draftLink.extendTo(event.point)
       hitResult = @draftingLayer.hitTest(event.point)
       if hitResult and hitResult.item.closed
-        paper.project.layers[0].selected = false
-        hitResult.item.selected = true
+        @changeSelectionTo(hitResult.item)
+        
   
   onMouseUp: (event) ->
     if @drafting 
@@ -47,14 +47,11 @@ class grumble.LinkTool extends grumble.Tool
           handleIn: {x: s.handleIn.x, y: s.handleIn.y}
           handleOut: {x: s.handleOut.x, y: s.handleOut.y}
         
-        console.log("creating link")
         l = new grumble.Link(attributes)
-        console.log("created: " + l)
         l.save()
-        console.log("saved")
       
       @draftingLayer.dispose()
-      paper.project.activeLayer.selected = false
+      @clearSelection()
       @drafting = false
 
 

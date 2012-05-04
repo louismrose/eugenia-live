@@ -26,17 +26,9 @@
     };
 
     NodeTool.prototype.onMouseDown = function(event) {
-      var attributes, node;
-      attributes = this.parameters;
-      attributes['position'] = event.point;
-      node = new grumble.Node(this.parameters);
-      console.log("created:");
-      console.log(node);
-      node.save();
-      console.log("saved");
-      if (paper.project.selectedItems[0]) {
-        return paper.project.selectedItems[0].selected = false;
-      }
+      this.parameters.position = event.point;
+      new grumble.Node(this.parameters).save();
+      return this.clearSelection();
     };
 
     return NodeTool;

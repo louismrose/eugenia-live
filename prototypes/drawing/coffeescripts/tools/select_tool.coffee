@@ -8,10 +8,10 @@ class grumble.SelectTool extends grumble.Tool
   destination: null
   
   onMouseDown: (event) ->
-    hitResult = paper.project.hitTest(event.point)    
-    paper.project.activeLayer.selected = false
+    hitResult = paper.project.hitTest(event.point)
+    @clearSelection()
     if hitResult  
-      hitResult.item.selected = true
+      @select(hitResult.item)
       @origin = hitResult.item.position
   
   onMouseDrag: (event) ->
