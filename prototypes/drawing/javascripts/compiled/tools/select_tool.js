@@ -73,7 +73,7 @@
         el.add(this.destination.add(offset));
       }
       el.simplify(100);
-      link.segments = this.filterPath(el);
+      link.moveTo(el.segments);
       return link.save();
     };
 

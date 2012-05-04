@@ -9,9 +9,18 @@ class grumble.Link extends Spine.Model
   constructor: (attributes) ->
     super
     @k = v for k,v of attributes
+    @moveTo(attributes.segments)
     @bind "save", @addToNodes
     @bind "destroy", @removeFromNodes
   
+  # extract the information needed to reconstruct
+  # the path used to draw this link (and nothing more)
+  moveTo: (segments) =>
+    @segments = (for s in segments
+      point: {x: s.point.x, y: s.point.y}
+      handleIn: {x: s.handleIn.x, y: s.handleIn.y}
+      handleOut: {x: s.handleOut.x, y: s.handleOut.y})
+      
   addToNodes: =>
     @source().addLink(@id)
     @target().addLink(@id)

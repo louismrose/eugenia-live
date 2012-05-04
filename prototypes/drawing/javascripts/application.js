@@ -37,15 +37,44 @@
 
       this.addToNodes = __bind(this.addToNodes, this);
 
+      this.moveTo = __bind(this.moveTo, this);
+
       var k, v;
       Link.__super__.constructor.apply(this, arguments);
       for (k in attributes) {
         v = attributes[k];
         this.k = v;
       }
+      this.moveTo(attributes.segments);
       this.bind("save", this.addToNodes);
       this.bind("destroy", this.removeFromNodes);
     }
+
+    Link.prototype.moveTo = function(segments) {
+      var s;
+      return this.segments = (function() {
+        var _i, _len, _results;
+        _results = [];
+        for (_i = 0, _len = segments.length; _i < _len; _i++) {
+          s = segments[_i];
+          _results.push({
+            point: {
+              x: s.point.x,
+              y: s.point.y
+            },
+            handleIn: {
+              x: s.handleIn.x,
+              y: s.handleIn.y
+            },
+            handleOut: {
+              x: s.handleOut.x,
+              y: s.handleOut.y
+            }
+          });
+        }
+        return _results;
+      })();
+    };
 
     Link.prototype.addToNodes = function() {
       this.source().addLink(this.id);
@@ -372,30 +401,6 @@
       }
     };
 
-    Tool.prototype.filterPath = function(path) {
-      var s, _i, _len, _ref, _results;
-      _ref = path.segments;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        s = _ref[_i];
-        _results.push({
-          point: {
-            x: s.point.x,
-            y: s.point.y
-          },
-          handleIn: {
-            x: s.handleIn.x,
-            y: s.handleIn.y
-          },
-          handleOut: {
-            x: s.handleOut.x,
-            y: s.handleOut.y
-          }
-        });
-      }
-      return _results;
-    };
-
     Tool.prototype.changeSelectionTo = function(item) {
       this.clearSelection();
       return this.select(item);
@@ -426,7 +431,7 @@
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   grumble.LinkTool = (function(_super) {
-    var DraftLink, DraftingLayer;
+    var DraftLink;
 
     __extends(LinkTool, _super);
 
@@ -443,8 +448,6 @@
 
     LinkTool.prototype.draftLink = null;
 
-    LinkTool.prototype.draftingLayer = null;
-
     LinkTool.prototype.drafting = false;
 
     LinkTool.prototype.onMouseMove = function(event) {
@@ -458,10 +461,9 @@
 
     LinkTool.prototype.onMouseDown = function(event) {
       var hitResult;
-      hitResult = paper.project.activeLayer.hitTest(event.point);
+      hitResult = paper.project.hitTest(event.point);
       if (hitResult) {
         this.drafting = true;
-        this.draftingLayer = new DraftingLayer(paper.project.activeLayer);
         return this.draftLink = new DraftLink(event.point);
       }
     };
@@ -470,7 +472,7 @@
       var hitResult;
       if (this.drafting) {
         this.draftLink.extendTo(event.point);
-        hitResult = this.draftingLayer.hitTest(event.point);
+        hitResult = paper.project.hitTest(event.point);
         if (hitResult && hitResult.item.closed) {
           return this.changeSelectionTo(hitResult.item);
         }
@@ -478,50 +480,17 @@
     };
 
     LinkTool.prototype.onMouseUp = function(event) {
-      var attributes, hitResult, l, link;
+      var hitResult;
       if (this.drafting) {
-        hitResult = this.draftingLayer.hitTest(event.point);
+        hitResult = paper.project.hitTest(event.point);
         if (hitResult && hitResult.item.closed) {
-          attributes = this.parameters;
-          link = this.draftLink.finalise();
-          attributes.sourceId = this.draftingLayer.hitTest(link.firstSegment.point).item.spine_id;
-          attributes.targetId = this.draftingLayer.hitTest(link.lastSegment.point).item.spine_id;
-          this.draftingLayer.dispose();
-          attributes.segments = this.filterPath(link);
-          l = new grumble.Link(attributes);
-          l.save();
+          this.draftLink.finalise(this.parameters);
         }
-        this.draftingLayer.dispose();
+        this.draftLink.remove();
         this.clearSelection();
         return this.drafting = false;
       }
     };
-
-    DraftingLayer = (function() {
-
-      DraftingLayer.name = 'DraftingLayer';
-
-      DraftingLayer.prototype.parent = null;
-
-      DraftingLayer.prototype.layer = null;
-
-      function DraftingLayer(parent) {
-        this.parent = parent;
-        this.layer = new paper.Layer();
-      }
-
-      DraftingLayer.prototype.hitTest = function(point) {
-        return this.parent.hitTest(point);
-      };
-
-      DraftingLayer.prototype.dispose = function() {
-        this.layer.remove();
-        return this.parent.activate();
-      };
-
-      return DraftingLayer;
-
-    })();
 
     DraftLink = (function() {
 
@@ -531,6 +500,7 @@
 
       function DraftLink(origin) {
         this.path = new paper.Path([origin]);
+        this.path.layer.insertChild(0, this.path);
         this.path.strokeColor = 'black';
         this.path.dashArray = [10, 4];
       }
@@ -539,9 +509,16 @@
         return this.path.add(point);
       };
 
-      DraftLink.prototype.finalise = function() {
+      DraftLink.prototype.finalise = function(parameters) {
         this.path.simplify(100);
-        return this.path;
+        parameters.sourceId = paper.project.hitTest(this.path.firstSegment.point).item.spine_id;
+        parameters.targetId = paper.project.hitTest(this.path.lastSegment.point).item.spine_id;
+        parameters.segments = this.path.segments;
+        return new grumble.Link(parameters).save();
+      };
+
+      DraftLink.prototype.remove = function() {
+        return this.path.remove();
       };
 
       return DraftLink;
@@ -668,7 +645,7 @@
         el.add(this.destination.add(offset));
       }
       el.simplify(100);
-      link.segments = this.filterPath(el);
+      link.moveTo(el.segments);
       return link.save();
     };
 

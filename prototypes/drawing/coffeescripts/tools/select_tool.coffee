@@ -43,7 +43,7 @@ class grumble.SelectTool extends grumble.Tool
       
     el.simplify(100)
     
-    link.segments = @filterPath(el)
+    link.moveTo(el.segments)
     link.save()
     
   elementFor: (link) ->

@@ -4,7 +4,6 @@
 class grumble.LinkTool extends grumble.Tool
   parameters: {'strokeColor' : 'black', 'strokeStyle' : 'solid'}
   draftLink: null
-  draftingLayer: null
   drafting: false
   
   onMouseMove: (event) ->
@@ -13,72 +12,46 @@ class grumble.LinkTool extends grumble.Tool
     @select(hitResult.item) if hitResult and hitResult.item.closed
   
   onMouseDown: (event) ->
-    hitResult = paper.project.activeLayer.hitTest(event.point)
+    hitResult = paper.project.hitTest(event.point)
     if hitResult
       @drafting = true
-      @draftingLayer = new DraftingLayer(paper.project.activeLayer)
       @draftLink = new DraftLink(event.point)
 
   onMouseDrag: (event) ->
     if @drafting
       @draftLink.extendTo(event.point)
-      hitResult = @draftingLayer.hitTest(event.point)
+      hitResult = paper.project.hitTest(event.point)
       if hitResult and hitResult.item.closed
         @changeSelectionTo(hitResult.item)
-        
   
   onMouseUp: (event) ->
     if @drafting 
-      hitResult = @draftingLayer.hitTest(event.point)
-      if hitResult and hitResult.item.closed 
-        attributes = @parameters
-
-        link = @draftLink.finalise()
-        attributes.sourceId = @draftingLayer.hitTest(link.firstSegment.point).item.spine_id
-        attributes.targetId = @draftingLayer.hitTest(link.lastSegment.point).item.spine_id
-          
-        @draftingLayer.dispose()
-                
-        
-        # extract the information needed to reconstruct
-        # this path (and nothing more)
-        attributes.segments = @filterPath(link)
-        
-        l = new grumble.Link(attributes)
-        l.save()
+      hitResult = paper.project.hitTest(event.point)
+      if hitResult and hitResult.item.closed
+        @draftLink.finalise(@parameters)
       
-      @draftingLayer.dispose()
+      @draftLink.remove()
       @clearSelection()
       @drafting = false
-
-
-  class DraftingLayer
-    parent: null
-    layer: null
-    
-    constructor: (parent) ->
-      @parent = parent
-      @layer = new paper.Layer()
-    
-    hitTest: (point) ->
-      @parent.hitTest(point)
-      
-    dispose: ->
-      @layer.remove()
-      @parent.activate()
-      
 
   class DraftLink
     path: null
 
     constructor: (origin) ->
       @path = new paper.Path([origin])
+      @path.layer.insertChild(0, @path) # force to bottom
       @path.strokeColor = 'black'
       @path.dashArray = [10, 4] # dashed
 
     extendTo: (point) ->
       @path.add(point)
 
-    finalise: ->
+    finalise: (parameters) ->
       @path.simplify(100)
-      @path
+      parameters.sourceId = paper.project.hitTest(@path.firstSegment.point).item.spine_id
+      parameters.targetId = paper.project.hitTest(@path.lastSegment.point).item.spine_id
+      parameters.segments = @path.segments
+      new grumble.Link(parameters).save()
+    
+    remove: ->
+      @path.remove()

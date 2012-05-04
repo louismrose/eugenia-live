@@ -28,15 +28,44 @@
 
       this.addToNodes = __bind(this.addToNodes, this);
 
+      this.moveTo = __bind(this.moveTo, this);
+
       var k, v;
       Link.__super__.constructor.apply(this, arguments);
       for (k in attributes) {
         v = attributes[k];
         this.k = v;
       }
+      this.moveTo(attributes.segments);
       this.bind("save", this.addToNodes);
       this.bind("destroy", this.removeFromNodes);
     }
+
+    Link.prototype.moveTo = function(segments) {
+      var s;
+      return this.segments = (function() {
+        var _i, _len, _results;
+        _results = [];
+        for (_i = 0, _len = segments.length; _i < _len; _i++) {
+          s = segments[_i];
+          _results.push({
+            point: {
+              x: s.point.x,
+              y: s.point.y
+            },
+            handleIn: {
+              x: s.handleIn.x,
+              y: s.handleIn.y
+            },
+            handleOut: {
+              x: s.handleOut.x,
+              y: s.handleOut.y
+            }
+          });
+        }
+        return _results;
+      })();
+    };
 
     Link.prototype.addToNodes = function() {
       this.source().addLink(this.id);
