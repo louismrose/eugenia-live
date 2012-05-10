@@ -16,15 +16,22 @@ class Toolbox extends Spine.Controller
     @currentTool = @tools.node
     
   reactToToolSelection: (event) =>
-    tool_name = jQuery(event.target).attr('data-tool')    
-    @currentTool = @tools[tool_name]
-    @currentTool.activate() if @currentTool
-
+    toolName = jQuery(event.target).attr('data-tool')    
+    @switchTo(toolName)
+  
   reactToToolConfiguration: (event) =>
     button = jQuery(event.target)
     value = button.attr('data-tool-parameter-value')
     key = button.parent().attr('data-tool-parameter')
+    @configureCurrentToolWith(key, value)
+    
+  switchTo: (toolName) =>
+    throw "There is no tool named '#{toolName}'" unless @tools[toolName]
+    @currentTool = @tools[toolName]
+    @currentTool.activate()
+  
+  configureCurrentToolWith: (parameterKey, parameterValue) =>
     @currentTool.parameters or= {}
-    @currentTool.parameters[key] = value
+    @currentTool.parameters[parameterKey] = parameterValue
     
 module.exports = Toolbox
