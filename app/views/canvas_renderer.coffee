@@ -17,11 +17,11 @@ class CanvasRenderer
     Link.fetch()
   
   addAll: (type) =>
-    console.log("adding all " + type.count() + " " + type.name + "s")
+    console.log("adding all " + type.count() + " " + type.className + "s")
     type.each(@addOne)
   
   addOne: (element) =>
-    renderer = require("views/#{element.constructor.name.toLowerCase()}_renderer")
+    renderer = require("views/#{element.constructor.className.toLowerCase()}_renderer")
     
     if (renderer)
       new renderer(element).render()
