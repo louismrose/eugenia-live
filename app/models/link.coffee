@@ -1,6 +1,4 @@
-# Spine = require('spine')
-Node = require('models/node')
-
+#Spine = require('spine')
 class Link extends Spine.Model
   @configure "Link", "sourceId", "targetId", "segments", "strokeColor", "strokeStyle"
   @extend Spine.Model.Local
@@ -9,9 +7,7 @@ class Link extends Spine.Model
   constructor: (attributes) ->
     super
     @k = v for k,v of attributes
-    @updateSegments(attributes.segments) if attributes and attributes.segments
-    @bind "save", @addToNodes
-    @bind "destroy", @removeFromNodes
+    @updateSegments(attributes.segments)
   
   updateSegments: (segments) =>
     @removePossibleCyclesFromSegments(segments)
@@ -30,18 +26,4 @@ class Link extends Spine.Model
       handleOut: {x: s.handleOut.x, y: s.handleOut.y}
     }
       
-  addToNodes: =>
-    @source().addLink(@id)
-    @target().addLink(@id)
-    
-  removeFromNodes: =>
-    @source().removeLink(@id) if Node.exists(@sourceId)
-    @target().removeLink(@id) if Node.exists(@targetId)
-
-  source: =>
-    Node.find(@sourceId)
-  
-  target: =>
-    Node.find(@targetId)
-    
 module.exports = Link
