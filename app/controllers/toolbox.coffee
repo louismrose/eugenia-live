@@ -2,43 +2,29 @@ LinkTool = require('controllers/link_tool')
 NodeTool = require('controllers/node_tool')
 SelectTool = require('controllers/select_tool')
 
-class Toolbox
-  @tools = {}
-  @currentTool = null
+class Toolbox extends Spine.Controller
+  events:
+    "click a[data-tool]": "reactToToolSelection" 
+    "click button[data-tool-parameter-value]": "reactToToolConfiguration" 
   
-  install: ->
-    @createTools()
-    @reactToToolSelection()
-    @reactToToolConfiguration()
-    
-  createTools: ->
+  constructor: ->
+    super
     @tools =
       node:   new NodeTool()
       select: new SelectTool()
       link:   new LinkTool()
     @currentTool = @tools.node
     
-  reactToToolSelection: =>
-    toolbox = this
-    $('body').on('click', 'a[data-tool]', (event) ->
-      tool_name = $(this).attr('data-tool')    
-      toolbox.switchTo(tool_name)
-    )
-
-  reactToToolConfiguration: =>
-    toolbox = this
-    $('body').on('click', 'button[data-tool-parameter-value]', (event) ->
-      value = $(this).attr('data-tool-parameter-value')
-      key = $(this).parent().attr('data-tool-parameter')
-      toolbox.configureCurrentToolWith(key, value)
-    )
-    
-  switchTo: (tool_name) =>
-    @currentTool = @tools[tool_name]    
+  reactToToolSelection: (event) =>
+    tool_name = jQuery(event.target).attr('data-tool')    
+    @currentTool = @tools[tool_name]
     @currentTool.activate() if @currentTool
-  
-  configureCurrentToolWith: (parameter_key, parameter_value) =>
+
+  reactToToolConfiguration: (event) =>
+    button = jQuery(event.target)
+    value = button.attr('data-tool-parameter-value')
+    key = button.parent().attr('data-tool-parameter')
     @currentTool.parameters or= {}
-    @currentTool.parameters[parameter_key] = parameter_value
+    @currentTool.parameters[key] = value
     
 module.exports = Toolbox

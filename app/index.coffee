@@ -13,7 +13,7 @@ class App extends Spine.Controller
     paper.setup($('canvas')[0])
   
     new CanvasRenderer().install()
-    new Toolbox().install()
+    new Toolbox(el: $('#toolbox'))
   
     paper.view.draw()
     
