@@ -1,7 +1,0 @@
-source 'http://gemcutter.org'
-
-gem 'guard'
-gem 'guard-coffeescript'
-gem 'guard-process'
-gem 'growl'
-gem 'juicer'

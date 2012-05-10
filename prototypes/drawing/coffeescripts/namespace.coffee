@@ -1,2 +1,0 @@
-exports = this
-exports.grumble = {}
