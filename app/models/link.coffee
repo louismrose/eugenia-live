@@ -9,7 +9,7 @@ class Link extends Spine.Model
   constructor: (attributes) ->
     super
     @k = v for k,v of attributes
-    @updateSegments(attributes.segments)
+    @updateSegments(attributes.segments) if attributes and attributes.segments
     @bind "save", @addToNodes
     @bind "destroy", @removeFromNodes
   

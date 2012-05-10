@@ -1,6 +1,8 @@
 # Spine = require('spine')
 Link = require('models/link')
 
+Array::remove = (e) -> @[t..t] = [] if (t = @indexOf(e)) > -1
+
 class Node extends Spine.Model
   @configure "Node", "linkIds", "shape", "position", "fillColor", "strokeColor", "strokeStyle"
   @extend Spine.Model.Local
@@ -15,7 +17,7 @@ class Node extends Spine.Model
     @linkIds.push id unless id in @linkIds
     @save()
     
-  removeLink: (id) ->
+  removeLink: (id) =>
     @linkIds.remove(id)
   
   destroyLinks: =>
