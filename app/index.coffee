@@ -10,12 +10,8 @@ class App extends Spine.Controller
   constructor: ->
     super
 
-    paper.setup($('canvas')[0])
-  
-    new CanvasRenderer().install()
+    new CanvasRenderer($('canvas')[0])
     new Toolbox(el: $('#toolbox'))
-  
-    paper.view.draw()
-    
+      
 module.exports = App
     

@@ -2,9 +2,11 @@ Link = require('models/link')
 Node = require('models/node')
 
 class CanvasRenderer
-  install: =>
+  constructor: (canvas) ->
+    paper.setup(canvas)
     @bindToChangeEvents()
     @fetchDrawing()
+    paper.view.draw()
   
   bindToChangeEvents: =>
     Node.bind("refresh", => @addAll(Node))
