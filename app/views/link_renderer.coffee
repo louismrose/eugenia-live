@@ -1,15 +1,11 @@
-class LinkRenderer
+ElementRenderer = require('views/element_renderer')
+
+class LinkRenderer extends ElementRenderer
 
   constructor: (item) ->
-    @item = item
-    @item.bind("update", @render)
-    @item.bind("destroy", @remove)
+    super(item)
 
-  render: =>
-    console.log("rendering " + @item)
-    
-    old_el =  @el
-    
+  draw: =>
     segments = for s in @item.segments
       new paper.Segment(s.point, s.handleIn, s.handleOut)
   
@@ -21,12 +17,5 @@ class LinkRenderer
     # TODO trim the line in the tool
     # rather than hiding the overlap behind the nodes here
     @el.layer.insertChild(0, @el)
-    
-    if old_el
-      @el.selected = old_el.selected
-      old_el.remove()
-        
-  remove: =>
-    @el.remove()
     
 module.exports = LinkRenderer
