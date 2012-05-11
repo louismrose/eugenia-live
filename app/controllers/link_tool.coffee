@@ -3,7 +3,6 @@ Link = require('models/link')
 
 class LinkTool extends Tool
   parameters: {'strokeColor' : 'black', 'strokeStyle' : 'solid'}
-  draftLink: null
   drafting: false
   
   onMouseMove: (event) ->
@@ -34,9 +33,8 @@ class LinkTool extends Tool
       @clearSelection()
       @drafting = false
 
-  class DraftLink
-    path: null
 
+  class DraftLink
     constructor: (origin) ->
       @path = new paper.Path([origin])
       @path.layer.insertChild(0, @path) # force to bottom
