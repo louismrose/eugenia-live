@@ -18,7 +18,7 @@ class SelectTool extends Tool
   onMouseUp: (event) ->
     item = paper.project.selectedItems[0]
     if (item and item.closed)
-      node = Node.find(item.spine_id)
+      node = item.model
       node.moveTo(event.point)
       node.save()
     

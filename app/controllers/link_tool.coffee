@@ -48,8 +48,8 @@ class LinkTool extends Tool
 
     finalise: (parameters) ->
       @path.simplify(100)
-      parameters.sourceId = paper.project.hitTest(@path.firstSegment.point).item.spine_id
-      parameters.targetId = paper.project.hitTest(@path.lastSegment.point).item.spine_id
+      parameters.sourceId = paper.project.hitTest(@path.firstSegment.point).item.model.id
+      parameters.targetId = paper.project.hitTest(@path.lastSegment.point).item.model.id
       parameters.segments = @path.segments
       new Link(parameters).save()
     

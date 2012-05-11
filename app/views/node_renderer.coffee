@@ -12,7 +12,6 @@ class NodeRenderer extends ElementRenderer
       when "star" then @el = new paper.Path.Star(@item.position, 5, 20, 50)
 
     @el.position = @item.position
-    @el.spine_id = @item.id
     @el.fillColor = @item.fillColor
     @el.strokeColor = @item.strokeColor
     @el.dashArray = if @item.strokeStyle is 'solid' then [10, 0] else [10, 4]

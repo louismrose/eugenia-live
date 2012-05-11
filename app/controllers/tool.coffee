@@ -5,11 +5,7 @@ class Tool extends paper.Tool
   onKeyDown: (event) ->
     if (event.key is 'delete')
       selection = paper.project.selectedItems[0]
-      if selection 
-        if selection.closed
-          Node.destroy(selection.spine_id)
-        else
-          Link.destroy(selection.spine_id)
+      selection.model.destroy() if selection
 
   changeSelectionTo: (item) ->
     @clearSelection()

@@ -7,7 +7,6 @@ class LinkRenderer extends ElementRenderer
 
   draw: =>
     @el = @item.toPath()
-    @el.spine_id = @item.id
     @el.strokeColor = @item.strokeColor
     @el.dashArray = if @item.strokeStyle is 'solid' then [10, 0] else [10, 4]
 

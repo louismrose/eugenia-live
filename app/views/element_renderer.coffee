@@ -10,6 +10,7 @@ class ElementRenderer
     
     @draw()
     
+    @el.model = @item
     if old_el
       @el.selected = old_el.selected
       old_el.remove()
