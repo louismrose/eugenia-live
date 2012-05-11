@@ -19,8 +19,7 @@ class Node extends Spine.Model
     Link.select (link) => (link.sourceId is @id) or (link.targetId is @id)
 
   moveTo: (destination) =>
-    origin = @position
+    link.reconnectTo(@id, destination.subtract(@position)) for link in @links()
     @position = destination
-    link.reconnectTo(this, origin) for link in @links()
 
 module.exports = Node
