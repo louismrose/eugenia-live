@@ -14,6 +14,7 @@ class MovesPath
   finalise: =>
     @path.removeSegments(1, @path.segments.size - 2)
     @path.simplify(100)
-    @path
+    @path.remove()
+    @path.segments
 
 module.exports = MovesPath

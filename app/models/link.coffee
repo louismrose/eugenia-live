@@ -19,7 +19,7 @@ class Link extends Spine.Model
     mover = new MovesPath(@toPath(), offset)
     mover.moveStart() if nodeId is @sourceId
     mover.moveEnd() if nodeId is @targetId
-    @updateSegments(mover.finalise().segments)
+    @updateSegments(mover.finalise())
     @save()
     
   toPath: =>

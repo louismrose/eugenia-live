@@ -39,6 +39,5 @@ describe 'MovesPath', ->
     expect(@path.segments[1].point).toBeInTheSamePlaceAs(@middle)
     
   it 'can remove the middle when finalising', ->
-    @mover.finalise()
-    expect(@path.segments.length).toEqual(2)
+    expect(@mover.finalise().length).toEqual(2)
     
