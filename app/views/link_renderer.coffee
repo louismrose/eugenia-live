@@ -6,10 +6,7 @@ class LinkRenderer extends ElementRenderer
     super(item)
 
   draw: =>
-    segments = for s in @item.segments
-      new paper.Segment(s.point, s.handleIn, s.handleOut)
-  
-    @el = new paper.Path(segments)
+    @el = @item.toPath()
     @el.spine_id = @item.id
     @el.strokeColor = @item.strokeColor
     @el.dashArray = if @item.strokeStyle is 'solid' then [10, 0] else [10, 4]
