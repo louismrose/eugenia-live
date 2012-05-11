@@ -1,19 +1,5 @@
 - Issues
-xx Seems to be a conflict of IDs when drawing while loading is occurring (this was a bug in Spine 1.0.6)
-xx Select tool seems to move nodes in a strange way
-xx Select tool does not reconnect links
-
-- Testing
-x Add unit tests for models
-- Add unit tests for tools?
-- Add unit tests for renderers?
-
-- Refactoring
--- Revisit tools and tidy up
-xx Split out node and link rendering
--- Duplication in renderers?
--- Duplication in models? (Remove model/element?)
-xx Consider javascript dependency options (Hem / Sprockets)
+-- Tools are sometimes "undefined" when page first loads
 
 - Features
 -- Customisable palettes
@@ -22,6 +8,13 @@ xx Consider javascript dependency options (Hem / Sprockets)
 --- Label tool
 --- Port tool
 --- Compartment tool
+
+- Testing
+-- Add unit tests for LinkTool
+-- Add unit tests for renderers?
+
+- Refactoring
+--
 
 x Link tool
 xx Links should be deleted when their source/target node is deleted
