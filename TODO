@@ -1,9 +1,18 @@
 - Issues
--- Tools are sometimes "undefined" when page first loads
+xx Tools are sometimes "undefined" when page first loads
 
 - Features
 -- Customisable palettes
---- Separate "shape definitions" ("templates"?) from node and link models and renderers
+xxx Node shapes defined separately from nodes
+xxx Link shapes defined separately from links
+xxx Tool HTML generated from shapes
+xxx Refactor Shape
+--- Some mechanism for switching between built-in palettes
+--- Page for specifying your own palettes
+--- Do Palettes, LinkShapes and NodeShapes need to be saved in local storage?
+- Links with arrowheads
+-- Trim links at the intersection with nodes
+-- Figure out the maths for determining which way the last curve of a path is facing
 -- Tools
 --- Label tool
 --- Port tool
@@ -11,10 +20,9 @@
 
 - Testing
 -- Add unit tests for LinkTool
--- Add unit tests for renderers?
 
 - Refactoring
---
+-- Renderers are beginning to look anaemic 
 
 x Link tool
 xx Links should be deleted when their source/target node is deleted

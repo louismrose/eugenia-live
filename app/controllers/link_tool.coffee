@@ -2,31 +2,33 @@ Tool = require('controllers/tool')
 Link = require('models/link')
 
 class LinkTool extends Tool
-  parameters: {'strokeColor' : 'black', 'strokeStyle' : 'solid'}
+  parameters: {'shape' : null}
   drafting: false
   
   onMouseMove: (event) ->
-    hitResult = paper.project.hitTest(event.point)
-    @clearSelection()
-    @select(hitResult.item) if hitResult and hitResult.item.closed
+    if @parameters.shape
+      hitResult = paper.project.hitTest(event.point)
+      @clearSelection()
+      @select(hitResult.item) if hitResult and @isNode(hitResult.item)
   
   onMouseDown: (event) ->
-    hitResult = paper.project.hitTest(event.point)
-    if hitResult
-      @drafting = true
-      @draftLink = new DraftLink(event.point)
+    if @parameters.shape
+      hitResult = paper.project.hitTest(event.point)
+      if hitResult
+        @drafting = true
+        @draftLink = new DraftLink(event.point)
 
   onMouseDrag: (event) ->
     if @drafting
       @draftLink.extendTo(event.point)
       hitResult = paper.project.hitTest(event.point)
-      if hitResult and hitResult.item.closed
+      if hitResult and @isNode(hitResult.item)
         @changeSelectionTo(hitResult.item)
   
   onMouseUp: (event) ->
     if @drafting 
       hitResult = paper.project.hitTest(event.point)
-      if hitResult and hitResult.item.closed
+      if hitResult and @isNode(hitResult.item)
         @draftLink.finalise(@parameters)
       
       @draftLink.remove()

@@ -1,9 +1,10 @@
 MovesPath = require('models/moves_path')
 SimplifiesSegments = require('models/simplifies_segments')
+LinkShape = require ('models/link_shape')
 #Spine = require('spine')
 
 class Link extends Spine.Model
-  @configure "Link", "sourceId", "targetId", "segments", "strokeColor", "strokeStyle"
+  @configure "Link", "sourceId", "targetId", "segments", "shape"
   @extend Spine.Model.Local
   
   # TODO duplication with Node
@@ -23,7 +24,9 @@ class Link extends Spine.Model
     @save()
     
   toPath: =>
-    new paper.Path(@toSegments())
+    s = LinkShape.findByAttribute("name", @shape)
+    path = s.draw(@toSegments())
+    path
 
   toSegments: =>
     for s in @segments

@@ -1,6 +1,8 @@
 LinkTool = require('controllers/link_tool')
 NodeTool = require('controllers/node_tool')
 SelectTool = require('controllers/select_tool')
+NodeShape = require ('models/node_shape')
+LinkShape = require ('models/link_shape')
 
 class Toolbox extends Spine.Controller
   events:
@@ -14,15 +16,20 @@ class Toolbox extends Spine.Controller
       select: new SelectTool()
       link:   new LinkTool()
     @currentTool = @tools.node
+    @render()
     
+  render: =>
+    context = {nodeShapes: NodeShape.all(), linkShapes: LinkShape.all()}
+    @html require('views/toolbox')(context)
+  
   reactToToolSelection: (event) =>
-    toolName = jQuery(event.target).attr('data-tool')    
+    toolName = $(event.currentTarget).data('tool')    
     @switchTo(toolName)
   
   reactToToolConfiguration: (event) =>
-    button = jQuery(event.target)
-    value = button.attr('data-tool-parameter-value')
-    key = button.parent().attr('data-tool-parameter')
+    button = $(event.currentTarget)
+    value = button.data('toolParameterValue')
+    key = button.parent().data('toolParameter')
     @configureCurrentToolWith(key, value)
     
   switchTo: (toolName) =>

@@ -11,13 +11,13 @@ class SelectTool extends Tool
       @select(hitResult.item)
   
   onMouseDrag: (event) ->
-    item = paper.project.selectedItems[0]
-    if (item and item.closed)
+    item = @selection()
+    if (@isNode(item))
       item.position = event.point # TODO use some other indicator instead
 
   onMouseUp: (event) ->
-    item = paper.project.selectedItems[0]
-    if (item and item.closed)
+    item = @selection()
+    if (@isNode(item))
       node = item.model
       node.moveTo(event.point)
       node.save()

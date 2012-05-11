@@ -7,11 +7,9 @@ class LinkRenderer extends ElementRenderer
 
   draw: =>
     @el = @item.toPath()
-    @el.strokeColor = @item.strokeColor
-    @el.dashArray = if @item.strokeStyle is 'solid' then [10, 0] else [10, 4]
-
+    
     # TODO trim the line in the tool
     # rather than hiding the overlap behind the nodes here
-    @el.layer.insertChild(0, @el)
+    paper.project.activeLayer.insertChild(0, @el)
     
 module.exports = LinkRenderer

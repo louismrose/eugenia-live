@@ -1,10 +1,9 @@
-Array::remove = (e) -> @[t..t] = [] if (t = @indexOf(e)) > -1
-
 #Spine = require('spine')
 Link = require('models/link')
+NodeShape = require('models/node_shape')
 
 class Node extends Spine.Model
-  @configure "Node", "shape", "position", "fillColor", "strokeColor", "strokeStyle"
+  @configure "Node", "shape", "position"
   @extend Spine.Model.Local
     
   constructor: (attributes) ->
@@ -21,5 +20,11 @@ class Node extends Spine.Model
   moveTo: (destination) =>
     link.reconnectTo(@id, destination.subtract(@position)) for link in @links()
     @position = destination
+
+  toPath: =>
+    s = NodeShape.findByAttribute("name", @shape)
+    path = s.draw(@position)
+    path
+
 
 module.exports = Node

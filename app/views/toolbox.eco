@@ -1,0 +1,23 @@
+<div class="btn-group" data-toggle="buttons-radio">
+  <a class="btn" href="#select_detail" data-toggle="tab" data-tool="select" title="Select"><i class="icon-move"></i></a>
+  <a class="btn active" href="#node_detail" data-toggle="tab" data-tool="node" title="Create Node"><i class="icon-pencil"></i></a>
+  <a class="btn" href="#link_detail" data-toggle="tab" data-tool="link" title="Create Link"><i class="icon-magnet"></i></a>
+</div>
+<div class="tab-content">
+  <div class="tab-pane" id="select_detail">
+  </div>
+  <div class="tab-pane active well" id="node_detail">
+    <div class="btn-group" data-tool-parameter="shape" data-toggle="buttons-radio">
+      <% for ns in @nodeShapes: %>
+        <button class="btn" data-tool-parameter-value="<%=ns.name%>"><%=ns.displayName()%></button>
+      <% end %>
+    </div>
+  </div>
+  <div class="tab-pane well" id="link_detail">
+    <div class="btn-group" data-tool-parameter="shape" data-toggle="buttons-radio">
+      <% for ls in @linkShapes: %>
+        <button class="btn" data-tool-parameter-value="<%=ls.name%>"><%=ls.displayName()%></button>
+      <% end %>
+    </div>
+  </div>
+</div>
