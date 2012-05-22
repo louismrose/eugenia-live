@@ -1,10 +1,10 @@
 {
   "dependencies": [
     "es5-shimify", 
-    "json2ify", 
-    "jqueryify"
+    "json2ify"
   ],
   "libs": [
+    "lib/jquery.js",
     "lib/paper.js",
     "lib/spine/spine.js",
     "lib/spine/ajax.js",

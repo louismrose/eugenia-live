@@ -11,10 +11,16 @@ class App extends Spine.Controller
   constructor: ->
     super
     
-    new StateMachinePalette()
-    # new PetriNetPalette()
-    new CanvasRenderer($('canvas')[0])
-    new Toolbox(el: $('#toolbox'))
+    Spine.Route.add("/drawing/:id", (params) ->
+      console.log("Loading drawing with id #{params.id}")
+      new StateMachinePalette()
+      # new PetriNetPalette()
+      new CanvasRenderer($('canvas')[0])
+      new Toolbox(el: $('#toolbox'))
+    )
+    
+    Spine.Route.setup()
+    Spine.Route.navigate("/drawing/2")
       
 module.exports = App
     
