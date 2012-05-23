@@ -1,22 +1,14 @@
 require('lib/setup')
 
 # Spine = require('spine')
-CanvasRenderer = require('views/canvas_renderer')
-Toolbox = require('controllers/toolbox')
-
-PetriNetPalette = require('models/petri_net_palette')
-StateMachinePalette = require('models/state_machine_palette')
+Drawings = require('controllers/drawings')
 
 class App extends Spine.Controller
   constructor: ->
     super
     
     Spine.Route.add("/drawing/:id", (params) ->
-      console.log("Loading drawing with id #{params.id}")
-      new StateMachinePalette()
-      # new PetriNetPalette()
-      new CanvasRenderer($('canvas')[0])
-      new Toolbox(el: $('#toolbox'))
+      new Drawings(el: @$('#content'), id: params.id)
     )
     
     Spine.Route.setup()
