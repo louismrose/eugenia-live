@@ -2,10 +2,14 @@ Link = require('models/link')
 Node = require('models/node')
 
 class CanvasRenderer
-  constructor: (canvas) ->
-    paper.setup(canvas)
+  constructor: (options) ->
+    @canvas = options.canvas
+    @drawing = options.drawing
+    
+    paper.setup(@canvas)
     @bindToChangeEvents()
-    @fetchDrawing()
+    @addAll(Node)
+    @addAll(Link)
     paper.view.draw()
   
   bindToChangeEvents: =>
@@ -14,13 +18,11 @@ class CanvasRenderer
     Node.bind("create", @addOne)
     Link.bind("create", @addOne)
   
-  fetchDrawing: (client) =>
-    Node.fetch()
-    Link.fetch()
-  
   addAll: (type) =>
-    console.log("adding all " + type.count() + " " + type.className + "s")
-    type.each(@addOne)
+    associationMethod = type.className.toLowerCase() + 's' #e.g. Node -> nodes
+    elements = @drawing[associationMethod]().all()         #e.g. @drawing.nodes().all()
+    console.log("adding all " + elements.length + " " + type.className + "s")
+    @addOne(element) for element in elements
   
   addOne: (element) =>
     renderer = require("views/#{element.constructor.className.toLowerCase()}_renderer")

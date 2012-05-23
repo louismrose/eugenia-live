@@ -12,9 +12,9 @@ class Toolbox extends Spine.Controller
   constructor: ->
     super
     @tools =
-      node:   new NodeTool()
-      select: new SelectTool()
-      link:   new LinkTool()
+      node:   new NodeTool(drawing: @item)
+      select: new SelectTool(drawing: @item)
+      link:   new LinkTool(drawing: @item)
     @currentTool = @tools.node
     @render()
     

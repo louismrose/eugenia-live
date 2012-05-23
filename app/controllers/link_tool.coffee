@@ -29,7 +29,8 @@ class LinkTool extends Tool
     if @drafting 
       hitResult = paper.project.hitTest(event.point)
       if hitResult and @isNode(hitResult.item)
-        @draftLink.finalise(@parameters)
+        @drawing.links().create(@draftLink.finalise(@parameters)).save()
+        console.log(@drawing.links().all().length)
       
       @draftLink.remove()
       @clearSelection()
@@ -51,7 +52,7 @@ class LinkTool extends Tool
       parameters.sourceId = paper.project.hitTest(@path.firstSegment.point).item.model.id
       parameters.targetId = paper.project.hitTest(@path.lastSegment.point).item.model.id
       parameters.segments = @path.segments
-      new Link(parameters).save()
+      parameters
     
     remove: ->
       @path.remove()

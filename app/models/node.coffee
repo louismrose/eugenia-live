@@ -1,9 +1,11 @@
 #Spine = require('spine')
+Drawing = require('models/drawing')
 Link = require('models/link')
 NodeShape = require('models/node_shape')
 
 class Node extends Spine.Model
   @configure "Node", "shape", "position"
+  @belongsTo 'drawing', Drawing
   @extend Spine.Model.Local
     
   constructor: (attributes) ->

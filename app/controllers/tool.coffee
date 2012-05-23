@@ -2,6 +2,11 @@ Link = require('models/link')
 Node = require('models/node')
 
 class Tool extends paper.Tool
+  
+  constructor: (options) ->
+    super
+    @drawing = options.drawing    
+  
   onKeyDown: (event) ->
     if (event.key is 'delete')
       selection = paper.project.selectedItems[0]
