@@ -20,7 +20,7 @@
         <h3>Create a new drawing</h3>
         <form>
           <label>Name:</label>
-          <input id="name" name="name" type="text" class="span3" placeholder="Type something...">
+          <input id="name" name="name" type="text" class="span3" required>
           <label class="select">Palette:
           <select id="palette" name="palette_id">
             <% for palette in @palettes: %>

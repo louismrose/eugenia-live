@@ -10,4 +10,7 @@ class Drawing extends Spine.Model
   @hasMany 'links', Link
   @extend Spine.Model.Local
   
+  validate: ->
+    "Name is required" unless @name
+  
 module.exports = Drawing

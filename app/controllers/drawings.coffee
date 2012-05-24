@@ -29,8 +29,11 @@ class Index extends Spine.Controller
     
   create: (event) =>
     event.preventDefault()
-    item = Drawing.fromForm(event.target).save()
-    @navigate '/drawings', item.id
+    item = Drawing.fromForm(event.target)
+    if item.save()
+      @navigate '/drawings', item.id
+    else
+      @$('input#name').focus()
 
   delete: (event) =>
     button = @$(event.currentTarget)
