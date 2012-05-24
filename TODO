@@ -1,39 +1,20 @@
-- Issues
-xx Tools are sometimes "undefined" when page first loads
-
-- Features
--- Customisable palettes
-xxx Node shapes defined separately from nodes
-xxx Link shapes defined separately from links
-xxx Tool HTML generated from shapes
-xxx Refactor Shape
---- Some mechanism for switching between built-in palettes
---- Page for specifying your own palettes
---- Do Palettes, LinkShapes and NodeShapes need to be saved in local storage?
+Features
+- Customisable palettes
+-- Page for specifying your own palettes
+-- Do Palettes, LinkShapes and NodeShapes need to be saved in local storage?
+- Multiple drawings
+xx Index view
+-- Some mechanism for selecting a palette when creating a new drawing
 - Links with arrowheads
 -- Trim links at the intersection with nodes
 -- Figure out the maths for determining which way the last curve of a path is facing
--- Tools
---- Label tool
---- Port tool
---- Compartment tool
+- Tools
+-- Label tool
+-- Port tool
+-- Compartment tool
 
-- Testing
--- Add unit tests for LinkTool
+Testing
+- Add unit tests for LinkTool
 
-- Refactoring
--- Renderers are beginning to look anaemic 
-
-x Link tool
-xx Links should be deleted when their source/target node is deleted
-xx Links should be moved when their source/target node is moved
-x Separate domain model from view model
-xx Nodes
-xx Links
-x Select tool
-x Delete key
-x Copy key
-x Paste key
-x Switch to Coffeescript
-x Auto build for Coffeescript
-x UI mock for tool configuration
+Refactoring
+- Renderers are beginning to look anaemic
