@@ -8,7 +8,4 @@ class Drawing extends Spine.Model
   @hasMany "links", Link
   @extend Spine.Model.Local
   
-  @findOrCreate: (id) ->
-    if @exists(id) then @find(id) else @create(id: id)
-      
 module.exports = Drawing
