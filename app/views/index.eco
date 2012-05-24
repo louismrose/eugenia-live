@@ -1,15 +1,31 @@
 <ul class="thumbnails">
   <% for drawing in @drawings: %>
   <li class="span4">
-    <a href="#/drawings/<%=drawing.id%>" class="thumbnail" style="text-align:center;">
-      <img src="http://placehold.it/520x360" alt="">
-      <h5><%=drawing.id%></h5>
-    </a>
+    <div class="thumbnail">
+      <a href="#/drawings/<%=drawing.id%>">
+        <img src="http://placehold.it/520x360" alt="">
+      </a>
+    </div>
+    <div style="margin-top: 10px;">
+      <h5 class="span3"><%=drawing.name%></h5>
+      <button class="btn btn-danger delete" data-id="<%=drawing.id%>">Delete</button>
+    </div>
   </li>
   <% end %>
   <li class="span4">
-    <div class="thumbnail" style="padding:114px 0;text-align:center;">
-      <button id="new" class="btn">New Drawing</button>
+    <div class="well">
+      <h3>Create a new drawing</h3>
+      <form>
+        <label>Name:</label>
+        <input id="name" name="name" type="text" class="span3" placeholder="Type something...">
+        <label class="select">Palette:
+        <select id="palette" name="palette">
+          <option>State machine</option>
+          <option>Petri net</option>
+        </select>
+        </label>
+        <button id="new" class="btn btn-primary">Go</button>
+      </form>
     </div>
   </li>
 </ul>

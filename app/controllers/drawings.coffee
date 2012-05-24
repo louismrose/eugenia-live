@@ -11,7 +11,8 @@ StateMachinePalette = require('models/state_machine_palette')
 
 class Index extends Spine.Controller
   events:
-    'click #new': 'create'
+    'submit form': 'create'
+    'click .delete': 'delete'
     
   constructor: ->
     super
@@ -24,9 +25,17 @@ class Index extends Spine.Controller
     super
     @html ''
     
-  create: ->
-    item = Drawing.create()
+  create: (event) =>
+    event.preventDefault()
+    item = Drawing.fromForm(event.target).save()
+    @log(item)
     @navigate '/drawings', item.id
+
+  delete: (event) =>
+    button = @$(event.currentTarget)
+    id = button.data('id')
+    Drawing.destroy(id)
+    @render()
 
 
 class Show extends Spine.Controller
