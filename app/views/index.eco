@@ -1,32 +1,36 @@
-<ul class="thumbnails">
-  <% for drawing in @drawings: %>
-  <li class="span4">
-    <div class="thumbnail">
-      <a href="#/drawings/<%=drawing.id%>">
-        <img src="http://placehold.it/520x360" alt="">
-      </a>
-    </div>
-    <div style="margin-top: 10px;">
-      <h5 class="span3"><%=drawing.name%></h5>
-      <button class="btn btn-danger delete" data-id="<%=drawing.id%>">Delete</button>
-    </div>
-  </li>
-  <% end %>
-  <li class="span4">
-    <div class="well">
-      <h3>Create a new drawing</h3>
-      <form>
-        <label>Name:</label>
-        <input id="name" name="name" type="text" class="span3" placeholder="Type something...">
-        <label class="select">Palette:
-        <select id="palette" name="palette">
-          <option>State machine</option>
-          <option>Petri net</option>
-        </select>
-        </label>
-        <button id="new" class="btn btn-primary">Go</button>
-      </form>
-    </div>
-  </li>
-</ul>
+<div class="row-fluid">
+  <ul class="thumbnails">
+    <% for drawing in @drawings: %>
+    <li class="span4 well">
+      <div style="margin-bottom: 10px;">
+        <h3><%=drawing.name%></h3>
+      </div>
+      <div>
+        <a href="#/drawings/<%=drawing.id%>">
+          <img src="http://placehold.it/520x360" alt="">
+        </a>
+      </div>
+      <div style="margin-top: 10px; text-align: right;">
+        <button class="btn btn-danger delete" data-id="<%=drawing.id%>" style="display:inline;">Delete</button>
+      </div>
+    </li>
+    <% end %>
+    <li class="span4">
+      <div class="well">
+        <h3>Create a new drawing</h3>
+        <form>
+          <label>Name:</label>
+          <input id="name" name="name" type="text" class="span3" placeholder="Type something...">
+          <label class="select">Palette:
+          <select id="palette" name="palette">
+            <option>State machine</option>
+            <option>Petri net</option>
+          </select>
+          </label>
+          <button id="new" class="btn btn-primary">Go</button>
+        </form>
+      </div>
+    </li>
+  </ul>
+</div>
 

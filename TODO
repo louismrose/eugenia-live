@@ -4,7 +4,8 @@ Features
 -- Do Palettes, LinkShapes and NodeShapes need to be saved in local storage?
 - Multiple drawings
 xx Index view
--- Some mechanism for selecting a palette when creating a new drawing
+xx Some mechanism for selecting a palette when creating a new drawing
+-- Respect palette selection when viewing a drawing
 - Links with arrowheads
 -- Trim links at the intersection with nodes
 -- Figure out the maths for determining which way the last curve of a path is facing
