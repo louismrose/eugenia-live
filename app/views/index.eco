@@ -22,9 +22,10 @@
           <label>Name:</label>
           <input id="name" name="name" type="text" class="span3" placeholder="Type something...">
           <label class="select">Palette:
-          <select id="palette" name="palette">
-            <option>State machine</option>
-            <option>Petri net</option>
+          <select id="palette" name="palette_id">
+            <% for palette in @palettes: %>
+              <option value="<%=palette.id%>"><%=palette.name%></option>
+            <% end %>
           </select>
           </label>
           <button id="new" class="btn btn-primary">Go</button>

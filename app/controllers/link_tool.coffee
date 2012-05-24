@@ -30,7 +30,6 @@ class LinkTool extends Tool
       hitResult = paper.project.hitTest(event.point)
       if hitResult and @isNode(hitResult.item)
         @drawing.links().create(@draftLink.finalise(@parameters)).save()
-        console.log(@drawing.links().all().length)
       
       @draftLink.remove()
       @clearSelection()

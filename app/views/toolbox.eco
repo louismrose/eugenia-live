@@ -8,14 +8,14 @@
   </div>
   <div class="tab-pane active well" id="node_detail">
     <div class="btn-group" data-tool-parameter="shape" data-toggle="buttons-radio">
-      <% for ns in @nodeShapes: %>
+      <% for ns in @nodeShapes().all(): %>
         <button class="btn" data-tool-parameter-value="<%=ns.name%>"><%=ns.displayName()%></button>
       <% end %>
     </div>
   </div>
   <div class="tab-pane well" id="link_detail">
     <div class="btn-group" data-tool-parameter="shape" data-toggle="buttons-radio">
-      <% for ls in @linkShapes: %>
+      <% for ls in @linkShapes().all(): %>
         <button class="btn" data-tool-parameter-value="<%=ls.name%>"><%=ls.displayName()%></button>
       <% end %>
     </div>

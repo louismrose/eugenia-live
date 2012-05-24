@@ -1,6 +1,8 @@
+Palette = require ('models/palette')
+
 class LinkShape extends Spine.Model
   @configure "Shape", "name", "color", "style"
-  @extend Spine.Model.Local
+  @belongsTo 'palette', Palette
   
   constructor: (attributes) ->
     super

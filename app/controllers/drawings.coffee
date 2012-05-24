@@ -1,4 +1,5 @@
 # Spine = require('spine')
+Palette = require ('models/palette')
 Drawing = require('models/drawing')
 Node = require('models/node')
 Link = require('models/link')
@@ -6,8 +7,6 @@ Link = require('models/link')
 CanvasRenderer = require('views/canvas_renderer')
 Toolbox = require('controllers/toolbox')
 
-PetriNetPalette = require('models/petri_net_palette')
-StateMachinePalette = require('models/state_machine_palette')
 
 class Index extends Spine.Controller
   events:
@@ -19,7 +18,10 @@ class Index extends Spine.Controller
     @active @render
   
   render: ->
-    @html require('views/index')(drawings: Drawing.all())
+    context =
+      drawings: Drawing.all()
+      palettes: Palette.all()
+    @html require('views/index')(context)
   
   deactivate: ->
     super
@@ -28,7 +30,6 @@ class Index extends Spine.Controller
   create: (event) =>
     event.preventDefault()
     item = Drawing.fromForm(event.target).save()
-    @log(item)
     @navigate '/drawings', item.id
 
   delete: (event) =>
@@ -45,7 +46,8 @@ class Show extends Spine.Controller
   
   change: (params) =>
     @item = Drawing.find(params.id)
-    console.log "Showing drawing #{@item}, which has #{@item.nodes().all().length} nodes and #{@item.links().all().length} links"
+    @log "Showing drawing #{@item}, which has #{@item.nodes().all().length} nodes and #{@item.links().all().length} links"
+    @log "Palette: #{@item.palette_id}"
     @render()
 
   render: ->
@@ -66,11 +68,9 @@ class Drawings extends Spine.Stack
   constructor: ->
     super
 
+    Palette.fetch()
     Drawing.fetch()
     Node.fetch()
     Link.fetch()
-    new StateMachinePalette()
-    # new PetriNetPalette()
-    
 
 module.exports = Drawings

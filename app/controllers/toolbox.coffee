@@ -19,8 +19,13 @@ class Toolbox extends Spine.Controller
     @render()
     
   render: =>
-    context = {nodeShapes: NodeShape.all(), linkShapes: LinkShape.all()}
-    @html require('views/toolbox')(context)
+    # FIXME:
+    #  it should be possible to use @item.palette() 
+    #  rather than the following two lines, but this
+    #  doesn't seem to work?
+    Palette = require('models/palette')
+    palette = Palette.find(@item.palette_id)
+    @html require('views/toolbox')(palette)
   
   reactToToolSelection: (event) =>
     toolName = $(event.currentTarget).data('tool')    
