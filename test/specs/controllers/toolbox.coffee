@@ -1,10 +1,9 @@
 require = window.require
 
 describe 'Toolbox', ->
-  require('jqueryify')
   Toolbox = require('controllers/toolbox')
 
-  beforeEach -> @t = new Toolbox(el: $("div#dummy"))
+  beforeEach -> @t = new Toolbox()
 
   it 'switches to NodeTool when initialised', ->
     expect(@t.currentTool).toBe(@t.tools.node)
