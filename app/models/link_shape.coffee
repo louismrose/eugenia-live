@@ -1,8 +1,6 @@
-Palette = require ('models/palette')
-
 class LinkShape extends Spine.Model
   @configure "Shape", "name", "color", "style"
-  @belongsTo 'palette', Palette
+  @belongsTo 'palette', 'models/palette'
   
   constructor: (attributes) ->
     super

@@ -1,4 +1,5 @@
 Issues
+- Are there other cyclic requires in models that I can get rid of?
 - Does deleting a drawing also delete its nodes and links?
 - Sometimes when creating a new (the first new?) drawing and then creating some nodes and links, leaving that page and visiting it again later, the nodes have disappeared!
 

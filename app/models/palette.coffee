@@ -1,7 +1,4 @@
 #Spine = require('spine')
-NodeShape = require('models/node_shape')
-LinkShape = require ('models/link_shape')
-Drawing = require ('models/drawing')
 
 class StateMachinePaletteFactory
   @create: ->
@@ -96,9 +93,9 @@ class PetriNetPaletteFactory
 
 class Palette extends Spine.Model
   @configure 'Palette', 'name'
-  @hasMany 'nodeShapes', NodeShape
-  @hasMany 'linkShapes', LinkShape
-  @hasMany 'drawings', Drawing
+  @hasMany 'nodeShapes', 'models/node_shape'
+  @hasMany 'linkShapes', 'models/link_shape'
+  @hasMany 'drawings', 'models/drawing'
   
   @fetch: ->
     StateMachinePaletteFactory.create()

@@ -1,8 +1,6 @@
-Palette = require ('models/palette')
-
 class NodeShape extends Spine.Model
   @configure "Shape", "name", "elements"
-  @belongsTo 'palette', Palette
+  @belongsTo 'palette', 'models/palette'
   
   constructor: (attributes) ->
     super

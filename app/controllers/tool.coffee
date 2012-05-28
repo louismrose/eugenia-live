@@ -1,4 +1,3 @@
-Link = require('models/link')
 Node = require('models/node')
 
 class Tool extends paper.Tool

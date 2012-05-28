@@ -4,7 +4,8 @@
 # to the bare essentials (which will be acyclic)
 class SimplifiesSegments
   for: (segments) =>
-    @simplified(segment) for segment in segments
+    if segments
+      @simplified(segment) for segment in segments
   
   simplified: (s) ->
     {

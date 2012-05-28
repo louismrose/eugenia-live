@@ -1,16 +1,21 @@
-#Spine = require('spine')
-Palette = require ('models/palette')
-Node = require('models/node')
-Link = require ('models/link')
+Spine = require('spine')
 
 class Drawing extends Spine.Model
   @configure 'Drawing', 'name'
-  @belongsTo 'palette', Palette
-  @hasMany 'nodes', Node
-  @hasMany 'links', Link
+  @belongsTo 'palette', 'models/palette'
+  @hasMany 'nodes', 'models/node'
+  @hasMany 'links', 'models/link'
   @extend Spine.Model.Local
+  
+  constructor: ->
+    super
+    @bind("destroy", @destroyChildren)
   
   validate: ->
     "Name is required" unless @name
+    
+  destroyChildren: ->
+    node.destroy() for node in @nodes().all()
+    link.destroy() for link in @links().all()
   
 module.exports = Drawing

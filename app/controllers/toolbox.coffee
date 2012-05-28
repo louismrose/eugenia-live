@@ -1,3 +1,4 @@
+Spine = require('spine')
 LinkTool = require('controllers/link_tool')
 NodeTool = require('controllers/node_tool')
 SelectTool = require('controllers/select_tool')

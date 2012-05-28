@@ -1,20 +1,18 @@
-Drawing = require ('models/drawing')
-
+Spine = require('spine')
 MovesPath = require('models/moves_path')
 SimplifiesSegments = require('models/simplifies_segments')
-LinkShape = require ('models/link_shape')
-#Spine = require('spine')
+LinkShape = require('models/link_shape')
 
 class Link extends Spine.Model
   @configure "Link", "sourceId", "targetId", "segments", "shape"
-  @belongsTo "drawing", Drawing
+  @belongsTo 'drawing', 'models/drawing'
   @extend Spine.Model.Local
   
   # TODO duplication with Node
   constructor: (attributes) ->
     super
     @k = v for k,v of attributes
-    @updateSegments(attributes.segments)
+    @updateSegments(attributes.segments) if attributes
   
   updateSegments: (segments) =>
     @segments = new SimplifiesSegments().for(segments)

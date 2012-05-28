@@ -1,6 +1,6 @@
 require('lib/setup')
 
-# Spine = require('spine')
+Spine = require('spine')
 Drawings = require('controllers/drawings')
 
 class App extends Spine.Controller
