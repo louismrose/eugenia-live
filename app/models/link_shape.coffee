@@ -1,3 +1,5 @@
+Spine = require('spine')
+
 class LinkShape extends Spine.Model
   @configure "Shape", "name", "color", "style"
   @belongsTo 'palette', 'models/palette'

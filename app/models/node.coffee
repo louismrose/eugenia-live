@@ -1,4 +1,4 @@
-#Spine = require('spine')
+Spine = require('spine')
 Link = require('models/link')
 NodeShape = require('models/node_shape')
 

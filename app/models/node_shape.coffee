@@ -1,3 +1,5 @@
+Spine = require('spine')
+
 class NodeShape extends Spine.Model
   @configure "Shape", "name", "elements"
   @belongsTo 'palette', 'models/palette'
