@@ -7,17 +7,16 @@ LinkShape = require ('models/link_shape')
 
 class Toolbox extends Spine.Controller
   events:
-    "click a[data-tool]": "reactToToolSelection" 
-    "click button[data-tool-parameter-value]": "reactToToolConfiguration" 
+    "click a": "reactToToolSelection" 
   
   constructor: ->
     super
+    @render()
     @tools =
       node:   new NodeTool(drawing: @item)
       select: new SelectTool(drawing: @item)
       link:   new LinkTool(drawing: @item)
     @switchTo("node")
-    @render()
     
   render: =>
     if @item
@@ -27,17 +26,18 @@ class Toolbox extends Spine.Controller
       #  doesn't seem to work?
       Palette = require('models/palette')
       palette = Palette.find(@item.palette_id)
+      
       @html require('views/toolbox')(palette)
   
   reactToToolSelection: (event) =>
-    toolName = $(event.currentTarget).data('tool')    
-    @switchTo(toolName)
-  
-  reactToToolConfiguration: (event) =>
-    button = $(event.currentTarget)
-    value = button.data('toolParameterValue')
-    key = button.parent().data('toolParameter')
-    @configureCurrentToolWith(key, value)
+    link = $(event.currentTarget)
+
+    @switchTo(link.data('toolName'))
+    @configureCurrentToolWith("shape", link.data('toolShape'))
+    
+    $("li.active").removeClass("active")
+    link.parent().addClass("active")
+    event.preventDefault()
     
   switchTo: (toolName) =>
     throw "There is no tool named '#{toolName}'" unless @tools[toolName]
@@ -45,7 +45,6 @@ class Toolbox extends Spine.Controller
     @currentTool.activate()
   
   configureCurrentToolWith: (parameterKey, parameterValue) =>
-    @currentTool.parameters or= {}
-    @currentTool.parameters[parameterKey] = parameterValue
+    @currentTool.setParameter(parameterKey, parameterValue)
     
 module.exports = Toolbox

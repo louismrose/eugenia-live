@@ -1,23 +1,17 @@
-<div class="btn-group" data-toggle="buttons-radio">
-  <a class="btn" href="#select_detail" data-toggle="tab" data-tool="select" title="Select"><i class="icon-move"></i></a>
-  <a class="btn active" href="#node_detail" data-toggle="tab" data-tool="node" title="Create Node"><i class="icon-pencil"></i></a>
-  <a class="btn" href="#link_detail" data-toggle="tab" data-tool="link" title="Create Link"><i class="icon-magnet"></i></a>
-</div>
-<div class="tab-content">
-  <div class="tab-pane" id="select_detail">
-  </div>
-  <div class="tab-pane active well" id="node_detail">
-    <div class="btn-group" data-tool-parameter="shape" data-toggle="buttons-radio">
-      <% for ns in @nodeShapes().all(): %>
-        <button class="btn" data-tool-parameter-value="<%=ns.name%>"><%=ns.displayName()%></button>
-      <% end %>
-    </div>
-  </div>
-  <div class="tab-pane well" id="link_detail">
-    <div class="btn-group" data-tool-parameter="shape" data-toggle="buttons-radio">
-      <% for ls in @linkShapes().all(): %>
-        <button class="btn" data-tool-parameter-value="<%=ls.name%>"><%=ls.displayName()%></button>
-      <% end %>
-    </div>
-  </div>
+<div class="well" style="padding: 8px 0;">
+
+<ul class="nav nav-list">
+  <li class="nav-header">Built-in</li>
+  <li class="active"><a href="#" data-tool-name="select">Select</i></a></li>
+  
+  <li class="nav-header">Nodes</li>
+  <% for ns in @nodeShapes().all(): %>
+    <li><a href="#" data-tool-name="node" data-tool-shape="<%=ns.name%>"><%=ns.displayName()%></a></li>
+  <% end %>
+  
+  <li class="nav-header">Links</li>
+  <% for ls in @linkShapes().all(): %>
+    <li><a href="#" data-tool-name="link" data-tool-shape="<%=ls.name%>"><%=ls.displayName()%></a></li>
+  <% end %>
+</ul>
 </div>

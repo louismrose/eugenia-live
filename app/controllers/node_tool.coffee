@@ -9,5 +9,8 @@ class NodeTool extends Tool
       @parameters.position = event.point
       @drawing.nodes().create(@parameters).save()
       @clearSelection()
-    
+  
+  setParameter: (parameterKey, parameterValue) ->
+    super(parameterKey, parameterValue)
+  
 module.exports = NodeTool

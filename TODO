@@ -1,14 +1,14 @@
 Features
 - Customisable palettes
--- Page for specifying your own palettes
+xx Simpler interface for toolbox
+-- Interface for adding, editing and deleting palette items
+-- Palette editor used for adding and editing palette items
 -- Do Palettes, LinkShapes and NodeShapes need to be saved in local storage?
+-- Preview palette items (e.g. little icons next to names or a thumbnail shown when hovering)
 - Multiple drawings
-xx Index view
 -- Add thumbnails to index view:
 	var canvas = document.getElementById("mycanvas");
 	var img    = canvas.toDataURL("image/png");
-xx Some mechanism for selecting a palette when creating a new drawing
--- Respect palette selection when viewing a drawing
 - Links with arrowheads
 -- Trim links at the intersection with nodes
 -- Figure out the maths for determining which way the last curve of a path is facing

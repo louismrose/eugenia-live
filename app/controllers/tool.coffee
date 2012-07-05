@@ -4,7 +4,11 @@ class Tool extends paper.Tool
   
   constructor: (options) ->
     super
-    @drawing = options.drawing    
+    @drawing = options.drawing
+  
+  setParameter: (parameterKey, parameterValue) ->
+    @parameters or= {}
+    @parameters[parameterKey] = parameterValue
   
   onKeyDown: (event) ->
     if (event.key is 'delete')
