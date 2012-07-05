@@ -1,7 +1,5 @@
 Issues
-- Creating a second drawing disables the palette?
 - Test that deleting a drawing also delete its nodes and links in real app.
-- Sometimes when creating a new (the first new?) drawing and then creating some nodes and links, leaving that page and visiting it again later, the nodes have disappeared!
 
 Features
 - Customisable palettes

@@ -16,7 +16,7 @@ class Toolbox extends Spine.Controller
       node:   new NodeTool(drawing: @item)
       select: new SelectTool(drawing: @item)
       link:   new LinkTool(drawing: @item)
-    @currentTool = @tools.node
+    @switchTo("node")
     @render()
     
   render: =>
