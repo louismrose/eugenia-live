@@ -16,6 +16,7 @@ class App extends Spine.Controller
       @drawings.index.active(params)
     
     Spine.Route.setup()
+    @navigate('/drawings')
       
 module.exports = App
     
