@@ -14,8 +14,4 @@ describe 'Toolbox', ->
 
   it 'errors when switching to an unknown tool', ->
     expect( => @t.switchTo('detonator')).toThrow("There is no tool named 'detonator'")
-    
-  it 'adds configuration values to the parameters of the current tool', ->
-    expect(@t.currentTool.parameters.foo).toBeUndefined()
-    @t.configureCurrentToolWith("foo", "bar")
-    expect(@t.currentTool.parameters.foo).toEqual("bar")
+  

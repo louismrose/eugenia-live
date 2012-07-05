@@ -33,7 +33,7 @@ class Toolbox extends Spine.Controller
     link = $(event.currentTarget)
 
     @switchTo(link.data('toolName'))
-    @configureCurrentToolWith("shape", link.data('toolShape'))
+    @currentTool.setParameter('shape', link.data('toolShape'))
     
     $("li.active").removeClass("active")
     link.parent().addClass("active")
@@ -43,8 +43,6 @@ class Toolbox extends Spine.Controller
     throw "There is no tool named '#{toolName}'" unless @tools[toolName]
     @currentTool = @tools[toolName]
     @currentTool.activate()
-  
-  configureCurrentToolWith: (parameterKey, parameterValue) =>
-    @currentTool.setParameter(parameterKey, parameterValue)
+
     
 module.exports = Toolbox
