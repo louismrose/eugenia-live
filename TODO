@@ -1,6 +1,3 @@
-Issues
-- Test that deleting a drawing also delete its nodes and links in real app.
-
 Features
 - Customisable palettes
 -- Page for specifying your own palettes

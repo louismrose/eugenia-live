@@ -49,7 +49,6 @@ class Show extends Spine.Controller
   
   change: (params) =>
     @item = Drawing.find(params.id)
-    @log "Showing drawing #{@item}, which has #{@item.nodes().all().length} nodes and #{@item.links().all().length} links"
     @log "Palette: #{@item.palette_id}"
     @render()
 
@@ -57,11 +56,12 @@ class Show extends Spine.Controller
     @html require('views/show')
     if @item
       new CanvasRenderer(drawing: @item, canvas: @$('#drawing')[0])
-      new Toolbox(item: @item, el: @$('#toolbox'))  
+      @toolbox = new Toolbox(item: @item, el: @$('#toolbox'))  
 
   deactivate: ->
     super
     @html ''
+    @toolbox.release() if @toolbox
 
 class Drawings extends Spine.Stack
   controllers:
