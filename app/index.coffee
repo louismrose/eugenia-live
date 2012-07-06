@@ -18,8 +18,11 @@ class App extends Spine.Controller
     Spine.Route.add '/palettes/:p_id/:type/:id', (params) =>
       @log("To be implemented")
     
+    # Redirect any other route  
+    Spine.Route.add '*glob', (params) =>
+      @navigate('/drawings')
+    
     Spine.Route.setup()
-    @navigate('/drawings')
       
 module.exports = App
     
