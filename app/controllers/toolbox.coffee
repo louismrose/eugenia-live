@@ -7,7 +7,8 @@ LinkShape = require ('models/link_shape')
 
 class Toolbox extends Spine.Controller
   events:
-    "click a": "reactToToolSelection" 
+    "click a": "reactToToolSelection"
+    "dblclick a": "showEditor"
   
   constructor: ->
     super
@@ -28,6 +29,13 @@ class Toolbox extends Spine.Controller
       palette = Palette.find(@item.palette_id)
       
       @html require('views/toolbox')(palette)
+  
+  showEditor: (event) =>
+    link = $(event.currentTarget)
+    toolName = link.data('toolName')
+    
+    unless toolName is 'select'
+      @navigate("/palettes/#{@item.palette_id}/#{toolName}s/#{link.data('toolShape')}")
   
   reactToToolSelection: (event) =>
     link = $(event.currentTarget)

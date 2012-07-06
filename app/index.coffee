@@ -14,6 +14,9 @@ class App extends Spine.Controller
 
     Spine.Route.add '/drawings', (params) =>
       @drawings.index.active(params)
+      
+    Spine.Route.add '/palettes/:p_id/:type/:id', (params) =>
+      @log("To be implemented")
     
     Spine.Route.setup()
     @navigate('/drawings')
