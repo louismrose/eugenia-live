@@ -1,4 +1,11 @@
 Features
+- Conformance checking
+-- Implement the selection view properly
+-- Update selection view when the selection in the canvas changes
+-- Combo box that can change an element's type
+-- Label that can restore deleted shapes to the palette
+-- Problems model and marker rendering
+-- NodeShape listener that adds markers when a used nodeshape is deleted
 - Customisable palettes
 xx Simpler interface for toolbox
 -- Interface for adding, editing and deleting palette items
