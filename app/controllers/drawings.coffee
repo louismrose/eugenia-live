@@ -74,6 +74,6 @@ class Drawings extends Spine.Stack
     Palette.fetch()
     Drawing.fetch()
     Node.fetch()
-    Link.fetch()
+    Link.fetch()    
 
 module.exports = Drawings

@@ -2,12 +2,14 @@ require('lib/setup')
 
 Spine = require('spine')
 Drawings = require('controllers/drawings')
+Palettes = require('controllers/palettes')
 
-class App extends Spine.Controller
+class App extends Spine.Stack
   constructor: ->
     super
     
     @drawings = new Drawings(el: @el)
+    @palettes = new Palettes(el: @el)
     
     Spine.Route.add '/drawings/:id', (params) =>
       @drawings.show.active(params)
@@ -15,8 +17,9 @@ class App extends Spine.Controller
     Spine.Route.add '/drawings', (params) =>
       @drawings.index.active(params)
       
-    Spine.Route.add '/palettes/:p_id/:type/:id', (params) =>
-      @log("To be implemented")
+    Spine.Route.add '/drawings/:d_id/:type/:id', (params) =>
+      @drawings.show.deactivate()
+      @palettes.create.active(params)
     
     # Redirect any other route  
     Spine.Route.add '*glob', (params) =>
@@ -24,5 +27,4 @@ class App extends Spine.Controller
     
     Spine.Route.setup()
       
-module.exports = App
-    
+module.exports = App  

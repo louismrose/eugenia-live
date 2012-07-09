@@ -7,7 +7,7 @@ LinkShape = require ('models/link_shape')
 
 class Toolbox extends Spine.Controller
   events:
-    "click a": "reactToToolSelection"
+    "click a[data-tool-name]": "reactToToolSelection"
     "dblclick a": "showEditor"
   
   constructor: ->
@@ -26,9 +26,11 @@ class Toolbox extends Spine.Controller
       #  rather than the following two lines, but this
       #  doesn't seem to work?
       Palette = require('models/palette')
-      palette = Palette.find(@item.palette_id)
+      context =
+        drawing: @item
+        palette: Palette.find(@item.palette_id)
       
-      @html require('views/toolbox')(palette)
+      @html require('views/toolbox')(context)
   
   showEditor: (event) =>
     link = $(event.currentTarget)

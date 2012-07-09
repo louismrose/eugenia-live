@@ -8,7 +8,16 @@ Features
 -- NodeShape listener that adds markers when a used nodeshape is deleted
 - Customisable palettes
 xx Simpler interface for toolbox
--- Interface for adding, editing and deleting palette items
+-- CRUD for palette items
+xxx Read
+--- Create
+---- Tidy up create method
+---- When a drawing is created, it should get its own palette that can be edited.
+---- Support links as well as edges
+---- Simple parser of definition value (keep in mind that different editors will be used eventually)
+---- Is controller/routing organisation appropriate?
+--- Update
+--- Delete
 -- Palette editor used for adding and editing palette items
 -- Do Palettes, LinkShapes and NodeShapes need to be saved in local storage?
 -- Preview palette items (e.g. little icons next to names or a thumbnail shown when hovering)
