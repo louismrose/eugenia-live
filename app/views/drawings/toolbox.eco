@@ -5,15 +5,15 @@
     <li class="active"><a href="#" data-tool-name="select">Select</i></a></li>
   
     <li class="nav-header">Nodes</li>
-    <% for ns in @palette.nodeShapes().all(): %>
+    <% for ns in @palette().nodeShapes().all(): %>
       <li><a href="#" data-tool-name="node" data-tool-shape="<%=ns.name%>"><%=ns.displayName()%></a></li>
     <% end %>
-    <li><a href="#/drawings/<%=@drawing.id%>/nodes/new">New...</a></li>
+    <li><a href="#/drawings/<%=@id%>/nodes/new">New...</a></li>
   
     <li class="nav-header">Links</li>
-    <% for ls in @palette.linkShapes().all(): %>
+    <% for ls in @palette().linkShapes().all(): %>
       <li><a href="#" data-tool-name="link" data-tool-shape="<%=ls.name%>"><%=ls.displayName()%></a></li>
     <% end %>
-      <li><a href="#/drawings/<%=@drawing.id%>/links/new">New...</a></li>
+      <li><a href="#/drawings/<%=@id%>/links/new">New...</a></li>
   </ul>
 </div>

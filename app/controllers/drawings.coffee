@@ -4,6 +4,8 @@ Palette = require ('models/palette')
 Drawing = require('models/drawing')
 Node = require('models/node')
 Link = require('models/link')
+NodeShape = require('models/node_shape')
+LinkShape = require('models/link_shape')
 
 CanvasRenderer = require('views/drawings/canvas_renderer')
 Toolbox = require('controllers/toolbox')
@@ -32,10 +34,12 @@ class Index extends Spine.Controller
     event.preventDefault()
     
     form = @extractFormData($(event.target)) 
-    palette = PaletteSpecification.find(form.palette_specification_id).instantiate()
-    item = palette.drawings().create(name: form.name)
+    item = Drawing.create(name: form.name)
     
     if item and item.save()
+      palette = PaletteSpecification.find(form.palette_specification_id).instantiate()
+      palette.drawing_id = item.id
+      palette.save()
       @navigate '/drawings', item.id
     else
       @$('input#name').focus()
@@ -59,7 +63,7 @@ class Show extends Spine.Controller
   
   change: (params) =>
     @item = Drawing.find(params.id)
-    @log "Palette: #{@item.palette_id}"
+    @log "Palette: #{@item.palette().id}"
     @render()
 
   render: ->
@@ -83,6 +87,8 @@ class Drawings extends Spine.Stack
 
     PaletteSpecification.fetch()
     Palette.fetch()
+    LinkShape.fetch()
+    NodeShape.fetch()
     Drawing.fetch()
     Node.fetch()
     Link.fetch()    

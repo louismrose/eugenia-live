@@ -21,16 +21,7 @@ class Toolbox extends Spine.Controller
     
   render: =>
     if @item
-      # FIXME:
-      #  it should be possible to use @item.palette() 
-      #  rather than the following two lines, but this
-      #  doesn't seem to work?
-      Palette = require('models/palette')
-      context =
-        drawing: @item
-        palette: Palette.find(@item.palette_id)
-      
-      @html require('views/drawings/toolbox')(context)
+      @html require('views/drawings/toolbox')(@item)
   
   showEditor: (event) =>
     link = $(event.currentTarget)

@@ -2,7 +2,7 @@ Spine = require('spine')
 
 class Drawing extends Spine.Model
   @configure 'Drawing', 'name'
-  @belongsTo 'palette', 'models/palette'
+  @hasOne 'palette', 'models/palette'
   @hasMany 'nodes', 'models/node'
   @hasMany 'links', 'models/link'
   @extend Spine.Model.Local
@@ -17,5 +17,6 @@ class Drawing extends Spine.Model
   destroyChildren: ->
     node.destroy() for node in @nodes().all()
     link.destroy() for link in @links().all()
+    @palette().destroy() if @palette()
   
 module.exports = Drawing
