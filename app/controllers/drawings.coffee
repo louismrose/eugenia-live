@@ -4,7 +4,7 @@ Drawing = require('models/drawing')
 Node = require('models/node')
 Link = require('models/link')
 
-CanvasRenderer = require('views/canvas_renderer')
+CanvasRenderer = require('views/drawings/canvas_renderer')
 Toolbox = require('controllers/toolbox')
 
 
@@ -21,7 +21,7 @@ class Index extends Spine.Controller
     context =
       drawings: Drawing.all()
       palettes: Palette.all()
-    @html require('views/index')(context)
+    @html require('views/drawings/index')(context)
   
   deactivate: ->
     super
@@ -53,7 +53,7 @@ class Show extends Spine.Controller
     @render()
 
   render: ->
-    @html require('views/show')
+    @html require('views/drawings/show')
     if @item
       new CanvasRenderer(drawing: @item, canvas: @$('#drawing')[0])
       @toolbox = new Toolbox(item: @item, el: @$('#toolbox'))  

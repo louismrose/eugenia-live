@@ -1,4 +1,4 @@
-ElementRenderer = require('views/element_renderer')
+ElementRenderer = require('views/drawings/element_renderer')
 
 class NodeRenderer extends ElementRenderer
 

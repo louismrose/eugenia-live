@@ -30,7 +30,7 @@ class Toolbox extends Spine.Controller
         drawing: @item
         palette: Palette.find(@item.palette_id)
       
-      @html require('views/toolbox')(context)
+      @html require('views/drawings/toolbox')(context)
   
   showEditor: (event) =>
     link = $(event.currentTarget)

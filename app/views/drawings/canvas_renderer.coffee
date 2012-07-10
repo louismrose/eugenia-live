@@ -25,7 +25,7 @@ class CanvasRenderer
     @addOne(element) for element in elements
   
   addOne: (element) =>
-    renderer = require("views/#{element.constructor.className.toLowerCase()}_renderer")
+    renderer = require("views/drawings/#{element.constructor.className.toLowerCase()}_renderer")
     
     if (renderer)
       new renderer(element).render()
