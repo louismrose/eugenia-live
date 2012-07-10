@@ -3,6 +3,7 @@ Spine = require('spine')
 class NodeShape extends Spine.Model
   @configure "Shape", "name", "elements"
   @belongsTo 'palette', 'models/palette'
+  @extend Spine.Model.Local
   
   constructor: (attributes) ->
     super

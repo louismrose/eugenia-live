@@ -22,9 +22,9 @@
           <label>Name:</label>
           <input id="name" name="name" type="text" class="span3" required>
           <label class="select">Palette:
-          <select id="palette" name="palette_id">
-            <% for palette in @palettes: %>
-              <option value="<%=palette.id%>"><%=palette.name%></option>
+          <select id="palette" name="palette_specification_id">
+            <% for palette_spec in @palette_specs: %>
+              <option value="<%=palette_spec.id%>"><%=palette_spec.name%></option>
             <% end %>
           </select>
           </label>

@@ -12,9 +12,9 @@ xx Simpler interface for toolbox
 xxx Read
 --- Create
 ---- Tidy up create method
----- When a drawing is created, it should get its own palette that can be edited.
----- Support links as well as edges
----- Simple parser of definition value (keep in mind that different editors will be used eventually)
+xxxx When a drawing is created, it should get its own palette that can be edited.
+---- Support creating links as well as nodes
+---- Simple JSON parsing of definition value (keep in mind that different editors will be used eventually)
 ---- Is controller/routing organisation appropriate?
 --- Update
 --- Delete

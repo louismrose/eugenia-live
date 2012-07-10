@@ -25,13 +25,11 @@ class Create extends Spine.Controller
   create: (event) =>
     event.preventDefault()
     
+    
     drawing = Drawing.find(@params.d_id)
     palette = Palette.find(drawing.palette_id) 
     
-    form = {}
-    for key in $(event.target).serializeArray()
-      form[key.name] = key.value
-
+    form = @extractFormData($(event.target)) 
     palette.nodeShapes().create(name: form.name).save()
     
     @back()
@@ -43,6 +41,11 @@ class Create extends Spine.Controller
   back: =>
     @navigate('/drawings/' + @params.d_id)
 
+  extractFormData: (form) =>
+    result = {}
+    for key in form.serializeArray()
+      result[key.name] = key.value
+    result
   
 class Palettes extends Spine.Stack
   controllers:

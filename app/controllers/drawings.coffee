@@ -1,4 +1,5 @@
 # Spine = require('spine')
+PaletteSpecification = require('models/palette_specification')
 Palette = require ('models/palette')
 Drawing = require('models/drawing')
 Node = require('models/node')
@@ -20,7 +21,7 @@ class Index extends Spine.Controller
   render: ->
     context =
       drawings: Drawing.all()
-      palettes: Palette.all()
+      palette_specs: PaletteSpecification.all()
     @html require('views/drawings/index')(context)
   
   deactivate: ->
@@ -29,8 +30,12 @@ class Index extends Spine.Controller
     
   create: (event) =>
     event.preventDefault()
-    item = Drawing.fromForm(event.target)
-    if item.save()
+    
+    form = @extractFormData($(event.target)) 
+    palette = PaletteSpecification.find(form.palette_specification_id).instantiate()
+    item = palette.drawings().create(name: form.name)
+    
+    if item and item.save()
       @navigate '/drawings', item.id
     else
       @$('input#name').focus()
@@ -41,6 +46,11 @@ class Index extends Spine.Controller
     Drawing.destroy(id)
     @render()
 
+  extractFormData: (form) =>
+    result = {}
+    for key in form.serializeArray()
+      result[key.name] = key.value
+    result
 
 class Show extends Spine.Controller
   constructor: ->
@@ -71,6 +81,7 @@ class Drawings extends Spine.Stack
   constructor: ->
     super
 
+    PaletteSpecification.fetch()
     Palette.fetch()
     Drawing.fetch()
     Node.fetch()
