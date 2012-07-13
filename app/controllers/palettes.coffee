@@ -61,7 +61,7 @@ class Edit extends Spine.Controller
   change: (params) ->    
     @params = params
     palette = Drawing.find(@params.d_id).palette()
-    @shape = palette.nodeShapes().findByAttribute("name", @params.id)
+    @shape = palette.nodeShapes().find(@params.id)
     @render()
 
   render: ->

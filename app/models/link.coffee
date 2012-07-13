@@ -25,7 +25,7 @@ class Link extends Spine.Model
     @save()
     
   toPath: =>
-    s = LinkShape.findByAttribute("name", @shape)
+    s = LinkShape.find(@shape)
     path = s.draw(@toSegments())
     path
 

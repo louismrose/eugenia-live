@@ -23,7 +23,7 @@ class Node extends Spine.Model
     @position = destination
 
   toPath: =>
-    s = NodeShape.findByAttribute("name", @shape)
+    s = NodeShape.find(@shape)
     path = s.draw(@position)
     path
 
