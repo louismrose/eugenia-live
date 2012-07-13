@@ -7,7 +7,8 @@ Features
 -- Problems model and marker rendering
 -- NodeShape listener that adds markers when a used nodeshape is deleted
 
-- Customisable palettes
+- Customisable
+ palettes
 -- Delete for palette items
 -- Is controller/routing organisation appropriate?
 -- Create / update palette items

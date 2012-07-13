@@ -17,18 +17,17 @@
     <% end %>
     <li class="span4">
       <div class="well">
-        <h3>Create a new drawing</h3>
         <form>
+		  <legend>Create a new drawing</legend>
           <label>Name:</label>
-          <input id="name" name="name" type="text" class="span3" required>
-          <label class="select">Palette:
-          <select id="palette" name="palette_specification_id">
+          <input id="name" name="name" type="text" class="span12" required>
+          <label class="select">Palette:</label>
+          <select id="palette" name="palette_specification_id" class="span12">
             <% for palette_spec in @palette_specs: %>
               <option value="<%=palette_spec.id%>"><%=palette_spec.name%></option>
             <% end %>
           </select>
-          </label>
-          <button id="new" class="btn btn-primary">Go</button>
+          <button id="new" class="btn btn-primary" type="submit" style="margin-top: 1.5em;">Go</button>
         </form>
       </div>
     </li>
