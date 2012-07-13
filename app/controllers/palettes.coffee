@@ -1,5 +1,6 @@
 Drawing = require('models/drawing')
 NodeShape = require('models/node_shape')
+LinkShape = require('models/link_shape')
 Palette = require('models/palette')
 
 class Define extends Spine.Controller
@@ -13,6 +14,7 @@ class Define extends Spine.Controller
   
   change: (params) ->
     @params = params
+    @type = @params.type[0..-2]
     @palette = Drawing.find(@params.d_id).palette()
     @render()
     
@@ -20,7 +22,14 @@ class Define extends Spine.Controller
     context =
       item: @item()
       verb: @constructor.name
+      type: @type
     @html require('views/palettes/define')(context)
+  
+  item: =>
+    if @type is 'node'
+      @_item ?= @node()
+    else
+      @_item ?= @link()
   
   deactivate: ->
     super
@@ -54,14 +63,18 @@ class Define extends Spine.Controller
 
 
 class Create extends Define
-  item: =>
-    @_item ?= new NodeShape(name: "", elements: [{}], palette_id: @palette.id)
+  node: =>
+    new NodeShape(name: "", elements: [{}], palette_id: @palette.id)
 
+  link: =>
+    new LinkShape(name: "", palette_id: @palette.id)
 
-class Update extends Define  
-  item: =>
-    @_item ?= @palette.nodeShapes().find(@params.id)
+class Update extends Define      
+  node: =>
+    @palette.nodeShapes().find(@params.id)
 
+  link: =>
+    @palette.linkShapes().find(@params.id)
 
 class Palettes extends Spine.Stack
   controllers:
