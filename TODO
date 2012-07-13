@@ -9,11 +9,9 @@ Features
 
 - Customisable
  palettes
--- Delete for palette items
 -- Is controller/routing organisation appropriate?
 -- Create / update palette items
 --- Better error reporting for JSON parsing
---- Do not show palette_id and id when editing. Do not allow these values to be set when updating / editing
 --- Add EuGENia editor as well as JSON editor
 -- Preview palette items (e.g. little icons next to names or a thumbnail shown when hovering)
 

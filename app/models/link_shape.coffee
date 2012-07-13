@@ -7,6 +7,7 @@ class LinkShape extends Spine.Model
   
   constructor: (attributes) ->
     super
+    @bind("destroy", @destroyLinks)
   
   displayName: =>
     @name.charAt(0).toUpperCase() + @name.slice(1)
@@ -16,5 +17,8 @@ class LinkShape extends Spine.Model
     path.strokeColor = @color
     path.dashArray = [4, 4] if @style is "dashed"
     path
+  
+  destroyLinks: ->
+    link.destroy() for link in require('models/link').findAllByAttribute("shape", @id)
     
 module.exports = LinkShape

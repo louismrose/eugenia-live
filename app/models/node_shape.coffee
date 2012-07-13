@@ -7,6 +7,7 @@ class NodeShape extends Spine.Model
   
   constructor: (attributes) ->
     super
+    @bind("destroy", @destroyNodes)
   
   displayName: =>
     @name.charAt(0).toUpperCase() + @name.slice(1)
@@ -31,5 +32,8 @@ class NodeShape extends Spine.Model
         new paper.Path.Circle(0, 0, size.width)
       when "rectangle"
         new paper.Path.Rectangle(0, 0, size.width, size.height)
+
+  destroyNodes: ->
+    node.destroy() for node in require('models/node').findAllByAttribute("shape", @id)
     
 module.exports = NodeShape

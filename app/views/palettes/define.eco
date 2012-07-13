@@ -6,7 +6,7 @@
         <label class="control-label" for="definition">Definition</label>
         <div class="controls">
           <textarea class="input-xlarge" id="definition" name="definition" rows="10" required>
-<%=JSON.stringify(@item, null, 2)%>
+<%=@json%>
   </textarea>
           <p class="help-block">
 			Here's an example definition:
@@ -29,7 +29,9 @@
         </div>
       </div>
       <div class="form-actions">
-        <button type="submit" class="btn btn-primary"><%=@verb%> <%=@type%></button> <button id="cancel" class="btn">Cancel</button>
+        <button type="submit" class="btn btn-primary"><%=@verb%> <%=@type%></button>
+		<button id="cancel" class="btn">Cancel</button>
+		<button id="delete" class="btn btn-danger" style="float:right;">Delete <%=@type%></button>
       </div>
     </fieldset>
   </form>

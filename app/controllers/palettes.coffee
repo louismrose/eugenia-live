@@ -6,6 +6,7 @@ Palette = require('models/palette')
 class Define extends Spine.Controller
   events:
     'submit form': 'define'
+    'click #delete': 'delete'
     'click #cancel': 'cancel'
     
   constructor: ->
@@ -19,11 +20,14 @@ class Define extends Spine.Controller
     @render()
     
   render: ->
-    context =
-      item: @item()
+    context = 
+      json: @json()
       verb: @constructor.name
       type: @type
     @html require('views/palettes/define')(context)
+  
+  json: =>
+    JSON.stringify(@removeIds(@item().toJSON()), null, 2)
   
   item: =>
     if @type is 'node'
@@ -34,6 +38,7 @@ class Define extends Spine.Controller
   deactivate: ->
     super
     @html ''
+    @_item = null
     
   define: (event) =>
     event.preventDefault()
@@ -41,11 +46,16 @@ class Define extends Spine.Controller
     form = @extractFormData($(event.target)) 
     
     try
-      nsData = JSON.parse(form.definition)
+      nsData = @removeIds(JSON.parse(form.definition))      
       @item().updateAttributes(nsData).save()
       @back()
     catch error
       @log(error.message)
+  
+  delete: (event) =>
+    event.preventDefault()
+    @item().destroy()
+    @back()
   
   cancel: (event) =>
     event.preventDefault()
@@ -54,6 +64,11 @@ class Define extends Spine.Controller
   back: =>
     @deactivate()
     @navigate('/drawings/' + @params.d_id)
+
+  removeIds: (o) =>
+    delete o.id
+    delete o.palette_id
+    o
 
   extractFormData: (form) =>
     result = {}
