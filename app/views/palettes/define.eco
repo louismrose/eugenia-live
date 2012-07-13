@@ -31,7 +31,9 @@
       <div class="form-actions">
         <button type="submit" class="btn btn-primary"><%=@verb%> <%=@type%></button>
 		<button id="cancel" class="btn">Cancel</button>
+		<% if @verb is 'Update': %>
 		<button id="delete" class="btn btn-danger" style="float:right;">Delete <%=@type%></button>
+		<% end %>
       </div>
     </fieldset>
   </form>
