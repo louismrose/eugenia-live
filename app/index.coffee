@@ -22,7 +22,6 @@ class App extends Spine.Stack
       if (params.id is 'new')
         @palettes.create.active(params)
       else
-        @log("switching to edit")
         @palettes.edit.active(params)
     
     # Redirect any other route  

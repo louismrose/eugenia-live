@@ -1,12 +1,12 @@
 <div class="row-fluid">
   <form class="form-horizontal">
-    <legend>Update node</legend>
+    <legend><%=@verb%> node</legend>
     <fieldset>
       <div class="control-group">
         <label class="control-label" for="definition">Definition</label>
         <div class="controls">
           <textarea class="input-xlarge" id="definition" name="definition" rows="10" required>
-<%=JSON.stringify(this, null, 2)%>
+<%=JSON.stringify(@item, null, 2)%>
   </textarea>
           <p class="help-block">
 			Here's an example definition:
@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class="form-actions">
-        <button type="submit" class="btn btn-primary">Update node</button> <button id="cancel" class="btn">Cancel</button>
+        <button type="submit" class="btn btn-primary"><%=@verb%> node</button> <button id="cancel" class="btn">Cancel</button>
       </div>
     </fieldset>
   </form>
