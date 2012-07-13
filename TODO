@@ -7,12 +7,11 @@ Features
 -- Problems model and marker rendering
 -- NodeShape listener that adds markers when a used nodeshape is deleted
 
-- Customisable
- palettes
+- Customisable palettes
 -- Is controller/routing organisation appropriate?
 -- Create / update palette items
---- Better error reporting for JSON parsing
---- Add EuGENia editor as well as JSON editor
+--- Don't create / update invalid palette items
+--- Better error reporting for parsing of JSON and EuGENia
 -- Preview palette items (e.g. little icons next to names or a thumbnail shown when hovering)
 
 - Multiple drawings
