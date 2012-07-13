@@ -1,34 +1,29 @@
 <div class="row-fluid">
-  <form class="form-horizontal">
-    <legend><%=@verb%> <%=@type%></legend>
+  <form>
+    <legend><%=@verb%> <%=@type%>
+      <ul class="nav nav-pills" style="display: inline; float: right;">
+        <li class="<%= 'active' if @notation is 'json' %>">
+          <a data-notation="json" href="#">JSON</a>
+        </li>
+        <li class="<%= 'active' if @notation is 'eugenia' %>">
+          <a data-notation="eugenia" href="#">EuGENia</a>
+        </li>
+      </ul>
+    </legend>
     <fieldset>
-      <div class="control-group">
-        <label class="control-label" for="definition">Definition</label>
-        <div class="controls">
-          <textarea class="input-xlarge" id="definition" name="definition" rows="12" required>
-<%=@json%>
-  </textarea>
+      <div class="row-fluid">
+        <div class="span6" style="padding-left: 20px">
+          <label for="definition">Definition</label>
+          <textarea class="input-xlarge" style="width: 90%;" id="definition" name="definition" rows="12" required><%=@serialisation%></textarea>
+        </div>
+        <div class="span6" style="padding-right: 20px">
           <p class="help-block">
-			Here's an example definition:
-			<pre><% if @type is 'node': %>{
-  "name": "InitialState",
-  "elements": [
-    {
-      "figure": "circle",
-      "size": {"width": 10, "height": 10},
-      "fillColor": "white",
-      "borderColor": "black"
-    }
-  ]
-}<% else: %>{
-  "name": "Link",
-  "color": "gray",
-  "style": "dashed"
-}<% end %></pre>
+			For example:
+			<pre><%=@example%></pre>
           </p>
         </div>
       </div>
-      <div class="form-actions">
+      <div class="form-actions" style="padding-left: 20px;">
         <button type="submit" class="btn btn-primary"><%=@verb%> <%=@type%></button>
 		<button id="cancel" class="btn">Cancel</button>
 		<% if @verb is 'Update': %>
