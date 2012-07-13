@@ -3,18 +3,31 @@
     <legend>Create new <%=@type[0..(@type.length-2)]%></legend>
     <fieldset>
       <div class="control-group">
-        <label class="control-label" for="name">Name</label>
-        <div class="controls">
-          <input type="text" class="input-xlarge" id="name" name="name" required>
-        </div>
-      </div>
-      <div class="control-group">
         <label class="control-label" for="definition">Definition</label>
         <div class="controls">
           <textarea class="input-xlarge" id="definition" name="definition" rows="10" required>
+{
+  "name": ""
+  "elements" : [
+    {
+	
+    }
+  ]
+}
   </textarea>
           <p class="help-block">
-            TODO: add some help text.
+			Here's an example definition:
+			<pre>{
+  "name": "InitialState",
+  "elements": [
+    {
+      "figure": "circle",
+      "size": {"width": 10, "height": 10},
+      "fillColor": "white",
+      "borderColor": "black"
+    }
+  ]
+}</pre>
           </p>
         </div>
       </div>

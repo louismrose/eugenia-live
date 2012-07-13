@@ -15,7 +15,8 @@ xxx Read
 xxxx When a drawing is created, it should get its own palette that can be edited.
 ---- Should node and link models refer to node/linkshapes by ID rather than by name? (Surely by-name will cause issues when two palettes share an element with the same name?)
 ---- Support creating links as well as nodes
----- Simple JSON parsing of definition value (keep in mind that different editors will be used eventually)
+xxxx Simple JSON parsing of definition value (keep in mind that different editors will be used eventually)
+---- Better error reporting for JSON parsing
 ---- Is controller/routing organisation appropriate?
 --- Update
 --- Delete

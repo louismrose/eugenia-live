@@ -14,7 +14,6 @@ class Create extends Spine.Controller
     @params = params
     @log(params)
     @render()
-  
   render: ->
     @html require('views/palettes/new')(@params)
   
@@ -25,20 +24,22 @@ class Create extends Spine.Controller
   create: (event) =>
     event.preventDefault()
     
-    
-    drawing = Drawing.find(@params.d_id)
-    palette = Palette.find(drawing.palette_id) 
-    
     form = @extractFormData($(event.target)) 
-    palette.nodeShapes().create(name: form.name).save()
     
-    @back()
+    try
+      nsData = JSON.parse(form.definition)
+      palette = Drawing.find(@params.d_id).palette()
+      palette.nodeShapes().create(nsData).save()
+      @back()
+    catch error
+      @log(error.message)
   
   cancel: (event) =>
     event.preventDefault()
     @back()
     
   back: =>
+    @deactivate()
     @navigate('/drawings/' + @params.d_id)
 
   extractFormData: (form) =>
