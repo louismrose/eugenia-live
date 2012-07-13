@@ -16,10 +16,14 @@ class App extends Spine.Stack
 
     Spine.Route.add '/drawings', (params) =>
       @drawings.index.active(params)
-      
+    
     Spine.Route.add '/drawings/:d_id/:type/:id', (params) =>
       @drawings.show.deactivate()
-      @palettes.create.active(params)
+      if (params.id is 'new')
+        @palettes.create.active(params)
+      else
+        @log("switching to edit")
+        @palettes.edit.active(params)
     
     # Redirect any other route  
     Spine.Route.add '*glob', (params) =>

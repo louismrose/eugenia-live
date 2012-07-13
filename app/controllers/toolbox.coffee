@@ -24,11 +24,12 @@ class Toolbox extends Spine.Controller
       @html require('views/drawings/toolbox')(@item)
   
   showEditor: (event) =>
+    event.preventDefault()
     link = $(event.currentTarget)
     toolName = link.data('toolName')
     
     unless toolName is 'select'
-      @navigate("/palettes/#{@item.palette_id}/#{toolName}s/#{link.data('toolShape')}")
+      @navigate("/drawings/#{@item.id}/#{toolName}s/#{link.data('toolShape')}")
   
   reactToToolSelection: (event) =>
     link = $(event.currentTarget)

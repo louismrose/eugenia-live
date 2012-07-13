@@ -1,0 +1,32 @@
+<div class="row-fluid">
+  <form class="form-horizontal">
+    <legend>Update node</legend>
+    <fieldset>
+      <div class="control-group">
+        <label class="control-label" for="definition">Definition</label>
+        <div class="controls">
+          <textarea class="input-xlarge" id="definition" name="definition" rows="10" required>
+<%=JSON.stringify(this, null, 2)%>
+  </textarea>
+          <p class="help-block">
+			Here's an example definition:
+			<pre>{
+  "name": "InitialState",
+  "elements": [
+    {
+      "figure": "circle",
+      "size": {"width": 10, "height": 10},
+      "fillColor": "white",
+      "borderColor": "black"
+    }
+  ]
+}</pre>
+          </p>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Update node</button> <button id="cancel" class="btn">Cancel</button>
+      </div>
+    </fieldset>
+  </form>
+</div>

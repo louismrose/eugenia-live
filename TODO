@@ -11,13 +11,13 @@ xx Simpler interface for toolbox
 -- CRUD for palette items
 xxx Read
 --- Create
----- Tidy up create method
 xxxx When a drawing is created, it should get its own palette that can be edited.
 ---- Should node and link models refer to node/linkshapes by ID rather than by name? (Surely by-name will cause issues when two palettes share an element with the same name?)
 ---- Support creating links as well as nodes
 xxxx Simple JSON parsing of definition value (keep in mind that different editors will be used eventually)
 ---- Better error reporting for JSON parsing
 ---- Is controller/routing organisation appropriate?
+---- Do not show palette_id and id when editing. Do not allow these values to be set when updating / editing
 --- Update
 --- Delete
 -- Palette editor used for adding and editing palette items
