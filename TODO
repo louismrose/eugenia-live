@@ -1,37 +1,10 @@
 Features
 - Labels
--- Every node should be able to have a label
---- label.placement (internal, external)
---- label.content = name of attribute
---- {
-  "name": "state",
-  "properties": ["name","weight"],    // these in props view
-  "label" :                           // this one on diagram
-    {
-      "for": "name"
-	  "display": "internal",
-    }
-  "elements": [
-    {
-      "figure": "rounded",
-      "size": {
-        "width": 100,
-        "height": 50
-      },
-      "fillColor": "white",
-      "borderColor": "black"
-    },
-    {
-      "figure": "rectangle",
-      "size": {
-        "width": 50,
-        "height": 50
-      },
-      "fillColor": "gray",
-      "borderColor": "black"
-    }
-  ]
-}
+-- NodeShapes can have a label whose content can be derived from properties
+-- NodeShapes' labels can be limited in size (number of chars)
+-- NodeShapes labels are defined in palette specifications
+-- EuGENia parsing of properties and labels
+-- Links can have properties and labels
 
 - Customisable palettes
 -- Is controller/routing organisation appropriate?
