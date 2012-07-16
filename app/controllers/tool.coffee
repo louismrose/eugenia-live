@@ -13,7 +13,7 @@ class Tool extends paper.Tool
   onKeyDown: (event) ->
     if (event.key is 'delete')
       selection = paper.project.selectedItems[0]
-      selection.model.destroy() if selection
+      @rootFor(selection).model.destroy() if selection
 
   isNode: (item) ->
     item and (item.model instanceof Node)
@@ -24,19 +24,23 @@ class Tool extends paper.Tool
 
   clearSelection: ->
     paper.project.activeLayer.selected = false
+    @drawing.clearSelection()
+    @drawing.save()
   
   select: (item) ->
-    if item.parent instanceof paper.Layer
-      item.selected = true
-    else
-      item.parent.selected = true
+    root = @rootFor(item)
+    root.selected = true
+    @drawing.select(root.model)
+    @drawing.save()
   
   selection: ->
     item = paper.project.selectedItems[0]
-    if item
-      if item.parent instanceof paper.Layer
-        item
-      else
-        item.parent
+    @rootFor(item) if item
+  
+  rootFor: (item) ->
+    if item.parent instanceof paper.Layer
+      item
+    else
+      item.parent
     
 module.exports = Tool

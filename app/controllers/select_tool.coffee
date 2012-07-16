@@ -7,7 +7,7 @@ class SelectTool extends Tool
   onMouseDown: (event) ->
     hitResult = paper.project.hitTest(event.point)
     @clearSelection()
-    if hitResult  
+    if hitResult
       @select(hitResult.item)
   
   onMouseDrag: (event) ->

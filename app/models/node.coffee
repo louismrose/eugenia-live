@@ -9,10 +9,11 @@ class Node extends Spine.Model
     
   constructor: (attributes) ->
     super
+    @propertyValues or= {}
     @k = v for k,v of attributes
     @bind("destroy", @destroyLinks)
   
-  addPropertyValue: (property, value) ->
+  setPropertyValue: (property, value) ->
     @propertyValues[property] = value
   
   getPropertyValue: (property) ->

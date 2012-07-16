@@ -1,7 +1,7 @@
 Spine = require('spine')
 
 class Drawing extends Spine.Model
-  @configure 'Drawing', 'name'
+  @configure 'Drawing', 'name', 'selection'
   @hasOne 'palette', 'models/palette'
   @hasMany 'nodes', 'models/node'
   @hasMany 'links', 'models/link'
@@ -10,6 +10,13 @@ class Drawing extends Spine.Model
   constructor: ->
     super
     @bind("destroy", @destroyChildren)
+  
+  select: (element) ->
+    @selection or= []
+    @selection.push(element)
+    
+  clearSelection: ->
+    @selection = []
   
   validate: ->
     "Name is required" unless @name

@@ -14,6 +14,9 @@ class Link extends Spine.Model
     @k = v for k,v of attributes
     @updateSegments(attributes.segments) if attributes
   
+  select: ->
+    @drawing().select(@)
+  
   updateSegments: (segments) =>
     @segments = new SimplifiesSegments().for(segments)
   

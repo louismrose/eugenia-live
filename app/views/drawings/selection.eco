@@ -1,4 +1,4 @@
-<!-- <h6>Selection</h6> -->
+<h6>Selection</h6>
 <!-- <p>
   <select>
     <option value="initial">Initial</option>
@@ -7,30 +7,21 @@
   </select>
   <span id="restore" class="label label-important">Restore to the palette?</span>
 </p> -->
-
-<table class="table table-bordered table-striped">
-  <thead>
-    <tr>
-      <th>Property</th>
-      <th>Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Name</td>
-      <td><a href="#">Foo</a></td>
-    </tr>
-    <tr>
-      <form class="form-inline">
-        <td style="vertical-align:middle">Weight</td>
-        <td><input type="text" value="Bar" style="margin-bottom: 0">
-        <button type="submit" class="btn btn-primary">Done</button>
-        </td>
-      </form>
-    </tr>
-    <tr>
-      <td>Other</td>
-      <td><a href="#">Baz</a></td>
-    </tr>
-  </tbody>
-</table>
+<% unless $.isEmptyObject(@propertyValues): %>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for property,value of @propertyValues: %>
+      <tr>
+        <td style="vertical-align:middle"><%=property%></td>
+        <td><input type="text" data-property="<%=property%>" value="<%=value%>" style="margin-bottom: 0"></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
