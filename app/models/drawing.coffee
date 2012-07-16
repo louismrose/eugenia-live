@@ -9,10 +9,10 @@ class Drawing extends Spine.Model
   
   constructor: ->
     super
+    @selection or= []
     @bind("destroy", @destroyChildren)
   
   select: (element) ->
-    @selection or= []
     @selection.push(element)
     
   clearSelection: ->

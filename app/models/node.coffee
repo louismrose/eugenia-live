@@ -9,7 +9,7 @@ class Node extends Spine.Model
     
   constructor: (attributes) ->
     super
-    @propertyValues or= {}
+    @propertyValues or= NodeShape.find(@shape).defaultPropertyValues()
     @k = v for k,v of attributes
     @bind("destroy", @destroyLinks)
   

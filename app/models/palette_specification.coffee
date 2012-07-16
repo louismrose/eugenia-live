@@ -12,6 +12,7 @@ class StateMachinePaletteSpecification
       "nodeShapes": [
         {
           "name": "state",
+          "properties": ["name", "recurrent"],
           "elements": [
             {
               "figure": "rounded",
@@ -23,6 +24,7 @@ class StateMachinePaletteSpecification
         },
         {
           "name": "initial",
+          "properties": ["name"],
           "elements": [
             {
               "figure": "circle",
@@ -34,6 +36,7 @@ class StateMachinePaletteSpecification
         },
         {
           "name": "final",
+          "properties": ["name"],
           "elements": [
             {
               "figure": "circle",

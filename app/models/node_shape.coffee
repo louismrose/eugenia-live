@@ -42,7 +42,7 @@ class Shapes
 
 
 class NodeShape extends Spine.Model
-  @configure "NodeShape", "name", "elements"
+  @configure "NodeShape", "name", "properties", "elements"
   @belongsTo 'palette', 'models/palette'
   @extend Spine.Model.Local
   
@@ -51,6 +51,11 @@ class NodeShape extends Spine.Model
     @shapes = new Shapes(@elements)
     @label = new Label("id")
     @bind("destroy", @destroyNodes)
+  
+  defaultPropertyValues: =>
+    defaults = {}
+    defaults[property] = "" for property in @properties
+    defaults
   
   displayName: =>
     @name.charAt(0).toUpperCase() + @name.slice(1)
