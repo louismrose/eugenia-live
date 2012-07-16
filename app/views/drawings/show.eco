@@ -6,16 +6,8 @@
     <div id="canvas" style="height:400px">
       <canvas id="drawing" width="1000" height="400" style="width: 100% height:400px"></canvas>
     </div>
-    <div id="selection" class="well">
-      <h6>Selection</h6>
-      <p>
-        <select>
-          <option value="initial">Initial</option>
-          <option value="state">State</option>
-          <option value="final">Final</option>
-        </select>
-        <span id="restore" class="label label-important">Restore to the palette?</span>
-      </p>
+
+    <div id="selection">
     </div>
   </div>
 </div>

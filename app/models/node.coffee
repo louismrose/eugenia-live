@@ -3,7 +3,7 @@ Link = require('models/link')
 NodeShape = require('models/node_shape')
 
 class Node extends Spine.Model
-  @configure "Node", "shape", "position"
+  @configure "Node", "shape", "position", "propertyValues"
   @belongsTo 'drawing', 'models/drawing'
   @extend Spine.Model.Local
     
@@ -11,6 +11,12 @@ class Node extends Spine.Model
     super
     @k = v for k,v of attributes
     @bind("destroy", @destroyLinks)
+  
+  addPropertyValue: (property, value) ->
+    @propertyValues[property] = value
+  
+  getPropertyValue: (property) ->
+    @propertyValues[property]
   
   destroyLinks: =>
     link.destroy() for link in @links()
@@ -24,7 +30,7 @@ class Node extends Spine.Model
 
   toPath: =>
     s = NodeShape.find(@shape)
-    path = s.draw(@position)
+    path = s.draw(@)
     path
 
 

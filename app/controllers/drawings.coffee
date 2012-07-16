@@ -9,6 +9,7 @@ LinkShape = require('models/link_shape')
 
 CanvasRenderer = require('views/drawings/canvas_renderer')
 Toolbox = require('controllers/toolbox')
+Selection = require('controllers/selection')
 
 
 class Index extends Spine.Controller
@@ -71,6 +72,7 @@ class Show extends Spine.Controller
     if @item
       new CanvasRenderer(drawing: @item, canvas: @$('#drawing')[0])
       @toolbox = new Toolbox(item: @item, el: @$('#toolbox'))  
+      @selection = new Selection(item: @item, el: @$('#selection'))
 
   deactivate: ->
     super

@@ -1,11 +1,37 @@
 Features
-- Conformance checking
--- Implement the selection view properly
--- Update selection view when the selection in the canvas changes
--- Combo box that can change an element's type
--- Label that can restore deleted shapes to the palette
--- Problems model and marker rendering
--- NodeShape listener that adds markers when a used nodeshape is deleted
+- Labels
+-- Every node should be able to have a label
+--- label.placement (internal, external)
+--- label.content = name of attribute
+--- {
+  "name": "state",
+  "properties": ["name","weight"],    // these in props view
+  "label" :                           // this one on diagram
+    {
+      "for": "name"
+	  "display": "internal",
+    }
+  "elements": [
+    {
+      "figure": "rounded",
+      "size": {
+        "width": 100,
+        "height": 50
+      },
+      "fillColor": "white",
+      "borderColor": "black"
+    },
+    {
+      "figure": "rectangle",
+      "size": {
+        "width": 50,
+        "height": 50
+      },
+      "fillColor": "gray",
+      "borderColor": "black"
+    }
+  ]
+}
 
 - Customisable palettes
 -- Is controller/routing organisation appropriate?
@@ -14,16 +40,26 @@ Features
 --- Better error reporting for parsing of JSON and EuGENia
 -- Preview palette items (e.g. little icons next to names or a thumbnail shown when hovering)
 
-- Multiple drawings
--- Add thumbnails to index view:
-	var canvas = document.getElementById("mycanvas");
-	var img    = canvas.toDataURL("image/png");
 - Links with arrowheads
 -- Trim links at the intersection with nodes
 -- Figure out the maths for determining which way the last curve of a path is facing
 
+- Conformance checking
+-- Implement the selection view properly
+-- Update selection view when the selection in the canvas changes
+-- Combo box that can change an element's type
+-- Label that can restore deleted shapes to the palette
+-- Problems model and marker rendering
+-- NodeShape listener that adds markers when a used nodeshape is deleted
+
+
+- Multiple drawings
+-- Add thumbnails to index view:
+	var canvas = document.getElementById("mycanvas");
+	var img    = canvas.toDataURL("image/png");
+
+
 - Tools
--- Label tool
 -- Port tool
 -- Compartment tool
 
