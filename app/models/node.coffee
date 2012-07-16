@@ -9,9 +9,13 @@ class Node extends Spine.Model
     
   constructor: (attributes) ->
     super
-    @propertyValues or= NodeShape.find(@shape).defaultPropertyValues()
     @k = v for k,v of attributes
     @bind("destroy", @destroyLinks)
+    @initialisePropertyValues()
+
+  initialisePropertyValues: ->
+    @propertyValues or= @nodeShape().defaultPropertyValues() if @nodeShape()
+    @propertyValues or= {}
   
   setPropertyValue: (property, value) ->
     @propertyValues[property] = value
@@ -30,9 +34,11 @@ class Node extends Spine.Model
     @position = destination
 
   toPath: =>
-    s = NodeShape.find(@shape)
-    path = s.draw(@)
+    path = @nodeShape().draw(@)
     path
+    
+  nodeShape: =>
+    NodeShape.find(@shape) if @shape
 
 
 module.exports = Node
