@@ -1,11 +1,9 @@
-Bugs
-- Ensure select tool is activated when show drawing laods
+Issues
 - Don't update properties view when link tool is active?
+- Add tests for reconstructing linkshapes and then refactor EugeniaNotation
 
 Features
 - Labels
--- NodeShapes can have a label whose content can be derived from more than one property
--- EuGENia parsing of properties and labels
 -- Links can have properties and labels
 -- Fix duplication of rootFor in DraftLink and Tool
 

@@ -5,7 +5,7 @@ class ElementRenderer
     @item.bind("destroy", @remove)
 
   render: =>
-    console.log("rendering " + @item)
+    # console.log("rendering " + @item)
     old_el = @el
     
     @draw()

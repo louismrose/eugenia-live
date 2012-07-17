@@ -17,7 +17,7 @@ class StateMachinePaletteSpecification
             "for" : "name",
             "color" : "green",
             "placement" : "internal",
-            "size" : 15
+            "length" : 15
           },
           "elements": [
             {

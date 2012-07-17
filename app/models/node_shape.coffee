@@ -3,6 +3,13 @@ Spine = require('spine')
 class Label
   constructor: (definition) ->
     @definition = definition
+    @definition.for = [@definition.for] unless @definition.for instanceof Array
+    @definition.pattern = @default_pattern() unless @definition.pattern
+  
+  default_pattern: ->
+    numbers = [0..@definition.for.length-1]
+    formattedNumbers = ("{#{n}}" for n in numbers)
+    formattedNumbers.join(",")
   
   draw: (node, shape) ->
     result = new paper.Group(shape)
@@ -27,12 +34,22 @@ class Label
     text
   
   contentFor: (node) ->
-    @trimTextToSize(node.getPropertyValue(@definition.for))
+    content = @definition.pattern    
+    for number in [0..@definition.for.length-1]
+      pattern = ///
+        \{
+        #{number}
+        \}
+      ///g
+      value = node.getPropertyValue(@definition.for[number])
+      content = content.replace(pattern, value)
+    
+    @trimText(content)
   
-  trimTextToSize: (text) ->
+  trimText: (text) ->
     return "" unless text
-    return text unless text.length > @definition.size
-    return text.substring(0, @definition.size-3).trim() + "..."
+    return text unless text.length > @definition.length
+    return text.substring(0, @definition.length-3).trim() + "..."
       
 
 
