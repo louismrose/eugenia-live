@@ -48,12 +48,20 @@ class LinkTool extends Tool
 
     finalise: (parameters) ->
       @path.simplify(100)
-      parameters.sourceId = paper.project.hitTest(@path.firstSegment.point).item.model.id
-      parameters.targetId = paper.project.hitTest(@path.lastSegment.point).item.model.id
+      i = paper.project.hitTest(@path.firstSegment.point).item
+      parameters.sourceId = @rootFor(paper.project.hitTest(@path.firstSegment.point).item).model.id
+      parameters.targetId = @rootFor(paper.project.hitTest(@path.lastSegment.point).item).model.id
       parameters.segments = @path.segments
       parameters
     
     remove: ->
       @path.remove()
+    
+    # FIXME: duplication with tool
+    rootFor: (item) ->
+      if item.parent instanceof paper.Layer
+        item
+      else
+        item.parent
       
 module.exports = LinkTool

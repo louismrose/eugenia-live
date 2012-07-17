@@ -16,7 +16,7 @@ class Tool extends paper.Tool
       @rootFor(selection).model.destroy() if selection
 
   isNode: (item) ->
-    item and (item.model instanceof Node)
+    item and (@rootFor(item).model instanceof Node)
 
   changeSelectionTo: (item) ->
     @clearSelection()
