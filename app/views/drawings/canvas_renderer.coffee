@@ -10,8 +10,7 @@ class CanvasRenderer
     @bindToChangeEvents()
     @addAll(Node)
     @addAll(Link)
-    paper.view.draw()
-  
+      
   bindToChangeEvents: =>
     Node.bind("refresh", => @addAll(Node))
     Link.bind("refresh", => @addAll(Link))

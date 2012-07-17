@@ -5,7 +5,7 @@ class ElementRenderer
     @item.bind("destroy", @remove)
 
   render: =>
-    # console.log("rendering " + @item)
+    console.log("rendering " + @item)
     old_el = @el
     
     @draw()
@@ -16,6 +16,8 @@ class ElementRenderer
     if old_el
       @el.selected = old_el.selected
       old_el.remove()
+    
+    paper.view.draw()
       
   draw: =>
     throw "No draw method has been defined for: #{@item}"

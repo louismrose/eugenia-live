@@ -1,9 +1,9 @@
 Bugs
 - Ensure select tool is activated when show drawing laods
+- Don't update properties view when link tool is active?
 
 Features
 - Labels
--- Update labels when a property changes
 -- NodeShapes can have a label whose content can be derived from more than one property
 -- EuGENia parsing of properties and labels
 -- Links can have properties and labels
