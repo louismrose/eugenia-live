@@ -5,12 +5,12 @@ describe 'Toolbox', ->
 
   beforeEach -> @t = new Toolbox()
 
-  it 'switches to NodeTool when initialised', ->
-    expect(@t.currentTool).toBe(@t.tools.node)
+  it 'switches to SelectTool when initialised', ->
+    expect(@t.currentTool).toBe(@t.tools.select)
   
   it 'activates specified tool after switching', ->
-    @t.switchTo('select')
-    expect(@t.currentTool).toBe(@t.tools.select)
+    @t.switchTo('node')
+    expect(@t.currentTool).toBe(@t.tools.node)
 
   it 'errors when switching to an unknown tool', ->
     expect( => @t.switchTo('detonator')).toThrow("There is no tool named 'detonator'")
