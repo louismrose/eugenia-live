@@ -17,11 +17,10 @@ class Toolbox extends Spine.Controller
       node:   new NodeTool(drawing: @item)
       select: new SelectTool(drawing: @item)
       link:   new LinkTool(drawing: @item)
-    @switchTo("node")
+    @switchTo("select")
     
   render: =>
-    if @item
-      @html require('views/drawings/toolbox')(@item)
+    @html require('views/drawings/toolbox')(@item) if @item
   
   showEditor: (event) =>
     event.preventDefault()
