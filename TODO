@@ -1,10 +1,13 @@
+Bugs
+- Ensure select tool is activated when show drawing laods
+
 Features
 - Labels
--- NodeShapes can have a label whose content can be derived from properties
--- NodeShapes' labels can be limited in size (number of chars)
--- NodeShapes labels are defined in palette specifications
+-- Update labels when a property changes
+-- NodeShapes can have a label whose content can be derived from more than one property
 -- EuGENia parsing of properties and labels
 -- Links can have properties and labels
+-- Fix duplication of rootFor in DraftLink and Tool
 
 - Customisable palettes
 -- Is controller/routing organisation appropriate?

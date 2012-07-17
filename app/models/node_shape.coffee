@@ -1,21 +1,42 @@
 Spine = require('spine')
 
 class Label
-  constructor: (pattern) ->
-    @pattern = pattern
+  constructor: (definition) ->
+    @definition = definition
   
-  draw: (node) ->
-    text = new paper.PointText(node.position)
+  draw: (node, shape) ->
+    result = new paper.Group(shape)
+    
+    unless @definition.placement is "none"
+      position = @positionFor(shape)
+      result.addChild(@createText(node, position))
+    
+    result  
+  
+  positionFor: (shape) ->
+    if @definition.placement is "external"
+      shape.bounds.bottomCenter.add([0, 20]) # nudge outside shape
+    else
+      shape.position.add([0, 5]) # nudge down to middle of shape
+
+  createText: (node, position) ->
+    text = new paper.PointText(position)
     text.justification = 'center'
-    text.fillColor = 'red'
+    text.fillColor = @definition.color
     text.content = @contentFor(node)
     text
   
   contentFor: (node) ->
-    node[@pattern]
+    @trimTextToSize(node.getPropertyValue(@definition.for))
+  
+  trimTextToSize: (text) ->
+    return "" unless text
+    return text unless text.length > @definition.size
+    return text.substring(0, @definition.size-3).trim() + "..."
+      
 
 
-class Shapes
+class Elements
   constructor: (elements) ->
     @elements = elements
     
@@ -42,15 +63,22 @@ class Shapes
 
 
 class NodeShape extends Spine.Model
-  @configure "NodeShape", "name", "properties", "elements"
+  @configure "NodeShape", "name", "properties", "label", "elements"
   @belongsTo 'palette', 'models/palette'
   @extend Spine.Model.Local
   
   constructor: (attributes) ->
     super
-    @shapes = new Shapes(@elements)
-    @label = new Label("id")
+    @createDelegates()
+    @bind("update", @createDelegates)
     @bind("destroy", @destroyNodes)
+  
+  createDelegates: =>
+    @_elements = new Elements(@elements)
+    if @label
+      @_label = new Label(@label)
+    else
+      @_label = new Label(for: "id", color: "blue", placement: "internal")
   
   defaultPropertyValues: =>
     defaults = {}
@@ -61,8 +89,8 @@ class NodeShape extends Spine.Model
     @name.charAt(0).toUpperCase() + @name.slice(1)
   
   draw: (node) =>
-    new paper.Group(@shapes.draw(node), @label.draw(node))
-
+    @_label.draw(node, @_elements.draw(node))
+      
   destroyNodes: ->
     node.destroy() for node in require('models/node').findAllByAttribute("shape", @id)
     

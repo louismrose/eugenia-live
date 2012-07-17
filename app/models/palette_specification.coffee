@@ -13,6 +13,12 @@ class StateMachinePaletteSpecification
         {
           "name": "state",
           "properties": ["name", "recurrent"],
+          "label" : {
+            "for" : "name",
+            "color" : "green",
+            "placement" : "internal",
+            "size" : 15
+          },
           "elements": [
             {
               "figure": "rounded",
