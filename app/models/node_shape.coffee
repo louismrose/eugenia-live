@@ -3,8 +3,12 @@ Spine = require('spine')
 class Label
   constructor: (definition) ->
     @definition = definition
-    @definition.for = [@definition.for] unless @definition.for instanceof Array
-    @definition.pattern = @default_pattern() unless @definition.pattern
+    
+    if @definition
+      @definition.for = [@definition.for] unless @definition.for instanceof Array
+      @definition.pattern = @default_pattern() unless @definition.pattern
+    else
+      @definition = { placement: "none" }
   
   default_pattern: ->
     numbers = [0..@definition.for.length-1]
@@ -92,14 +96,11 @@ class NodeShape extends Spine.Model
   
   createDelegates: =>
     @_elements = new Elements(@elements)
-    if @label
-      @_label = new Label(@label)
-    else
-      @_label = new Label(for: "id", color: "blue", placement: "internal")
+    @_label = new Label(@label)
   
   defaultPropertyValues: =>
     defaults = {}
-    defaults[property] = "" for property in @properties
+    defaults[property] = "" for property in @properties if @properties
     defaults
   
   displayName: =>
