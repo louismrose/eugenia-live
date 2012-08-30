@@ -66,8 +66,10 @@ class Elements
     new paper.Group(children)
 
   createElement: (e, position) =>
+    e.x or= 0
+    e.y or= 0
     path = @createPath(e.figure, e.size)
-    path.position = position
+    path.position = new paper.Point(position).add(e.x, e.y)
     path.fillColor = e.fillColor
     path.strokeColor = e.borderColor
     path

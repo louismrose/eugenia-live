@@ -3,6 +3,19 @@
 .container-fluid {
   padding-top: 50px;
 }
-canvas {
+.well-tight {
+  padding: 8px 0;
+}
+#canvas {
   border: 1px solid #ccc;
+}
+#selection {
+  margin-top: 2em;
+  padding: 1em;
+}
+#selection h6 {
+  padding-bottom: 0.5em;
+}
+#selection #restore {
+  margin-left: 1em;
 }
