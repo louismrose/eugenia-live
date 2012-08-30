@@ -1,5 +1,4 @@
 # Deploy
-* Speak to Dimitris about where to host
 * Build & deploy script
 * Alpha label
 * Feedback link
@@ -63,4 +62,5 @@
 # Refactoring
 * Renderers are beginning to look anaemic -> separate presentation from domain model?
 * Update to latest versions of Hem and Spine
+* Update to latest version of Twitter bootstrap
 * Fix duplication of rootFor in DraftLink and Tool

@@ -1,6 +1,5 @@
 echo "Building static application with Hem"
-hem build
-git add public/application.{css,js}
-git commit -m "Building for deployment"
-echo "Pushing to Heroku"
-git push heroku
+node_modules/hem/bin/hem build
+echo "Copying static application to local copy of Epsilon website"
+cp -R public/* ~/Websites/MAMP/epsilon/eugenia-live
+echo "Now do a CVS commit with Eclipse"

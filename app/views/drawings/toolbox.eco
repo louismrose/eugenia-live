@@ -1,4 +1,4 @@
-<div class="well well-tight">
+<div id="toolbox" class="well">
 
   <ul class="nav nav-list">
     <li class="nav-header">Built-in</li>
@@ -16,4 +16,8 @@
     <% end %>
       <li><a href="#/drawings/<%=@id%>/links/new">New...</a></li>
   </ul>
+
+  <a id="palette-export" class="btn btn-primary" href="#/palettes/<%=@palette().id%>">
+    <i class="icon-download icon-white"></i> Export palette
+  </a>
 </div>
