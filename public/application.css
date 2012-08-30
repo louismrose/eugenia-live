@@ -3,8 +3,12 @@
 .container-fluid {
   padding-top: 50px;
 }
-.well-tight {
+#toolbox {
   padding: 8px 0;
+  text-align: center;
+}
+#toolbox ul {
+  text-align: left;
 }
 #canvas {
   border: 1px solid #ccc;
@@ -18,4 +22,7 @@
 }
 #selection #restore {
   margin-left: 1em;
+}
+#palette-export {
+  margin-top: 2em;
 }
