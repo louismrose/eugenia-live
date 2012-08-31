@@ -26,3 +26,19 @@
 #palette-export {
   margin-top: 2em;
 }
+ol.instructions {
+  margin-top: 2em;
+}
+ol.instructions li {
+  margin-bottom: 2em;
+}
+ol.instructions li img,
+ol.instructions li pre {
+  margin-top: 0.5em;
+}
+ol.instructions ol {
+  list-style-type: lower-latin;
+}
+ol.instructions ol li {
+  margin-top: 1em;
+}
