@@ -11,7 +11,7 @@ class StateMachinePaletteSpecification
       "name": "State Machine",
       "nodeShapes": [
         {
-          "name": "state",
+          "name": "State",
           "properties": ["name", "recurrent"],
           "label" : {
             "for" : "name",
@@ -29,7 +29,7 @@ class StateMachinePaletteSpecification
           ]
         },
         {
-          "name": "initial",
+          "name": "Initial",
           "properties": ["name"],
           "elements": [
             {
@@ -41,7 +41,7 @@ class StateMachinePaletteSpecification
           ]
         },
         {
-          "name": "final",
+          "name": "Final",
           "properties": ["name"],
           "elements": [
             {
@@ -61,12 +61,12 @@ class StateMachinePaletteSpecification
       ],
       "linkShapes": [
         {
-          "name": "transition",
+          "name": "Transition",
           "color": "black",
           "style": "solid"
         },
         {
-          "name": "dependency",
+          "name": "Dependency",
           "color": "gray",
           "style": "dashed"
         }
@@ -84,7 +84,7 @@ class PetriNetPaletteSpecification
       "name": "Petri net",
       "nodeShapes": [
         {
-          "name": "net",
+          "name": "Net",
           "elements": [
             {
               "figure": "circle",
@@ -95,7 +95,7 @@ class PetriNetPaletteSpecification
           ]
         },
         {
-          "name": "arc",
+          "name": "Arc",
           "elements": [
             {
               "figure": "rectangle",
@@ -108,7 +108,7 @@ class PetriNetPaletteSpecification
       ],
       "linkShapes": [
         {
-          "name": "transition",
+          "name": "Transition",
           "color": "black",
           "style": "solid"
         }

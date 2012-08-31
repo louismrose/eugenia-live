@@ -18,7 +18,8 @@ class App extends Spine.Stack
       @drawings.index.active(params)
     
     Spine.Route.add '/palettes/:id', (params) =>
-      new Exports(params)
+      @drawings.show.deactivate()
+      @palettes.show.active(params)
     
     Spine.Route.add '/drawings/:d_id/:type/:id', (params) =>
       @drawings.show.deactivate()
@@ -32,20 +33,5 @@ class App extends Spine.Stack
       @navigate('/drawings')
     
     Spine.Route.setup()
-
-
-class Exports extends Spine.Controller
-  constructor: (params) ->
-    super
-    @log "Palette export for: #{params.id}"
-    @item = require('models/palette').find(params.id)
-    @render()
-
-  render: ->
-    @html require('views/palettes/show')
-
-  deactivate: ->
-    super
-    @html ''
       
 module.exports = App  

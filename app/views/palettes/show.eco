@@ -1,0 +1,55 @@
+<div class="page-header">
+  <h1>Export your palette&nbsp;&nbsp;<small>Generate an Eclipse-based editor</small></h1>
+</div>
+
+<div class="row-fluid">
+  <div class="span8">
+    <p>
+      Follow the instructions below to generate a graphical editor from
+      your EuGENia Live palette. The generated editor will integrate 
+      with the Eclipse IDE. You'll be able to extend your editor with lots
+      of features that EuGENia Live doesn't yet support, such as: 
+      <a href="http://epsilonblog.wordpress.com/2008/01/18/model-refactoring-in-gmf-based-editors-with-ewl/">wizards</a> and <a href="http://www.eclipse.org/epsilon/doc/articles/evl-gmf-integration/">validation</a> using Epsilon or automatic layout using
+      <a href="http://www.informatik.uni-kiel.de/en/rtsys/kieler/">KIELER</a>.
+    </p>
+    
+    <ol class="instructions">
+      <li>
+        <strong>Install Epsilon, EuGENia and Emfatic</strong> by following <a href="http://www.eclipse.org/epsilon/download/" target="_blank">these instructions</a>.
+      </li>
+      
+      <li>
+        <strong>Copy the following Emfatic code to the clipboard</strong>
+        <pre><%=@eugenia%></pre>
+      </li>
+      
+      <li>
+        <strong>Create a new EuGENia project</strong>
+        <ol>
+          <li>Start Eclipse</li>
+          <li>Select File -&gt; New -&gt; Project... and select Java Project. Give the project a name, and use the default options.</li>
+          <li>Select File -&gt; New -&gt; Other... and select Emfatic file. Select your project as the container, and give the file a name. </li>
+          <li>Open the Emfatic file and replace its contents with the Emfatic code shown above.</li>
+          <li>Save the Emfatic file.</li>
+          <li>Right-click the Emfatic file and select Eugenia -&gt; Generate GMF Editor.</li>
+        </ol>
+      </li>
+      
+      <li>
+        <strong>Use the generated GMF editor</strong>
+        <ol>
+          <li>Select Run -&gt; Run Configurations... and create a new
+Eclipse Application run configuration.</li>
+         <li>Use the following VM arguments: <pre>-XX:PermSize=64M -XX:MaxPermSize=128M -Xms512M -Xmx1024M</pre></li>
+         <li>Click Run</li>
+         <li>In the new Eclipse instance, use the File -&gt; New menu to create a new diagram with your GMF editor. The resulting editor will look similar to the one shown below.</li>
+        </ol>
+        <img src="http://www.eclipse.org/epsilon/doc/articles/eugenia-gmf-tutorial/Filesystemscreenshot2.png"/>
+      </li>
+      
+      <li>
+        <strong>Learn more about EuGENia</strong> by reading <a href="http://www.eclipse.org/epsilon/doc/eugenia/">the documentation</a>.
+      </li>
+    </ol>
+  </div>
+</div>

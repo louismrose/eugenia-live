@@ -133,9 +133,29 @@ class Update extends Define
     @palette.linkShapes().find(@params.id)
 
 
+class Show extends Spine.Controller
+  constructor: ->
+    super
+    @active @change
+
+  change: (params) =>
+    @item = Palette.find(params.id)
+    @render()
+
+  render: ->
+    context =
+      eugenia: new EugeniaNotation().serialisePalette(@item)
+
+    @html require('views/palettes/show')(context)
+
+  deactivate: ->
+    super
+    @html ''
+
 class Palettes extends Spine.Stack
   controllers:
     create: Create
     edit: Update
+    show: Show
 
 module.exports = Palettes

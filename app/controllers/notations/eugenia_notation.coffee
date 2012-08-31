@@ -4,6 +4,25 @@ class EugeniaNotation
   reconstruct: (item) ->
     @deserialise(@serialise(item))
   
+  serialisePalette: (palette) ->
+    @serialisePaletteHeader(palette) + @serialisePaletteBody(palette)
+    
+  serialisePaletteHeader: (palette) ->
+    nodeShapeContainmentReferences = ("  val #{ns.name}[*] #{ns.name}s;" for ns in palette.nodeShapes().all()).join('\n')
+    
+    """@namespace(uri="yourlanguage", prefix="yourlanguage")
+    package yourlanguage;
+
+    @gmf.diagram(foo="bar")
+    class Root {
+    #{nodeShapeContainmentReferences}
+    }\n\n"""
+  
+  serialisePaletteBody: (palette) ->
+    shapes = palette.nodeShapes().all().concat palette.linkShapes().all()
+    serialisedShapes = (@serialise(shape) for shape in shapes)
+    serialisedShapes.join('\n\n')
+  
   serialise: (item) ->
     if item instanceof NodeShape
        @serialiseNode(item)

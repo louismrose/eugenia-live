@@ -1,5 +1,4 @@
 # Deploy
-* Build & deploy script
 * Alpha label
 * Feedback link
 * Basic homepage explaining purpose
@@ -9,15 +8,15 @@
 * Add unit tests for LinkTool
 
 # Issues
+* Investigate why back button seems to broken in some cases
 * Don't update properties view when link tool is active?
 * Add tests for reconstructing linkshapes and then refactor EugeniaNotation
 
 
 # Features
 
-## Export to EuGENia
-* Simpler interface (one button) for downloading an Emfatic file for use with EuGENia
-* Could also provide a page that explains next steps and a link to Epsilon installation instructions and EuGENia article
+## Syntax highlighting
+* Investigate Google prettify for highlighting JSON and EuGENia code
 
 ## Multiple drawings
 * Add thumbnails to index view:
