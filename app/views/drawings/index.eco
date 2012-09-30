@@ -28,6 +28,7 @@
             <% end %>
           </select>
           <button id="new" class="btn btn-primary" type="submit" style="margin-top: 1.5em;">Go</button>
+          <a href="#" style="margin-top: 1.5em;" class="btn btn-link popover-test" rel="popover" data-trigger="hover" data-placement="bottom" data-content="Your drawings are stored by your browser. They won't be available from other computers, or from other web browsers on the same computer." data-original-title="Local Storage">Where are drawings stored?</a>
         </form>
       </div>
     </li>
