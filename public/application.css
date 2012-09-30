@@ -3,9 +3,6 @@
 .container-fluid {
   padding-top: 50px;
 }
-a.drawing img {
-  border: 1px solid #ccc;
-}
 #toolbox {
   padding: 8px 0;
   text-align: center;
