@@ -16,27 +16,6 @@
           that integrates with Eclipse development environment.
         </p>
       </li>
-      <li class="span4 well">
-        <h3>Alpha</h3>
-        <p>
-          We're released this early version of EuGENia Live to
-          start getting feedback on the concept.
-        </p>
-        <p>There's a few issues we'd like to make our users aware of:
-        </p>
-        <ul>
-          <li>
-          </li>
-          <li><strong>There are bugs</strong>. If you find an
-              issue and would like to report it, please contact
-              <a href="http://www.cs.york.ac.uk/~louis">Louis</a>.
-          </li>
-          <li><strong>There are bugs</strong>. If you find an
-              issue and would like to report it, please contact
-              <a href="http://www.cs.york.ac.uk/~louis">Louis</a>.
-          </li>
-        </ul>
-      </li>
     <% for drawing in @drawings: %>
     <li class="span4 well">
       <div style="margin-bottom: 10px;">
