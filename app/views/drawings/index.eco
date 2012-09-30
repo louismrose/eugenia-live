@@ -1,5 +1,42 @@
 <div class="row-fluid">
   <ul class="thumbnails">
+      <li class="span4 well">
+        <h3>Design graphical DSLs</h3>
+        <p>
+           EuGENia Live allows you to quickly build a
+           graphical editor for a domain-specific language.
+        </p>
+        <p>
+          Build languages that resemble flowcharts, state machines
+          or seating plans.
+        </p>
+        <img src="./img/example_dsl.png"/>
+        <p>
+          You can even export your language, and generate an editor
+          that integrates with Eclipse development environment.
+        </p>
+      </li>
+      <li class="span4 well">
+        <h3>Alpha</h3>
+        <p>
+          We're released this early version of EuGENia Live to
+          start getting feedback on the concept.
+        </p>
+        <p>There's a few issues we'd like to make our users aware of:
+        </p>
+        <ul>
+          <li>
+          </li>
+          <li><strong>There are bugs</strong>. If you find an
+              issue and would like to report it, please contact
+              <a href="http://www.cs.york.ac.uk/~louis">Louis</a>.
+          </li>
+          <li><strong>There are bugs</strong>. If you find an
+              issue and would like to report it, please contact
+              <a href="http://www.cs.york.ac.uk/~louis">Louis</a>.
+          </li>
+        </ul>
+      </li>
     <% for drawing in @drawings: %>
     <li class="span4 well">
       <div style="margin-bottom: 10px;">
