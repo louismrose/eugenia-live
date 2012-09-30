@@ -1,7 +1,6 @@
 # Deploy
 * Alpha label
 * Feedback link
-* Basic homepage explaining purpose
 
 # Testing
 * Need a few end-to-end tests for core functionality
@@ -15,14 +14,19 @@
 
 # Features
 
-## Syntax highlighting
-* Investigate Google prettify for highlighting JSON and EuGENia code
+## Landing page
+* Overview the tool
+* Link to the paper
+* Warn about alpha, local storage, etc
 
 ## Multiple drawings
 * Add thumbnails to index view:
 
     var canvas = document.getElementById("mycanvas");
     var img    = canvas.toDataURL("image/png");
+
+## Syntax highlighting
+* Investigate Google prettify for highlighting JSON and EuGENia code
 
 
 ## Customisable palettes
