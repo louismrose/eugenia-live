@@ -1,12 +1,3 @@
-<h6>Selection</h6>
-<!-- <p>
-  <select>
-    <option value="initial">Initial</option>
-    <option value="state">State</option>
-    <option value="final">Final</option>
-  </select>
-  <span id="restore" class="label label-important">Restore to the palette?</span>
-</p> -->
 <% unless $.isEmptyObject(@propertyValues): %>
   <table class="table table-bordered">
     <thead>
