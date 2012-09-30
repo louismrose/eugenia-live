@@ -1,10 +1,7 @@
 require('json2ify')
 require('es5-shimify')
 require('jqueryify')
-require('lib/bootstrap.min')
-require('lib/bootstrap-button')
-require('lib/bootstrap-collapse')
-require('lib/bootstrap-dropdown')
+require('lib/bootstrap')
 
 require('spine')
 require('spine/lib/local')

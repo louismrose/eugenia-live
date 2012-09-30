@@ -1,5 +1,5 @@
-@import 'css/bootstrap.min.css';
-@import 'css/bootstrap-responsive.min.css';
+@import 'css/bootstrap.css';
+@import 'css/bootstrap-responsive.css';
 .container-fluid {
   padding-top: 50px;
 }
