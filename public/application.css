@@ -1,5 +1,14 @@
 @import 'css/bootstrap.css';
 @import 'css/bootstrap-responsive.css';
+.hero-unit {
+  padding: 30px 60px;
+}
+.hero-unit .carousel-caption h4 {
+  color: #ddd;
+}
+.hero-unit .carousel-caption p {
+  color: #ddd;
+}
 .container-fluid {
   padding-top: 50px;
 }
