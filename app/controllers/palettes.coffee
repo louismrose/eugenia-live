@@ -36,6 +36,8 @@ class Define extends Spine.Controller
     @render()
   
   render: ->
+    @log "Constructor is #{@constructor}"
+    @log "Constructor name is #{@constructor.name}"
     context = 
       serialisation: @currentNotation().serialise(@safe(@item()))
       example: @currentNotation().serialise(@safe(@example()))
