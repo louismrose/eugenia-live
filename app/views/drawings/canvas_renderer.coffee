@@ -21,17 +21,22 @@ class CanvasRenderer
     associationMethod = type.className.toLowerCase() + 's' #e.g. Node -> nodes
     elements = @drawing[associationMethod]().all()         #e.g. @drawing.nodes().all()
     console.log("adding all " + elements.length + " " + type.className + "s")
-    @addOne(element) for element in elements
+    @renderOne(element) for element in elements
+    @updateDrawingCache()
   
   addOne: (element) =>
+    @renderOne(element)
+    @updateDrawingCache()
+  
+  renderOne: (element) =>
     renderer = require("views/drawings/#{element.constructor.className.toLowerCase()}_renderer")
     
     if (renderer)
       new renderer(element).render()      
     else
       console.warn("no renderer attached for " + element)
-    
-    console.log(@drawing.cache)
+  
+  updateDrawingCache: =>
     @drawing.cache = @canvas.toDataURL()
     @drawing.save()
     
