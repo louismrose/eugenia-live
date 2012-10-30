@@ -27,8 +27,12 @@ class CanvasRenderer
     renderer = require("views/drawings/#{element.constructor.className.toLowerCase()}_renderer")
     
     if (renderer)
-      new renderer(element).render()
+      new renderer(element).render()      
     else
       console.warn("no renderer attached for " + element)
-      
+    
+    console.log(@drawing.cache)
+    @drawing.cache = @canvas.toDataURL()
+    @drawing.save()
+    
 module.exports = CanvasRenderer

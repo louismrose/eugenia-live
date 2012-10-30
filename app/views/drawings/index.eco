@@ -61,7 +61,7 @@
       </div>
       <div>
         <a href="#/drawings/<%=drawing.id%>">
-          <img src="http://placehold.it/520x360" alt="">
+          <img src="<%=drawing.cache%>" style="background-color: white; border: 1px solid #ddd">
         </a>
       </div>
       <div style="margin-top: 10px; text-align: right;">

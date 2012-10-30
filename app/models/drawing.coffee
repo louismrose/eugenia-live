@@ -1,7 +1,7 @@
 Spine = require('spine')
 
 class Drawing extends Spine.Model
-  @configure 'Drawing', 'name', 'selection'
+  @configure 'Drawing', 'name', 'selection', 'cache'
   @hasOne 'palette', 'models/palette'
   @hasMany 'nodes', 'models/node'
   @hasMany 'links', 'models/link'

@@ -10,7 +10,7 @@ class App extends Spine.Stack
     
     @drawings = new Drawings(el: @el)
     @palettes = new Palettes(el: @el)
-    
+        
     Spine.Route.add '/drawings/:id', (params) =>
       @drawings.show.active(params)
 

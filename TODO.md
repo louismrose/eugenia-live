@@ -1,6 +1,5 @@
 # Deploy
 * Alpha label
-* Feedback link
 
 # Testing
 * Need a few end-to-end tests for core functionality
@@ -13,6 +12,7 @@
 * Some issues with Eugenia notation...
     * Attributes aren't included
     * Colours need to be translated to RGB values
+* Creating a load of drawings, deleting them all and then visiting the first one seems to lead to duplicated palette items?
 
 # Features
 
@@ -21,11 +21,6 @@
 * Link to the paper
 * Warn about alpha, local storage, etc
 
-## Multiple drawings
-* Add thumbnails to index view:
-
-    var canvas = document.getElementById("mycanvas");
-    var img    = canvas.toDataURL("image/png");
 
 ## Syntax highlighting
 * Investigate Google prettify for highlighting JSON and EuGENia code
