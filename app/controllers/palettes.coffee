@@ -36,12 +36,10 @@ class Define extends Spine.Controller
     @render()
   
   render: ->
-    @log "Constructor is #{@constructor}"
-    @log "Constructor name is #{@constructor.name}"
     context = 
       serialisation: @currentNotation().serialise(@safe(@item()))
       example: @currentNotation().serialise(@safe(@example()))
-      verb: @constructor.name
+      verb: @verb()
       type: @type
       notation: @notation
     @html require('views/palettes/define')(context)
@@ -120,6 +118,9 @@ class Define extends Spine.Controller
 
 
 class Create extends Define
+  verb: =>
+    "Create"
+  
   node: =>
     new NodeShape(name: "TheNode", elements: [{}], palette_id: @palette.id)
     
@@ -128,6 +129,9 @@ class Create extends Define
 
 
 class Update extends Define      
+  verb: =>
+    "Update"
+  
   node: =>
     @palette.nodeShapes().find(@params.id)
 
