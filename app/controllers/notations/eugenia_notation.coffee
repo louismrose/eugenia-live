@@ -8,14 +8,15 @@ class EugeniaNotation
     @serialisePaletteHeader(palette) + @serialisePaletteBody(palette)
     
   serialisePaletteHeader: (palette) ->
-    nodeShapeContainmentReferences = ("  val #{ns.name}[*] #{ns.name}s;" for ns in palette.nodeShapes().all()).join('\n')
+    shapes = palette.nodeShapes().all().concat palette.linkShapes().all()
+    containmentReferences = ("  val #{s.name}[*] #{s.name.toLowerCase()}s;" for s in shapes).join('\n')
     
     """@namespace(uri="yourlanguage", prefix="yourlanguage")
     package yourlanguage;
 
     @gmf.diagram(foo="bar")
     class Root {
-    #{nodeShapeContainmentReferences}
+    #{containmentReferences}
     }
     
     abstract class Element {}\n\n"""
