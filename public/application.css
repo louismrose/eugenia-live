@@ -1,5 +1,8 @@
 @import 'css/bootstrap.css';
 @import 'css/bootstrap-responsive.css';
+.stack > *:not(.active) {
+  display: none;
+}
 .hero-unit {
   padding: 30px 60px;
 }
