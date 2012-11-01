@@ -6,32 +6,23 @@
 * Add unit tests for LinkTool
 
 # Issues
-* Double clicking on state node opens editor for links?!
-* Eugenia notation...
-    * Test
-    * Refactor
+* Refactor Eugenia notation and retest
 * Don't update properties view when link tool is active?
 
 # Features
+
+## Routing
+* Gracefully handle invalid ids in routes
+
+## Drawing export
 * Export drawing as SVG
+* Export model as XML / JSON
 
-## Landing page
-* Overview the tool
-* Link to the paper
-* Warn about alpha, local storage, etc
-
-
-## Syntax highlighting
+## Palette editor
+* Better error reporting for parsing of invalid JSON and EuGENia
 * Investigate Google prettify for highlighting JSON and EuGENia code
-
-
-## Customisable palettes
-* Is controller/routing organisation appropriate?
-    * Create / update palette items
-    * Don't create / update invalid palette items
-    * Better error reporting for parsing of JSON and EuGENia
-* Preview palette items (e.g. little icons next to names or a thumbnail shown when hovering)
 * Graphical alternative to JSON / EuGENia metamodelling languages
+* Preview palette items (e.g. little icons next to names or a thumbnail shown when hovering)
 
 ## Links
 * Allow properties and labels
