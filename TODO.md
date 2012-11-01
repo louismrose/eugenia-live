@@ -12,7 +12,6 @@
 * Some issues with Eugenia notation...
     * Attributes aren't included
     * Colours need to be translated to RGB values
-* Creating a load of drawings, deleting them all and then visiting the first one seems to lead to duplicated palette items?
 
 # Features
 
