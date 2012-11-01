@@ -6,11 +6,12 @@
 * Add unit tests for LinkTool
 
 # Issues
-* Don't update properties view when link tool is active?
-* Add tests for reconstructing linkshapes and then refactor EugeniaNotation
-* Some issues with Eugenia notation...
+* Double clicking on state node opens editor for links?!
+* Eugenia notation...
     * Attributes aren't included
-    * Colours need to be translated to RGB values
+    * Test
+    * Refactor
+* Don't update properties view when link tool is active?
 
 # Features
 * Export drawing as SVG

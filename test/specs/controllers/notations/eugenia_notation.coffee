@@ -17,6 +17,15 @@ describe 'EugeniaNotation', ->
     
     expect(@notation.reconstruct(shape)).toEqual(shape.toJSON())
   
+  it 'can represent a nodeshape with properties', ->
+    shape = new NodeShape
+      name: "Simple"
+      elements: [
+        figure: "rectangle"
+      ]
+      properties: ["name", "id"]
+
+    expect(@notation.reconstruct(shape)).toEqual(shape.toJSON())
   
   it 'can represent additional properties of each element', ->
     shape = new NodeShape
@@ -85,3 +94,25 @@ describe 'EugeniaNotation', ->
       style: "solid"
 
     expect(@notation.reconstruct(shape)).toEqual(shape.toJSON())
+    
+  it 'includes properties for ends when serialising a link', ->
+    shape = new LinkShape
+      name: "Simple"
+      color: "rgba(0, 0, 0, 1)" 
+      style: "solid"
+
+    serialised = @notation.serialise(shape)
+
+    expect(serialised).toMatch("source=\"source\"")
+    expect(serialised).toMatch("target=\"target\"")
+
+  it 'includes references to ends when serialising a link', ->
+    shape = new LinkShape
+      name: "Simple"
+      color: "rgba(0, 0, 0, 1)" 
+      style: "solid"
+
+    serialised = @notation.serialise(shape)
+
+    expect(serialised).toMatch("ref .* source;")
+    expect(serialised).toMatch("ref .* target;")

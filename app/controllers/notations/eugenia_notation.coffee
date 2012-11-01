@@ -16,7 +16,9 @@ class EugeniaNotation
     @gmf.diagram(foo="bar")
     class Root {
     #{nodeShapeContainmentReferences}
-    }\n\n"""
+    }
+    
+    abstract class Element {}\n\n"""
   
   serialisePaletteBody: (palette) ->
     shapes = palette.nodeShapes().all().concat palette.linkShapes().all()
@@ -77,18 +79,27 @@ class EugeniaNotation
     
     """
     @gmf.node(#{properties})
-    class #{item.name} {
+    class #{item.name} extends Element {
+    #{@serialiseAttributes(item)}
     }
     """
+  
+  serialiseAttributes: (item) ->
+    if item.properties
+      (@serialiseAttribute(a) for a in item.properties).join("\n")
+  
+  serialiseAttribute: (attribute) ->
+    "  attr String[0..1] #{attribute};"
   
   serialiseLink: (item) ->
     item.style or= "solid"
     item.color or= "black"
     
     """
-    @gmf.link(style="#{item.style}", color="#{@serialiseColor(item.color)}")
+    @gmf.link(style="#{item.style}", color="#{@serialiseColor(item.color)}", source="source", target="target")
     class #{item.name} {
-      
+      ref Element[1] source;
+      ref Element[1] target;
     }
     """
 
@@ -106,6 +117,7 @@ class EugeniaNotation
   deserialiseNode: (definition) ->
     node = {}
     node.name = @deserialiseName(definition)
+    node.properties = @deserialiseAttributes(definition)
     
     properties = @deserialiseProperties(definition)
     
@@ -155,6 +167,10 @@ class EugeniaNotation
     link = @deserialiseProperties(definition)
     link.name = @deserialiseName(definition)
     link.color = @deserialiseColor(link.color) if link.color
+    
+    delete link.source if link.source
+    delete link.target if link.target
+    
     link
   
   deserialiseColor: (color) ->
@@ -164,7 +180,15 @@ class EugeniaNotation
   deserialiseName: (definition) ->
     class_pattern = /class\s+(\w*)/
     definition.match(class_pattern)[1]
-    
+  
+  deserialiseAttributes: (definition) ->
+    attrDefsPattern = /attr String\[0..1\] \w*;/g
+    attrDefPattern  = /attr String\[0..1\] (\w*);/
+        
+    if definition.match(attrDefsPattern)
+      for attributeDefinition in definition.match(attrDefsPattern)
+        attributeDefinition.match(attrDefPattern)[1]
+   
   deserialiseProperties: (definition) ->
     result = {}
     
