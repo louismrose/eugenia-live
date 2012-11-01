@@ -68,12 +68,10 @@ class StateMachinePaletteSpecification
         {
           "name": "Dependency",
           "color": "gray",
-          "style": "dashed"
+          "style": "dash"
         }
       ]
     }'
-  
-
 
 class PetriNetPaletteSpecification
   @create: ->  

@@ -81,7 +81,7 @@ class Define extends Spine.Controller
     new LinkShape
       name: "Link"
       color: "gray"
-      style: "dashed"
+      style: "dash"
     
   define: (event) =>
     event.preventDefault()

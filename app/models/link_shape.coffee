@@ -15,7 +15,7 @@ class LinkShape extends Spine.Model
   draw: (segments) =>
     path = new paper.Path(segments)
     path.strokeColor = @color
-    path.dashArray = [4, 4] if @style is "dashed"
+    path.dashArray = [4, 4] if @style is "dash"
     path
   
   destroyLinks: ->

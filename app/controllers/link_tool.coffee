@@ -41,7 +41,7 @@ class LinkTool extends Tool
       @path = new paper.Path([origin])
       @path.layer.insertChild(0, @path) # force to bottom
       @path.strokeColor = 'black'
-      @path.dashArray = [10, 4] # dashed
+      @path.dashArray = [10, 4] # dash
 
     extendTo: (point) ->
       @path.add(point)
