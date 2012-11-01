@@ -1,4 +1,5 @@
 require('lib/setup')
+require('lib/fetch_models')
 
 Spine = require('spine')
 Drawings = require('controllers/drawings')

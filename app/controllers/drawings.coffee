@@ -1,11 +1,6 @@
 # Spine = require('spine')
 PaletteSpecification = require('models/palette_specification')
-Palette = require ('models/palette')
 Drawing = require('models/drawing')
-Node = require('models/node')
-Link = require('models/link')
-NodeShape = require('models/node_shape')
-LinkShape = require('models/link_shape')
 
 Spine.SubStack = require('lib/substack')
 CanvasRenderer = require('views/drawings/canvas_renderer')
@@ -20,15 +15,6 @@ class Index extends Spine.Controller
     
   constructor: ->
     super
-    
-    PaletteSpecification.fetch()
-    Palette.fetch()
-    LinkShape.fetch()
-    NodeShape.fetch()
-    Drawing.fetch()
-    Node.fetch()
-    Link.fetch()
-    
     @active @render
   
   render: ->
