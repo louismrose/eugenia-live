@@ -11,8 +11,8 @@ class App extends Spine.Stack
     drawings: Drawings
       
   routes:
-    '/drawings' : 'drawings'
-    '/palettes' : 'palettes'
+    '/drawings/:d_id/palette' : 'palettes'
+    '/drawings'               : 'drawings'
   
   default: 'drawings'
   

@@ -17,7 +17,7 @@
       <li><a href="#/drawings/<%=@id%>/links/new">New...</a></li>
   </ul>
 
-  <a id="palette-export" class="btn btn-primary" href="#/palettes/<%=@palette().id%>">
+  <a id="palette-export" class="btn btn-primary" href="#/drawings/<%=@id%>/palette">
     <i class="icon-download icon-white"></i> Export palette
   </a>
 </div>

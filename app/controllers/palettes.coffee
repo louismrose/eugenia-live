@@ -144,7 +144,7 @@ class Show extends Spine.Controller
     @active @change
 
   change: (params) =>
-    @item = Palette.find(params.id)
+    @item = Drawing.find(params.d_id).palette()
     @render()
 
   render: ->
@@ -160,7 +160,7 @@ class Palettes extends Spine.SubStack
     show: Show
   
   routes:
-    '/palettes/:id' : 'show'
+    '/drawings/:d_id/palette'   : 'show'
     '/drawings/:d_id/:type/new' : 'create'
     '/drawings/:d_id/:type/:id' : 'edit'
 
