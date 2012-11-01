@@ -68,7 +68,7 @@ describe 'EugeniaNotation', ->
           size: { width: 10, height: 40 }
         },
         {
-          figure: "circle"
+          figure: "ellipse"
           borderColor: "rgba(0, 0, 255, 1)"
           fillColor: "rgba(255, 255, 0, 1)"
           size: { width: 5, height: 5 }

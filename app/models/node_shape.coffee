@@ -79,8 +79,9 @@ class Elements
       when "rounded"
         rect = new paper.Rectangle(0, 0, size.width, size.height)
         new paper.Path.RoundRectangle(rect, new paper.Size(10, 10))
-      when "circle"
-        new paper.Path.Circle(0, 0, size.width)
+      when "ellipse"
+        rect = new paper.Rectangle(0, 0, size.width*2, size.height*2)
+        new paper.Path.Oval(rect)
       when "rectangle"
         new paper.Path.Rectangle(0, 0, size.width, size.height)
 

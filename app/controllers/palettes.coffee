@@ -71,7 +71,7 @@ class Define extends Spine.Controller
     new NodeShape
       name: "InitialState"
       elements: [
-        "figure": "circle",
+        "figure": "ellipse",
         "size": {"width": 10, "height": 10},
         "fillColor": "white",
         "borderColor": "black"

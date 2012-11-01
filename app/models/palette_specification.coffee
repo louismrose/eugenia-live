@@ -33,7 +33,7 @@ class StateMachinePaletteSpecification
           "properties": ["name"],
           "elements": [
             {
-              "figure": "circle",
+              "figure": "ellipse",
               "size": {"width": 10, "height": 10},
               "fillColor": "black",
               "borderColor": "black"
@@ -45,13 +45,13 @@ class StateMachinePaletteSpecification
           "properties": ["name"],
           "elements": [
             {
-              "figure": "circle",
+              "figure": "ellipse",
               "size": {"width": 10, "height": 10},
               "fillColor": "white",
               "borderColor": "black"
             },
             {
-              "figure": "circle",
+              "figure": "ellipse",
               "size": {"width": 7, "height": 7},
               "fillColor": "black",
               "borderColor": "black"
@@ -87,7 +87,7 @@ class PetriNetPaletteSpecification
           "name": "Net",
           "elements": [
             {
-              "figure": "circle",
+              "figure": "ellipse",
               "size": {"width": 30, "height": 30},
               "fillColor": "white",
               "borderColor": "black"

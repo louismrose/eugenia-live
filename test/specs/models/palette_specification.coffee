@@ -19,7 +19,7 @@ describe 'PaletteSpecification', ->
           "name" : "multi",
           "elements" : [
             {
-              "figure": "circle"
+              "figure": "ellipse"
             },
             {
               "figure": "square"
@@ -54,7 +54,7 @@ describe 'PaletteSpecification', ->
   it 'creates elements for second node shape from JSON', ->
     elements = @palette.nodeShapes().all()[1].elements
     expect(elements.length).toBe(2)
-    expect(elements[0].figure).toBe("circle")
+    expect(elements[0].figure).toBe("ellipse")
     expect(elements[1].figure).toBe("square")
   
   it 'creates links shapes from JSON', ->
