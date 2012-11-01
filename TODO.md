@@ -13,6 +13,7 @@
     * Colours need to be translated to RGB values
 
 # Features
+* Export drawing as SVG
 
 ## Landing page
 * Overview the tool

@@ -3,6 +3,7 @@ require = window.require
 describe 'EugeniaNotation', ->
   EugeniaNotation = require('controllers/notations/eugenia_notation')
   NodeShape = require('models/node_shape')
+  LinkShape = require('models/link_shape')
 
   beforeEach ->
     @notation = new EugeniaNotation
@@ -22,8 +23,8 @@ describe 'EugeniaNotation', ->
       name: "Simple"
       elements: [
         figure: "rectangle"
-        borderColor: "red"
-        fillColor: "green"
+        borderColor: "rgba(255, 0, 0, 1)"
+        fillColor: "rgba(255, 0, 0, 1)"
         size: { width: 10, height: 40 }
       ]
 
@@ -36,14 +37,14 @@ describe 'EugeniaNotation', ->
       elements: [
         {
           figure: "rectangle"
-          borderColor: "red"
-          fillColor: "green"
+          borderColor: "rgba(255, 0, 0, 1)"
+          fillColor: "rgba(0, 255, 0, 1)"
           size: { width: 10, height: 40 }
         },
         {
           figure: "circle"
-          borderColor: "blue"
-          fillColor: "yellow"
+          borderColor: "rgba(0, 0, 255, 1)"
+          fillColor: "rgba(255, 255, 0, 1)"
           size: { width: 5, height: 5 }
         }
       ]
@@ -71,7 +72,16 @@ describe 'EugeniaNotation', ->
         for: ["name", "state"]
         pattern: "{1} --> {0}"
         placement: "external"
-        color: "purple"
+        color: "rgba(128, 0, 128, 1)"
         length: 20
+
+    expect(@notation.reconstruct(shape)).toEqual(shape.toJSON())
+   
+    
+  it 'can represent a minimal linkshape', ->
+    shape = new LinkShape
+      name: "Simple"
+      color: "rgba(0, 0, 0, 1)" 
+      style: "solid"
 
     expect(@notation.reconstruct(shape)).toEqual(shape.toJSON())

@@ -28,7 +28,7 @@ class EugeniaNotation
        @serialiseNode(item)
     else
        @serialiseLink(item)
-  
+    
   serialiseNode: (item) ->
     properties = ''
     
@@ -37,11 +37,11 @@ class EugeniaNotation
       
       if e.borderColor
         properties += ", " if properties
-        properties += "border.color=\"#{e.borderColor}\""
+        properties += "border.color=\"#{@serialiseColor(e.borderColor)}\""
       
       if e.fillColor
         properties += ", " if properties
-        properties += "color=\"#{e.fillColor}\""
+        properties += "color=\"#{@serialiseColor(e.fillColor)}\""
       
       if e.figure
         properties += ", " if properties
@@ -73,7 +73,7 @@ class EugeniaNotation
       
       if l.color
         properties += ", " if properties
-        properties += "label.color=\"#{l.color}\""
+        properties += "label.color=\"#{@serialiseColor(l.color)}\""
     
     """
     @gmf.node(#{properties})
@@ -86,11 +86,16 @@ class EugeniaNotation
     item.color or= "black"
     
     """
-    @gmf.link(style="#{item.style}", color="#{item.color}")
+    @gmf.link(style="#{item.style}", color="#{@serialiseColor(item.color)}")
     class #{item.name} {
       
     }
     """
+
+  serialiseColor: (color) ->
+    c = new paper.Color(color)
+    "rgb(#{c.red*255},#{c.green*255},#{c.blue*255})"
+  
   
   deserialise: (definition) ->
     if definition.match(/@gmf.node/)
@@ -118,7 +123,7 @@ class EugeniaNotation
       delete properties['label.pattern']
     
     if properties['label.color']
-      label.color = properties['label.color']
+      label.color = @deserialiseColor(properties['label.color'])
       delete properties['label.color']
     
     if properties['label.length']
@@ -127,11 +132,11 @@ class EugeniaNotation
     
     
     if properties['border.color']
-      properties.borderColor = properties['border.color']
+      properties.borderColor = @deserialiseColor(properties['border.color'])
       delete properties['border.color']
       
     if properties.color
-      properties.fillColor = properties.color
+      properties.fillColor = @deserialiseColor(properties.color)
       delete properties.color
     
     if properties.size
@@ -149,7 +154,12 @@ class EugeniaNotation
   deserialiseLink: (definition) ->
     link = @deserialiseProperties(definition)
     link.name = @deserialiseName(definition)
+    link.color = @deserialiseColor(link.color) if link.color
     link
+  
+  deserialiseColor: (color) ->
+    [all,r,g,b] = color.match("rgb\\((\\d+),(\\d+),(\\d+)\\)")
+    new paper.Color(r/255, g/255, b/255).toCssString()
     
   deserialiseName: (definition) ->
     class_pattern = /class\s+(\w*)/
