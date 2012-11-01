@@ -26,6 +26,7 @@ class Define extends Spine.Controller
     @notations[@notation]
   
   change: (params) ->
+    @_item = null
     @params = params
     @type = @params.type[0..-2]
     @palette = Drawing.find(@params.d_id).palette()
@@ -81,10 +82,6 @@ class Define extends Spine.Controller
       name: "Link"
       color: "gray"
       style: "dashed"
-  
-  deactivate: ->
-    super
-    @_item = null
     
   define: (event) =>
     event.preventDefault()
