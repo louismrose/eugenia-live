@@ -1,6 +1,7 @@
 JsonNotation = require("controllers/notations/json_notation")
 EugeniaNotation = require("controllers/notations/eugenia_notation")
 
+Spine.SubStack = require('lib/substack')
 Drawing = require('models/drawing')
 NodeShape = require('models/node_shape')
 LinkShape = require('models/link_shape')
@@ -77,7 +78,6 @@ class Define extends Spine.Controller
   
   deactivate: ->
     super
-    @html ''
     @_item = null
     
   define: (event) =>
@@ -102,7 +102,6 @@ class Define extends Spine.Controller
     @back()
     
   back: =>
-    @deactivate()
     @navigate('/drawings/' + @params.d_id)
 
   removeIds: (o) =>
@@ -154,14 +153,15 @@ class Show extends Spine.Controller
 
     @html require('views/palettes/show')(context)
 
-  deactivate: ->
-    super
-    @html ''
-
-class Palettes extends Spine.Stack
+class Palettes extends Spine.SubStack
   controllers:
     create: Create
     edit: Update
     show: Show
+  
+  routes:
+    '/palettes/:id' : 'show'
+    '/drawings/:d_id/:type/new' : 'create'
+    '/drawings/:d_id/:type/:id' : 'edit'
 
 module.exports = Palettes

@@ -7,6 +7,7 @@ Link = require('models/link')
 NodeShape = require('models/node_shape')
 LinkShape = require('models/link_shape')
 
+Spine.SubStack = require('lib/substack')
 CanvasRenderer = require('views/drawings/canvas_renderer')
 Toolbox = require('controllers/toolbox')
 Selection = require('controllers/selection')
@@ -19,17 +20,23 @@ class Index extends Spine.Controller
     
   constructor: ->
     super
+    
+    PaletteSpecification.fetch()
+    Palette.fetch()
+    LinkShape.fetch()
+    NodeShape.fetch()
+    Drawing.fetch()
+    Node.fetch()
+    Link.fetch()
+    
     @active @render
   
   render: ->
     context =
       drawings: Drawing.all()
       palette_specs: PaletteSpecification.all()
+    @log(context)
     @html require('views/drawings/index')(context)
-  
-  deactivate: ->
-    super
-    @html ''
     
   create: (event) =>
     event.preventDefault()
@@ -76,23 +83,17 @@ class Show extends Spine.Controller
 
   deactivate: ->
     super
-    @html ''
     @toolbox.release() if @toolbox
 
-class Drawings extends Spine.Stack
+class Drawings extends Spine.SubStack
   controllers:
     index: Index
     show: Show
-  
-  constructor: ->
-    super
+    
+  routes:
+    '/drawings'     : 'index'
+    '/drawings/:id' : 'show'
 
-    PaletteSpecification.fetch()
-    Palette.fetch()
-    LinkShape.fetch()
-    NodeShape.fetch()
-    Drawing.fetch()
-    Node.fetch()
-    Link.fetch()    
+  default: 'index'
 
 module.exports = Drawings
