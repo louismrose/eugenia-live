@@ -87,6 +87,8 @@ class EugeniaNotation
   serialiseAttributes: (item) ->
     if item.properties
       (@serialiseAttribute(a) for a in item.properties).join("\n")
+    else
+      ""
   
   serialiseAttribute: (attribute) ->
     "  attr String[0..1] #{attribute};"

@@ -38,12 +38,18 @@ class Define extends Spine.Controller
   
   render: ->
     context = 
-      serialisation: @currentNotation().serialise(@safe(@item()))
-      example: @currentNotation().serialise(@safe(@example()))
+      serialisation: @serialise(@item())
+      example: @serialise(@example())
       verb: @verb()
       type: @type
       notation: @notation
     @html require('views/palettes/define')(context)
+  
+  serialise: (o) =>
+    if @type is 'node'
+      @currentNotation().serialiseNode(@safe(o))
+    else
+      @currentNotation().serialiseLink(@safe(o))
   
   safe: (o) =>
     @removeIds(o.toJSON())

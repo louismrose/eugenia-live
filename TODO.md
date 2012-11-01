@@ -8,7 +8,6 @@
 # Issues
 * Double clicking on state node opens editor for links?!
 * Eugenia notation...
-    * Attributes aren't included
     * Test
     * Refactor
 * Don't update properties view when link tool is active?
