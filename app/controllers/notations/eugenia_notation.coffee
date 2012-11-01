@@ -113,7 +113,7 @@ class EugeniaNotation
 
   serialiseColor: (color) ->
     c = new paper.Color(color)
-    "rgb(#{c.red*255},#{c.green*255},#{c.blue*255})"
+    "#{c.red*255},#{c.green*255},#{c.blue*255}"
   
   
   deserialise: (definition) ->
@@ -182,7 +182,7 @@ class EugeniaNotation
     link
   
   deserialiseColor: (color) ->
-    [all,r,g,b] = color.match("rgb\\((\\d+),(\\d+),(\\d+)\\)")
+    [all,r,g,b] = color.match("(\\d+),(\\d+),(\\d+)")
     new paper.Color(r/255, g/255, b/255).toCssString()
     
   deserialiseName: (definition) ->
