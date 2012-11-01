@@ -18,5 +18,6 @@ class App extends Spine.Stack
   constructor: ->
     super
     Spine.Route.setup()
+    @navigate('/drawings')
       
 module.exports = App  
