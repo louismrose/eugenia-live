@@ -6,7 +6,6 @@
 * Add unit tests for LinkTool
 
 # Issues
-* Investigate why back button seems to broken in some cases
 * Don't update properties view when link tool is active?
 * Add tests for reconstructing linkshapes and then refactor EugeniaNotation
 * Some issues with Eugenia notation...
