@@ -11,15 +11,28 @@ describe 'EugeniaNotation', ->
   it 'can represent a minimal nodeshape', ->
     shape = new NodeShape
       name: "Simple"
+      label:
+        placement: "none"
       elements: [
         figure: "rectangle"
       ]
     
     expect(@notation.reconstruct(shape)).toEqual(shape.toJSON())
   
+  it 'sets label.placement to none when there is no label', ->
+    shape = new NodeShape
+      name: "Simple"
+      elements: [
+        figure: "rectangle"
+      ]
+    
+    expect(@notation.serialiseNode(shape)).toMatch(/label.placement="none"/)
+  
   it 'can represent a nodeshape with properties', ->
     shape = new NodeShape
       name: "Simple"
+      label:
+        placement: "none"
       elements: [
         figure: "rectangle"
       ]
@@ -30,6 +43,8 @@ describe 'EugeniaNotation', ->
   it 'can represent additional properties of each element', ->
     shape = new NodeShape
       name: "Simple"
+      label:
+        placement: "none"
       elements: [
         figure: "rectangle"
         borderColor: "rgba(255, 0, 0, 1)"
@@ -43,6 +58,8 @@ describe 'EugeniaNotation', ->
   it 'can represent only the first element of a multielement node shape', ->
     shape = new NodeShape
       name: "Simple"
+      label:
+        placement: "none"
       elements: [
         {
           figure: "rectangle"
@@ -72,7 +89,7 @@ describe 'EugeniaNotation', ->
         pattern: "{0}"
 
     expect(@notation.reconstruct(shape)).toEqual(shape.toJSON())
-  
+    expect(@notation.serialiseNode(shape)).not.toMatch(/label.placement="none"/)
     
   it 'can represent additional properties of a labelled nodeshape', ->
     shape = new NodeShape

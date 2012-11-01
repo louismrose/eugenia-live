@@ -77,6 +77,11 @@ class EugeniaNotation
       if l.color
         properties += ", " if properties
         properties += "label.color=\"#{@serialiseColor(l.color)}\""
+
+    else # there is no label
+      properties += ", " if properties
+      properties += "label.placement=\"none\""
+      
     
     """
     @gmf.node(#{properties})

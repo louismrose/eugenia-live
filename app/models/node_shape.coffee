@@ -4,7 +4,7 @@ class Label
   constructor: (definition) ->
     @definition = definition
     
-    if @definition
+    if @definition and @definition.placement isnt "none"
       @definition.for = [@definition.for] unless @definition.for instanceof Array
       @definition.pattern = @default_pattern() unless @definition.pattern
     else
