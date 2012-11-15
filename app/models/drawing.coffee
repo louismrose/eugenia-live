@@ -32,6 +32,9 @@ class Drawing extends Spine.Model
     link.destroy() for link in @links().all()
     @palette().destroy() if @palette()
 
+  addNode: (parameters) ->
+    @nodes().create(parameters)
+
   updateCanvas: ->
     if paper.project
       paper.project.activeLayer.selected = false

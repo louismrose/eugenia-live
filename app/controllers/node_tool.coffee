@@ -7,16 +7,12 @@ class NodeTool extends Tool
   onMouseDown: (event) ->
     if @parameters.shape
       @parameters.position = event.point
-      @node = @drawing.nodes().create(@parameters)
-      @node.save()
+      @drawing.addNode(@parameters)
       @clearSelection()
       
   onMouseMove: (event) ->
     if @parameters.shape
       @clearSelection()
       @select(@hitTester.nodeAt(event.point))
-  
-  setParameter: (parameterKey, parameterValue) ->
-    super(parameterKey, parameterValue)
   
 module.exports = NodeTool

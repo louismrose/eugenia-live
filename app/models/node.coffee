@@ -47,5 +47,4 @@ class Node extends Spine.Model
   nodeShape: =>
     NodeShape.find(@shape) if @shape
 
-
 module.exports = Node
