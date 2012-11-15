@@ -57,6 +57,7 @@ class Show extends Spine.Controller
   
   change: (params) =>
     @item = Drawing.find(params.id)
+    @item.clearSelection()
     @log "Palette: #{@item.palette().id}"
     @render()
 

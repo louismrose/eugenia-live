@@ -7,8 +7,14 @@ class NodeTool extends Tool
   onMouseDown: (event) ->
     if @parameters.shape
       @parameters.position = event.point
-      @drawing.nodes().create(@parameters).save()
+      @node = @drawing.nodes().create(@parameters)
+      @node.save()
       @clearSelection()
+      
+  onMouseMove: (event) ->
+    if @parameters.shape
+      @clearSelection()
+      @select(@hitTester.nodeAt(event.point))
   
   setParameter: (parameterKey, parameterValue) ->
     super(parameterKey, parameterValue)

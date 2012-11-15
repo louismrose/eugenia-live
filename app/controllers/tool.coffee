@@ -1,46 +1,51 @@
 Node = require('models/node')
+Link = require('models/link')
 
 class Tool extends paper.Tool
   
   constructor: (options) ->
     super
+    @hitTester = options.hitTester
+    @hitTester or= new PaperHitTester
     @drawing = options.drawing
   
   setParameter: (parameterKey, parameterValue) ->
     @parameters or= {}
     @parameters[parameterKey] = parameterValue
-  
+
   onKeyDown: (event) ->
     if (event.key is 'delete')
-      selection = paper.project.selectedItems[0]
-      @rootFor(selection).model.destroy() if selection
+      e.destroy() for e in @selection()
+      @clearSelection()
 
-  isNode: (item) ->
-    item and (@rootFor(item).model instanceof Node)
-
-  changeSelectionTo: (item) ->
+  changeSelectionTo: (nodeOrLink) ->
     @clearSelection()
-    @select(item)
+    @select(nodeOrLink)
 
   clearSelection: ->
-    paper.project.activeLayer.selected = false
     @drawing.clearSelection()
-    @drawing.save()
   
-  select: (item) ->
-    root = @rootFor(item)
-    root.selected = true
-    @drawing.select(root.model)
-    @drawing.save()
+  select: (nodeOrLink) ->
+    @drawing.select(nodeOrLink)
   
   selection: ->
-    item = paper.project.selectedItems[0]
-    @rootFor(item) if item
+    @drawing.selection
+
+
+class PaperHitTester
+  nodeOrLinkAt: (point) ->
+    result = @nodeAt(point)
+    result = @linkAt(point) unless result
+    result
   
-  rootFor: (item) ->
-    if item.parent instanceof paper.Layer
-      item
-    else
-      item.parent
+  linkAt: (point) ->
+    @xAt(point, Link)
+  
+  nodeAt: (point) ->
+    @xAt(point, Node)
+
+  xAt: (point, type) ->
+    hitResult = paper.project.hitTest(point)
+    hitResult.item.model if hitResult and (hitResult.item.model instanceof type)
     
 module.exports = Tool

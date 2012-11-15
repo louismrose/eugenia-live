@@ -33,9 +33,16 @@ class Node extends Spine.Model
     link.reconnectTo(@id, destination.subtract(@position)) for link in @links()
     @position = destination
 
+  paperId: =>
+    "node" + @id
+
   toPath: =>
     path = @nodeShape().draw(@)
+    path.name = @paperId()
     path
+  
+  select: (layer) =>
+    layer.children[@paperId()].selected = true
     
   nodeShape: =>
     NodeShape.find(@shape) if @shape

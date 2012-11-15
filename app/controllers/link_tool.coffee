@@ -7,29 +7,27 @@ class LinkTool extends Tool
   
   onMouseMove: (event) ->
     if @parameters.shape
-      hitResult = paper.project.hitTest(event.point)
       @clearSelection()
-      @select(hitResult.item) if hitResult and @isNode(hitResult.item)
+      @select(@hitTester.nodeAt(event.point))
   
   onMouseDown: (event) ->
-    if @parameters.shape
-      hitResult = paper.project.hitTest(event.point)
-      if hitResult
-        @drafting = true
-        @draftLink = new DraftLink(event.point)
+    if @parameters.shape and @hitTester.nodeAt(event.point)
+      @drafting = true
+      @draftLink = new DraftLink(event.point)
 
   onMouseDrag: (event) ->
     if @drafting
       @draftLink.extendTo(event.point)
-      hitResult = paper.project.hitTest(event.point)
-      if hitResult and @isNode(hitResult.item)
-        @changeSelectionTo(hitResult.item)
+      @changeSelectionTo(@hitTester.nodeAt(event.point)) if @hitTester.nodeAt(event.point)
   
   onMouseUp: (event) ->
     if @drafting 
-      hitResult = paper.project.hitTest(event.point)
-      if hitResult and @isNode(hitResult.item)
-        @drawing.links().create(@draftLink.finalise(@parameters)).save()
+      if @hitTester.nodeAt(event.point)
+        path = @draftLink.finalise()
+        @parameters.sourceId = @hitTester.nodeAt(path.firstSegment.point).id
+        @parameters.targetId = @hitTester.nodeAt(path.lastSegment.point).id
+        @parameters.segments = path.segments
+        @drawing.links().create(@parameters).save()
       
       @draftLink.remove()
       @clearSelection()
@@ -46,22 +44,11 @@ class LinkTool extends Tool
     extendTo: (point) ->
       @path.add(point)
 
-    finalise: (parameters) ->
+    finalise: () ->
       @path.simplify(100)
-      i = paper.project.hitTest(@path.firstSegment.point).item
-      parameters.sourceId = @rootFor(paper.project.hitTest(@path.firstSegment.point).item).model.id
-      parameters.targetId = @rootFor(paper.project.hitTest(@path.lastSegment.point).item).model.id
-      parameters.segments = @path.segments
-      parameters
+      @path
     
     remove: ->
       @path.remove()
-    
-    # FIXME: duplication with tool
-    rootFor: (item) ->
-      if item.parent instanceof paper.Layer
-        item
-      else
-        item.parent
-      
+     
 module.exports = LinkTool

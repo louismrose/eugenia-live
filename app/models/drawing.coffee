@@ -11,12 +11,18 @@ class Drawing extends Spine.Model
     super
     @selection or= []
     @bind("destroy", @destroyChildren)
+    @bind("selectionChanged", @updateCanvas)
   
   select: (element) ->
-    @selection.push(element)
+    if element
+      @selection.push(element)
+      @save()
+      @trigger("selectionChanged")
     
   clearSelection: ->
     @selection = []
+    @save()
+    @trigger("selectionChanged")
   
   validate: ->
     "Name is required" unless @name
@@ -25,5 +31,12 @@ class Drawing extends Spine.Model
     node.destroy() for node in @nodes().all()
     link.destroy() for link in @links().all()
     @palette().destroy() if @palette()
-  
+
+  updateCanvas: ->
+    if paper.project
+      paper.project.activeLayer.selected = false
+      for element in @selection
+        element.select(paper.project.activeLayer)
+    
+
 module.exports = Drawing

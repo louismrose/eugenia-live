@@ -5,21 +5,12 @@ class SelectTool extends Tool
   parameters: {}
   
   onMouseDown: (event) ->
-    hitResult = paper.project.hitTest(event.point)
     @clearSelection()
-    if hitResult
-      @select(hitResult.item)
+    @select(@hitTester.nodeOrLinkAt(event.point))
   
   onMouseDrag: (event) ->
-    item = @selection()
-    if (@isNode(item))
-      item.position = event.point # TODO use some other indicator instead
-
-  onMouseUp: (event) ->
-    item = @selection()
-    if (@isNode(item))
-      node = item.model
-      node.moveTo(event.point)
-      node.save()
+    for item in @selection() when item instanceof Node
+      item.moveTo(event.point)
+      item.save()
     
 module.exports = SelectTool

@@ -9,15 +9,17 @@ class ElementRenderer
     old_el = @el
     
     @draw()
-    
-    @el.model = @item
-    e.model = @item for e in @el.children if @el.children
+    @linkElementToModel(@el)
     
     if old_el
       @el.selected = old_el.selected
       old_el.remove()
     
     paper.view.draw()
+  
+  linkElementToModel: (e) =>
+    e.model = @item
+    @linkElementToModel(c) for c in e.children if e.children
       
   draw: =>
     throw "No draw method has been defined for: #{@item}"

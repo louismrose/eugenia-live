@@ -26,11 +26,18 @@ class Link extends Spine.Model
     mover.moveEnd() if nodeId is @targetId
     @updateSegments(mover.finalise())
     @save()
-    
+  
+  paperId: =>
+    "link" + @id
+      
   toPath: =>
     s = LinkShape.find(@shape)
     path = s.draw(@toSegments())
+    path.name = @paperId()
     path
+
+  select: (layer) =>
+    layer.children[@paperId()].selected = true
 
   toSegments: =>
     for s in @segments
