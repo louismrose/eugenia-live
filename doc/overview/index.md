@@ -26,7 +26,7 @@ We have used EuGENia Live to rapidly design graphical languages for seating plan
 
 The screenshot below shows the drawing editor, which is used to test a DSL. Here, we're partway through implementing our seating plan DSL. From the palette on the left-hand side of the screen, we can see that we've defined syntax for several domain concepts (tables, male guests, female guests and partners). Properties can be set using the editor at the bottom of the screen.
 
-![Using the drawing editor of EuGENia Live to construct a seating plan, comprising a table and two guests.](img/initial.png)
+![Using the drawing editor of EuGENia Live to construct a seating plan, comprising a table and two guests.](../../../raw/master/doc/overview/img/initial.png)
 
 Let's change the concrete syntax of tables, so that names and numbers are shown on the drawing. Double-clicking on the table in the palette opens the palette editor (shown below). This screen can be used to change the table concept: we can add or remove properties, change its shape or colour, and add a label.
 
