@@ -12,7 +12,7 @@ To help reduce this learning curve, we've developed a couple of tools. The first
 
 EuGENiA Live
 -----------
-The primary aim of EuGENia Live is to reduce the time and effort required to design graphical domain-specific languages. We have used EuGENia Live to rapidly design graphical languages for seating plans, and for modelling cell dynamics for prostrate cancer researchers.
+We have developed EuGENia Live with the aim of reducing the amount of technical expertise required to design a DSL, minimise the amount of time required to change the DSL during its design, and to interoperate with existing model-driven engineering tools, such as EMF, GMF and [Epsilon](http://www.eclipse.org/epsilon).
 
 Some of the key features of EuGENia Live are:
 
@@ -22,9 +22,9 @@ Some of the key features of EuGENia Live are:
 
 Designing a seating plan DSL with EuGENia Live
 ----------------------------------------------
-We have used EuGENia Live to rapidly design graphical languages for seating plans, and for modelling cell dynamics for prostrate cancer researchers. Let's now take a look at how EuGENia Live works.
+We have used EuGENia Live to rapidly design graphical languages ranging from seating plans to the cell dynamics of prostrate cancer cells. Using the example of a seating plan DSL, let's now take a look at how EuGENia Live works.
 
-The screenshot below shows the drawing editor, which is used to test a DSL. Here, we're partway through implementing our seating plan DSL. From the palette on the left-hand side of the screen, we can see that we've defined syntax for several domain concepts (tables, male guests, female guests and partners). Properties can be set using the editor at the bottom of the screen.
+The screenshot below shows EuGENia Live's drawing editor, which is used to test a DSL. Here, we're partway through implementing our seating plan DSL. From the palette on the left-hand side of the screen, we can see that we've defined syntax for several domain concepts (tables, male guests, female guests and partners). Properties can be set using the editor at the bottom of the screen.
 
 ![Using the drawing editor of EuGENia Live to construct a seating plan, comprising a table and two guests.](../../../../raw/master/doc/overview/img/initial.png)
 
