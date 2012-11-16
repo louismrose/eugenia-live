@@ -34,11 +34,7 @@ Let's change the concrete syntax of tables, so that names and numbers are shown 
 
 By adding a couple of additional [EuGENia annotations](http://www.eclipse.org/epsilon/doc/articles/eugenia-gmf-tutorial/), we can specify that tables should have a label, the label should display the name and number of the table, and the label should be placed inside the table's shape:
 
-    @gmf.node(border.color="0,0,0", color="255,255,255", figure="ellipse", size="50,50", label="name,number", label.pattern="{1} : {0}", label.placement="internal", label.color="0,0,0")
-    class Table extends Element {
-      attr String[0..1] name;
-      attr String[0..1] number;
-    }
+![The contents of the palette editor of EuGENia Live after adding a label to the table concept.](../../../../raw/master/doc/overview/img/editor-final.png)
 
 When we return to the drawing editor, the table now displays its name and number on the drawing.
 
