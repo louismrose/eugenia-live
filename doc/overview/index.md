@@ -30,7 +30,7 @@ The screenshot below shows the drawing editor, which is used to test a DSL. Here
 
 Let's change the concrete syntax of tables, so that names and numbers are shown on the drawing. Double-clicking on the table in the palette opens the palette editor (shown below). This screen can be used to change the table concept: we can add or remove properties, change its shape or colour, and add a label.
 
-![Using the palette editor of EuGENia Live to edit the table concept by adding a label to it.](img/editor.png)
+![Using the palette editor of EuGENia Live to edit the table concept by adding a label to it.](../../../../raw/master/doc/overview/img/editor.png)
 
 By adding a couple of additional [EuGENia annotations](http://www.eclipse.org/epsilon/doc/articles/eugenia-gmf-tutorial/), we can specify that tables should have label, the label should display the name and number of the table, and the label should be placed inside the table's shape:
 
@@ -42,7 +42,7 @@ By adding a couple of additional [EuGENia annotations](http://www.eclipse.org/ep
 
 When we return to the drawing editor, the table now displays its name and number on the drawing.
 
-![The results of using the palette editor are immediately shown in the drawing editor: the table now has a label.](img/editor.png)
+![The results of using the palette editor are immediately shown in the drawing editor: the table now has a label.](../../../../raw/master/doc/overview/img/editor.png)
 
 Designing a DSL with EuGENia Live normally proceeds precisely in this manner: experimenting with the drawing, identifying a small change to the language, and implementing it by adding or changing EuGENia annotations.
 
