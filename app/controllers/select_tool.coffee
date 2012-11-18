@@ -6,13 +6,13 @@ class SelectTool extends Tool
   
   onMouseDown: (event) ->
     @clearSelection()
-    item = @hitTester.nodeOrLinkAt(event.point)
-    @select(item)
-    @offset = event.point.subtract(item.position)
+    @select(@hitTester.nodeOrLinkAt(event.point))
+    @origin = event.point
       
   onMouseDrag: (event) ->
     for item in @selection() when item instanceof Node
-      item.moveTo(event.point.subtract(@offset))
+      item.moveBy(event.point.subtract(@origin))
+      @origin = event.point
       item.save()
     
 module.exports = SelectTool
