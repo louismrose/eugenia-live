@@ -1,7 +1,7 @@
 Bootstrap your new graphical DSL with EuGENia Live
 ==================================================
 Domain-specific languages (DSLs) play an important role
-in model-driven engineering: according to a recent survey of practitioners, DSLs are more widely used than any modelling language except for UML. But just how easy is it to start building your own DSL today?
+in model-driven engineering: according to [a recent survey of practitioners](http://doi.acm.org/10.1145/1985793.1985858), DSLs are more widely used than any modelling language except for UML. But just how easy is it to start building your own DSL today?
 
 A possible reason for the popularity of DSLs might be the increasing availability of powerful tools for implementing DSLs. In the Eclipse eco-system, Xtext, GMF and Graphiti allow software engineers to create rich DSLs and generate domain-specific editors. GMF, for example, has been used to produce powerful graphical editors for languages such as [UML](http://wiki.eclipse.org/MDT-UML2Tools) and [Business Process Model and Notation](http://www.bonitasoft.com/overview/bonita-studio).
 
@@ -50,4 +50,4 @@ EuGENia Live is a continuation of a line of research that we started in 2010, an
 
 We're currently working to make EuGENia Live easier to use and able to express richer languages. In particular, we're implementing a graphical editor for defining language concepts (so that users don't need to learn EuGENia annotations) and on adding support for users to define syntactic constraints (such as "it's not valid to use a partner link to connect a table to a guest").
 
-You can try the alpha version of EuGENia Live today at [http://eugenialive.herokuapp.com/](http://eugenialive.herokuapp.com/), or find out more by following [@epsilonews](https://www.twitter.com/epsilonews) on Twitter.
+You can try the alpha version of EuGENia Live today at [http://eugenialive.herokuapp.com/](http://eugenialive.herokuapp.com/), read our [workshop paper](http://www.di.univaq.it/diruscio/sites/XM2012/xm2012_submission_6.pdf), or find out more by following [@epsilonews](https://www.twitter.com/epsilonews) on Twitter.
