@@ -7,7 +7,7 @@ describe 'SimplifiesSegments', ->
     @segments = [new paper.Segment(new paper.Point(10, 5))]
 
   it 'is necessary because Paper.js segments cannot be serialised', ->
-    expect(=> JSON.stringify(@segments)).toThrow("JSON.stringify cannot serialize cyclic structures.")
+    expect(=> JSON.stringify(@segments)).toThrow("Converting circular structure to JSON")
 
   it 'simplifies segments and allows serialisation', ->
     simplifiedSegments = new SimplifiesSegments().for(@segments)
