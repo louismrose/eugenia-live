@@ -34,6 +34,9 @@ class Drawing extends Spine.Model
 
   addNode: (parameters) ->
     @nodes().create(parameters)
+    
+  addLink: (parameters) ->
+    @links().create(parameters)
 
   updateCanvas: ->
     if paper.project

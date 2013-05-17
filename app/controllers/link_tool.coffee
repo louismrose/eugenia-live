@@ -1,5 +1,6 @@
 Tool = require('controllers/tool')
 Link = require('models/link')
+CreateLink = require('models/commands/create_link')
 
 class LinkTool extends Tool
   parameters: {'shape' : null}
@@ -27,7 +28,7 @@ class LinkTool extends Tool
         @parameters.sourceId = @hitTester.nodeAt(path.firstSegment.point).id
         @parameters.targetId = @hitTester.nodeAt(path.lastSegment.point).id
         @parameters.segments = path.segments
-        @drawing.links().create(@parameters).save()
+        @run(new CreateLink(@drawing, @parameters))
       
       @draftLink.remove()
       @clearSelection()

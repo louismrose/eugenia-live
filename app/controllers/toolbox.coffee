@@ -4,6 +4,7 @@ NodeTool = require('controllers/node_tool')
 SelectTool = require('controllers/select_tool')
 NodeShape = require ('models/node_shape')
 LinkShape = require ('models/link_shape')
+Commander = require ('models/commands/commander')
 
 class Toolbox extends Spine.Controller
   events:
@@ -13,10 +14,11 @@ class Toolbox extends Spine.Controller
   constructor: ->
     super
     @render()
+    commander = new Commander()
     @tools =
-      node:   new NodeTool(drawing: @item)
-      select: new SelectTool(drawing: @item)
-      link:   new LinkTool(drawing: @item)
+      node:   new NodeTool(commander: commander, drawing: @item)
+      select: new SelectTool(commander: commander, drawing: @item)
+      link:   new LinkTool(commander: commander, drawing: @item)
     @switchTo("select")
     
   render: =>

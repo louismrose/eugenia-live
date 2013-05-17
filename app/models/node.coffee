@@ -10,7 +10,6 @@ class Node extends Spine.Model
   constructor: (attributes) ->
     super
     @k = v for k,v of attributes
-    @bind("destroy", @destroyLinks)
     @initialisePropertyValues()
 
   initialisePropertyValues: ->
@@ -22,9 +21,6 @@ class Node extends Spine.Model
   
   getPropertyValue: (property) ->
     @propertyValues[property]
-  
-  destroyLinks: =>
-    link.destroy() for link in @links()
     
   links: =>
     Link.select (link) => (link.sourceId is @id) or (link.targetId is @id)
@@ -43,7 +39,13 @@ class Node extends Spine.Model
   
   select: (layer) =>
     layer.children[@paperId()].selected = true
-    
+  
+  destroy: (options = {}) =>
+    destroyed = super(options)
+    memento =
+      shape: destroyed.shape
+      position: destroyed.position
+  
   nodeShape: =>
     NodeShape.find(@shape) if @shape
 

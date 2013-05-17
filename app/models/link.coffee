@@ -39,6 +39,14 @@ class Link extends Spine.Model
   select: (layer) =>
     layer.children[@paperId()].selected = true
 
+  destroy: (options = {}) =>
+    destroyed = super(options)
+    memento =
+      sourceId: destroyed.sourceId
+      targetId: destroyed.targetId
+      segments: destroyed.segments
+      shape: destroyed.shape
+
   toSegments: =>
     for s in @segments
       new paper.Segment(s.point, s.handleIn, s.handleOut)

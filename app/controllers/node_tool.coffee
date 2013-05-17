@@ -1,5 +1,5 @@
 Tool = require('controllers/tool')
-Node = require('models/node')
+CreateNode = require('models/commands/create_node')
 
 class NodeTool extends Tool
   parameters: {'shape' : null}
@@ -7,7 +7,7 @@ class NodeTool extends Tool
   onMouseDown: (event) ->
     if @parameters.shape
       @parameters.position = event.point
-      @drawing.addNode(@parameters)
+      @run(new CreateNode(@drawing, @parameters))
       @clearSelection()
       
   onMouseMove: (event) ->

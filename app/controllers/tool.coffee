@@ -1,10 +1,12 @@
 Node = require('models/node')
 Link = require('models/link')
+DeleteElement = require('models/commands/delete_element')
 
 class Tool extends paper.Tool
   
   constructor: (options) ->
     super
+    @commander = options.commander
     @hitTester = options.hitTester
     @hitTester or= new PaperHitTester
     @drawing = options.drawing
@@ -12,11 +14,20 @@ class Tool extends paper.Tool
   setParameter: (parameterKey, parameterValue) ->
     @parameters or= {}
     @parameters[parameterKey] = parameterValue
+  
+  run: (command) ->
+    @commander.run(command)
 
   onKeyDown: (event) ->
-    if (event.key is 'delete')
-      e.destroy() for e in @selection()
-      @clearSelection()
+    # don't intercept key events if any DOM element
+    # (e.g. form field) has focus
+    if (document.activeElement is document.body)      
+      if (event.key is 'delete')
+        @run(new DeleteElement(@drawing, e)) for e in @selection()
+        @clearSelection()
+
+      else if (event.key is 'z')
+        @commander.undo()
 
   changeSelectionTo: (nodeOrLink) ->
     @clearSelection()

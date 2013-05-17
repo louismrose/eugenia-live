@@ -12,10 +12,12 @@ class MockDrawing extends MockContainer
 
 describe 'NodeTool', ->
   NodeTool = require('controllers/node_tool')
+  Commander = require('models/commands/commander')
 
   beforeEach ->
+    @commander = new Commander
     @drawing = new MockDrawing
-    @tool = new NodeTool(drawing: @drawing)
+    @tool = new NodeTool(commander: @commander, drawing: @drawing)
     @tool.setParameter("shape", "a-shape")
 
   it 'creates a new node', ->
