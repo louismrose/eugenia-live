@@ -57,6 +57,8 @@ class Show extends Spine.Controller
     @active @change
   
   change: (params) =>
+    # LoggingCommander = require ('models/commands/logging_commander')
+    # @commander = new LoggingCommander(new Commander())
     @commander = new Commander()
     @item = Drawing.find(params.id)
     @item.clearSelection()
