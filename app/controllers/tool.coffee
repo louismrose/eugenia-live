@@ -15,8 +15,8 @@ class Tool extends paper.Tool
     @parameters or= {}
     @parameters[parameterKey] = parameterValue
   
-  run: (command) ->
-    @commander.run(command)
+  run: (command, options={undoable: true}) ->
+    @commander.run(command, options)
 
   onKeyDown: (event) ->
     # don't intercept key events if any DOM element

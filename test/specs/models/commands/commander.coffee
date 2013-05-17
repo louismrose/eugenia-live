@@ -7,11 +7,11 @@ describe 'Commander', ->
     @commander = new Commander
     @command = jasmine.createSpyObj('command', ['run', 'undo'])
 
-  it 'run delegates to the command', ->
+  it 'runs by delegating to the command', ->
     @commander.run(@command)
     expect(@command.run).toHaveBeenCalled()
     
-  it 'undo delegates to the last command to have been run', ->
+  it 'undoes by delegating to the last command to have been run', ->
     @commander.run(@command)
     @commander.undo()
     expect(@command.undo).toHaveBeenCalled()
@@ -32,9 +32,34 @@ describe 'Commander', ->
     @commander.undo()
     expect(c1.undo.callCount).toBe(1)
     
-  
-  it 'undo does nothing when there are no commands left to undo', ->
+  it 'does not undo when there are no commands left to undo', ->
     @commander.run(@command)
     @commander.undo()
     @commander.undo()
     expect(@command.undo.callCount).toBe(1)
+ 
+ 
+  describe 'run with undoable set to false', ->
+    it 'does not undo commands', ->
+      @commander.run(@command, undoable: false)
+      @commander.undo()
+      expect(@command.undo).not.toHaveBeenCalled()
+ 
+    it 'does undo the last undoable command', ->
+      uc = jasmine.createSpyObj('command', ['run', 'undo'])
+      nuc = jasmine.createSpyObj('command', ['run', 'undo'])
+      
+      @commander.run(uc, undoable: true)
+      @commander.run(nuc, undoable: false)
+      @commander.undo()
+      expect(uc.undo).toHaveBeenCalled()
+ 
+  describe 'add', ->
+    it 'does not run commands', ->
+      @commander.add(@command)
+      expect(@command.run).not.toHaveBeenCalled()
+  
+    it 'does prepare commands to be undone', ->
+      @commander.add(@command)
+      @commander.undo()
+      expect(@command.undo).toHaveBeenCalled()
