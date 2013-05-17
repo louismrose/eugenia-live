@@ -6,6 +6,7 @@ Spine.SubStack = require('lib/substack')
 CanvasRenderer = require('views/drawings/canvas_renderer')
 Toolbox = require('controllers/toolbox')
 Selection = require('controllers/selection')
+Commander = require ('models/commands/commander')
 
 
 class Index extends Spine.Controller
@@ -56,6 +57,7 @@ class Show extends Spine.Controller
     @active @change
   
   change: (params) =>
+    @commander = new Commander()
     @item = Drawing.find(params.id)
     @item.clearSelection()
     @log "Palette: #{@item.palette().id}"
@@ -65,8 +67,8 @@ class Show extends Spine.Controller
     @html require('views/drawings/show')
     if @item
       new CanvasRenderer(drawing: @item, canvas: @$('#drawing')[0])
-      @toolbox = new Toolbox(item: @item, el: @$('#toolbox'))  
-      @selection = new Selection(item: @item, el: @$('#selection'))
+      @toolbox = new Toolbox(commander: @commander, item: @item, el: @$('#toolbox'))  
+      @selection = new Selection(commander: @commander, item: @item, el: @$('#selection'))
 
   deactivate: ->
     super

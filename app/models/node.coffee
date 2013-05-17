@@ -17,6 +17,7 @@ class Node extends Spine.Model
   
   setPropertyValue: (property, value) ->
     @propertyValues[property] = value
+    @save()
   
   getPropertyValue: (property) ->
     @propertyValues[property]

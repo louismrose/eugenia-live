@@ -1,4 +1,5 @@
 Spine = require('spine')
+ChangeProperty = require('models/commands/change_property')
 
 class Selection extends Spine.Controller
   events:
@@ -18,7 +19,6 @@ class Selection extends Spine.Controller
   updatePropertyValue: (event) =>
     property = $(event.target).data('property')
     newValue = $(event.target).val()
-    @selection.setPropertyValue(property, newValue)
-    @selection.save()
+    @commander.run(new ChangeProperty(@selection, property, newValue))
   
 module.exports = Selection

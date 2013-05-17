@@ -3,7 +3,7 @@ require = window.require
 describe 'Toolbox', ->
   Toolbox = require('controllers/toolbox')
 
-  beforeEach -> @t = new Toolbox()
+  beforeEach -> @t = new Toolbox(commander: {})
 
   it 'switches to SelectTool when initialised', ->
     expect(@t.currentTool).toBe(@t.tools.select)
