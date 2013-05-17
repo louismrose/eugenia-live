@@ -1,3 +1,7 @@
 language: node_js
 node_js:
   - 0.6
+before_script:
+  - ./server.sh
+  - sleep 5
+script: ./test.sh

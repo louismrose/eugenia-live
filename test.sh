@@ -1,0 +1,1 @@
+phantomjs test/run_jasmine.coffee http://localhost:9294/test
