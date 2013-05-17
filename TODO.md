@@ -1,6 +1,3 @@
-# Deploy
-* Alpha label
-
 # Testing
 * Need a few end-to-end tests for core functionality
 * Add unit tests for LinkTool
@@ -11,18 +8,22 @@
 
 # Features
 
-## Routing
-* Gracefully handle invalid ids in routes
-
-## Drawing export
-* Export drawing as SVG
-* Export model as XML / JSON
+## Live collaboration
+* Build a commander that communicates with Pusher (and wraps the Commander class, like LoggingCommander)
+* Switch palette editing to command-based API
 
 ## Palette editor
 * Better error reporting for parsing of invalid JSON and EuGENia
 * Investigate Google prettify for highlighting JSON and EuGENia code
 * Graphical alternative to JSON / EuGENia metamodelling languages
 * Preview palette items (e.g. little icons next to names or a thumbnail shown when hovering)
+
+## Routing
+* Gracefully handle invalid ids in routes
+
+## Drawing export
+* Export drawing as SVG
+* Export model as XML / JSON
 
 ## Links
 * Allow properties and labels
