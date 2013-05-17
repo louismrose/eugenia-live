@@ -5,7 +5,6 @@ class Drawing extends Spine.Model
   @hasOne 'palette', 'models/palette'
   @hasMany 'nodes', 'models/node'
   @hasMany 'links', 'models/link'
-  @extend Spine.Model.Local
   
   constructor: ->
     super

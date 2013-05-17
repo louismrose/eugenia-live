@@ -3,7 +3,6 @@ Spine = require('spine')
 class LinkShape extends Spine.Model
   @configure "LinkShape", "name", "color", "style"
   @belongsTo 'palette', 'models/palette'
-  @extend Spine.Model.Local
   
   constructor: (attributes) ->
     super

@@ -89,7 +89,6 @@ class Elements
 class NodeShape extends Spine.Model
   @configure "NodeShape", "name", "properties", "label", "elements"
   @belongsTo 'palette', 'models/palette'
-  @extend Spine.Model.Local
   
   constructor: (attributes) ->
     super

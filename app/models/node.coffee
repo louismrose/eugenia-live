@@ -5,7 +5,6 @@ NodeShape = require('models/node_shape')
 class Node extends Spine.Model
   @configure "Node", "shape", "position", "propertyValues"
   @belongsTo 'drawing', 'models/drawing'
-  @extend Spine.Model.Local
     
   constructor: (attributes) ->
     super

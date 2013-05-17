@@ -6,7 +6,6 @@ LinkShape = require('models/link_shape')
 class Link extends Spine.Model
   @configure "Link", "sourceId", "targetId", "segments", "shape"
   @belongsTo 'drawing', 'models/drawing'
-  @extend Spine.Model.Local
   
   # TODO duplication with Node
   constructor: (attributes) ->
