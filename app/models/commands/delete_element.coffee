@@ -10,7 +10,6 @@ class DeleteElement
       @delegate = new DeleteLink(drawing, element)
   
   run: =>
-    console.log(@delegate)
     @delegate.run()
   
   undo: =>

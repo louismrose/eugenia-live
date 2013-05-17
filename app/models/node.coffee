@@ -47,6 +47,6 @@ class Node extends Spine.Model
       position: destroyed.position
   
   nodeShape: =>
-    NodeShape.find(@shape) if @shape
+    NodeShape.find(@shape) if @shape and NodeShape.exists(@shape)
 
 module.exports = Node

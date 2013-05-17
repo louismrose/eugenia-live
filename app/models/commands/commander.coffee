@@ -1,11 +1,12 @@
 class Commander
+  constructor: ->
+    @history = []
+  
   run: (command) =>
-    @command = command
+    @history.push command
     command.run()
 
   undo: =>
-    if @command
-      @command.undo()
-      @command = null
+    @history.pop().undo() if @history.length
   
 module.exports = Commander
