@@ -18,3 +18,9 @@ To be able to run the acceptance tests:
 4. Install Ruby dependencies: `bundle install`
 
 Run the acceptance tests with `bundle exec cucumber`
+
+
+Deploying to Heroku
+===================
+
+Ensure that Heroku knows that this is a Javascript (and not a Ruby) app: `heroku config:set BUILDPACK_URL=https://github.com/heroku/heroku-buildpack-nodejs`
