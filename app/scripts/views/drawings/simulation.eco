@@ -1,0 +1,4 @@
+<button data-stop-simulation="">Stop</button>
+<button data-start-simulation="">Start</button>
+<button data-reset-simulation="">Reset</button>
+<p>Current time = <span id="current-simulation-time">0</span><p>

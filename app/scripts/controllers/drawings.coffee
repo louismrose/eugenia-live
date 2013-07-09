@@ -8,8 +8,9 @@ define [
   'views/drawings/show'
   'views/drawings/canvas_renderer'
   'controllers/toolbox'
+  'controllers/simulation'
   'controllers/selection'
-], (Spine, SubStack, PaletteSpecification, Drawing, Commander, IndexTemplate, ShowTemplate, CanvasRenderer, Toolbox, Selection) ->
+], (Spine, SubStack, PaletteSpecification, Drawing, Commander, IndexTemplate, ShowTemplate, CanvasRenderer, Toolbox, Simulation, Selection) ->
 
   class Index extends Spine.Controller
     events:
@@ -74,6 +75,7 @@ define [
       if @item
         new CanvasRenderer(drawing: @item, canvas: @$('#drawing')[0])
         @toolbox = new Toolbox(commander: @commander, item: @item, el: @$('#toolbox'))  
+        @simulation = new Simulation(commander: @commander, item: @item, el: @$('#simulation'))
         @selection = new Selection(commander: @commander, item: @item, el: @$('#selection'))
   
     deactivate: ->
