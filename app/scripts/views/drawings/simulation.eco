@@ -2,3 +2,10 @@
 <button data-start-simulation="">Start</button>
 <button data-reset-simulation="">Reset</button>
 <p>Current time = <span id="current-simulation-time">0</span><p>
+
+<textarea id="function">
+  return x + y + z;
+</textarea>
+
+  <input type="text" id="x"/><input type="text" id="y"/><input type="text" id="z" value="test"/>
+  <input type="text" id="f"/>
