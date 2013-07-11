@@ -15,7 +15,7 @@ define [
       @initialisePropertyValues()
 
     initialisePropertyValues: ->
-      @propertyValues or= @nodeShape().defaultPropertyValues() if @nodeShape()
+      @propertyValues or= @getShape().defaultPropertyValues() if @getShape()
       @propertyValues or= {}
   
     setPropertyValue: (property, value) ->
@@ -37,7 +37,7 @@ define [
       "node" + @id
 
     toPath: =>
-      path = @nodeShape().draw(@)
+      path = @getShape().draw(@)
       path.name = @paperId()
       path
   
@@ -50,5 +50,5 @@ define [
         shape: destroyed.shape
         position: destroyed.position
   
-    nodeShape: =>
+    getShape: =>
       NodeShape.find(@shape) if @shape and NodeShape.exists(@shape)

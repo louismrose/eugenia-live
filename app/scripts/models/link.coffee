@@ -43,3 +43,6 @@ define [
         targetId: destroyed.targetId
         segments: destroyed.segments
         shape: destroyed.shape
+        
+    getShape: =>
+      LinkShape.find(@shape) if @shape and LinkShape.exists(@shape)

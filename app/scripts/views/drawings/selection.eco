@@ -1,4 +1,5 @@
 <% unless $.isEmptyObject(@propertyValues): %>
+  <h2><%= @getShape().displayName()%> properties</h2>
   <table class="table table-bordered">
     <thead>
       <tr>
