@@ -8,9 +8,8 @@ define [
   'views/drawings/show'
   'views/drawings/canvas_renderer'
   'controllers/toolbox'
-  'controllers/simulation'
   'controllers/selection'
-], (Spine, SubStack, PaletteSpecification, Drawing, Commander, IndexTemplate, ShowTemplate, CanvasRenderer, Toolbox, Simulation, Selection) ->
+], (Spine, SubStack, PaletteSpecification, Drawing, Commander, IndexTemplate, ShowTemplate, CanvasRenderer, Toolbox, Selection) ->
 
   class Index extends Spine.Controller
     events:
@@ -57,6 +56,9 @@ define [
       result
 
   class Show extends Spine.Controller
+    events:
+      'click [data-mode]' : 'changeMode'
+    
     constructor: ->
       super
       @active @change
@@ -75,9 +77,13 @@ define [
       if @item
         new CanvasRenderer(drawing: @item, canvas: @$('#drawing')[0])
         @toolbox = new Toolbox(commander: @commander, item: @item, el: @$('#toolbox'))  
-        @simulation = new Simulation(commander: @commander, item: @item, el: @$('#simulation'))
         @selection = new Selection(commander: @commander, item: @item, el: @$('#selection'))
   
+    changeMode: (event) =>
+      event.preventDefault()
+      @mode = $(event.target).data('mode')
+      @navigate('/simulate', @item.id) if @mode is 'simulate'    
+    
     deactivate: ->
       super
       @toolbox.release() if @toolbox

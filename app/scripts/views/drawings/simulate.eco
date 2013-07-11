@@ -1,24 +1,25 @@
 <div class="row-fluid">
-  <legend>Drawing <%=@name%>
+  <legend>Simulating <%=@name%>
     <ul class="nav nav-pills" style="display: inline; float: right;">
-      <li class="active">
+      <li>
         <a data-mode="edit" href="#">Edit drawing</a>
       </li>
-      <li>
+      <li class="active">
         <a data-mode="simulate" href="#">Simulate drawing</a>
       </li>
     </ul>
   </legend>
-<div class="row-fluid">
   <div id="toolbox" class="span2">
-      
+    
+  </div>
+  <div class="span10">
+    <div id="canvas" style="height:400px">
+      <canvas id="drawing" width="1000" height="400"></canvas>
     </div>
-    <div class="span10">
-      <div id="canvas" style="height:400px">
-        <canvas id="drawing" width="1000" height="400"></canvas>
-      </div>
-      <div id="selection" class="well">
-      </div>
+
+    <div id="simulation" class="well">
+    </div>
+    <div id="selection" class="well">
     </div>
   </div>
 </div>
