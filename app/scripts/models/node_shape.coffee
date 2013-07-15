@@ -71,22 +71,31 @@ define [
     createElement: (e, position) =>
       e.x or= 0
       e.y or= 0
-      path = @createPath(e.figure, e.size)
+      path = @createPath(e)
       path.position = new paper.Point(position).add(e.x, e.y)
       path.fillColor = e.fillColor
       path.strokeColor = e.borderColor
       path
 
-    createPath: (figure, size) =>
-      switch figure
+    createPath: (options) =>
+      switch options.figure
         when "rounded"
-          rect = new paper.Rectangle(0, 0, size.width, size.height)
+          rect = new paper.Rectangle(0, 0, options.size.width, options.size.height)
           new paper.Path.RoundRectangle(rect, new paper.Size(10, 10))
         when "ellipse"
-          rect = new paper.Rectangle(0, 0, size.width*2, size.height*2)
+          rect = new paper.Rectangle(0, 0, options.size.width*2, options.size.height*2)
           new paper.Path.Oval(rect)
         when "rectangle"
-          new paper.Path.Rectangle(0, 0, size.width, size.height)
+          new paper.Path.Rectangle(0, 0, options.size.width, options.size.height)
+        when "polygon"
+          options.sides or= 3
+          options.radius or= 50
+          new paper.Path.RegularPolygon(new paper.Point(0, 0), options.sides, options.radius)
+        when "path"
+          path = new paper.Path()
+          for point in options.points
+            path.add(new paper.Point(point.x, point.y))
+          path
 
 
   class NodeShape extends Spine.Model

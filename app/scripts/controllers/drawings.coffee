@@ -44,8 +44,10 @@ define [
     delete: (event) =>
       button = @$(event.currentTarget)
       id = button.data('id')
-      Drawing.destroy(id)
-      @render()
+      drawing = Drawing.find(id)
+      if confirm("Are you sure you want delete drawing '#{drawing.name}'?")
+        Drawing.destroy(id)
+        @render()
 
     extractFormData: (form) =>
       result = {}
