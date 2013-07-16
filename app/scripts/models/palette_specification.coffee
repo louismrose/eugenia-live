@@ -141,8 +141,8 @@ define [
               {
                 "figure": "rectangle",
                 "size": {
-                  "width": 75,
-                  "height": 75
+                  "width": 100,
+                  "height": 100
                 },
                 "fillColor": "white",
                 "borderColor": "black",
@@ -150,12 +150,20 @@ define [
                 "y": 0
               },
               {
-                "figure": "polygon",
-                "sides": 3,
-                "radius": 20,
-                "fillColor": "green",
-                "borderColor": "red",
-                "x": -35,
+                "figure": "path",
+                "points": [
+                  {"x": -20, "y" : 40},
+                  {"x": 50,  "y" : 40},
+                  {"x": 40,  "y" : 10},
+                  {"x": 80,  "y" : 50},
+                  {"x": 40,  "y" : 90},                
+                  {"x": 50,  "y" : 60},
+                  {"x": -20, "y" : 60},
+                  {"x": -20, "y" : 40}
+                ],
+                "fillColor": "white",
+                "borderColor": "green",
+                "x": -30,
                 "y": -35
               }
             ]
@@ -208,7 +216,7 @@ define [
                 "figure": "polygon",
                 "fillColor": "#FFCCFF",
                 "borderColor": "black",
-                "sides" : 10,
+                "sides" : 5,
                 "radius" : 50,
                 "x": 0,
                 "y": 0
