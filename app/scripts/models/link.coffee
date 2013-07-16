@@ -6,19 +6,31 @@ define [
 ], (Spine, MovesPath, LinkShape) ->
 
   class Link extends Spine.Model
-    @configure "Link", "sourceId", "targetId", "segments", "shape"
+    @configure "Link", "sourceId", "targetId", "segments", "shape", "propertyValues"
     @belongsTo 'drawing', 'models/drawing'
   
     # TODO duplication with Node
     constructor: (attributes) ->
       super
       @k = v for k,v of attributes
+      @initialisePropertyValues()
+      
+    initialisePropertyValues: ->
+      @propertyValues or= @getShape().defaultPropertyValues() if @getShape()
+      @propertyValues or= {}
+  
+    setPropertyValue: (property, value) ->
+      @propertyValues[property] = value
+      @save()
+  
+    getPropertyValue: (property) ->
+      @propertyValues[property]
   
     select: ->
       @drawing().select(@)
   
     reconnectTo: (nodeId, offset) =>
-      mover = new MovesPath(@toPath(), offset)
+      mover = new MovesPath(@toPath().firstChild, offset)
       mover.moveStart() if nodeId is @sourceId
       mover.moveEnd() if nodeId is @targetId
       @segments = mover.finalise()
@@ -28,8 +40,7 @@ define [
       "link" + @id
       
     toPath: =>
-      s = LinkShape.find(@shape)
-      path = s.draw(@segments)
+      path = @getShape().draw(@)
       path.name = @paperId()
       path
 
