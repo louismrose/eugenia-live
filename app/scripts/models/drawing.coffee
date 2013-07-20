@@ -18,12 +18,12 @@ define [
     select: (element) ->
       if element
         @selection.push(element)
-        @save()
+        # @save()
         @trigger("selectionChanged")
     
     clearSelection: ->
       @selection = []
-      @save()
+      # @save()
       @trigger("selectionChanged")
   
     validate: ->
@@ -43,5 +43,5 @@ define [
     updateCanvas: ->
       if paper.project
         paper.project.activeLayer.selected = false
-        for element in @selection
+        for element in @selection?
           element.select(paper.project.activeLayer)

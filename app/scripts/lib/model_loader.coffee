@@ -8,6 +8,7 @@ define [
   'models/node'
   'models/link'
   'spine.model.local'
+  'spine.model.remote'
 ], (Spine, PaletteSpecification, Palette, LinkShape, NodeShape, Drawing, Node, Link) ->
 
   class ModelLoader
@@ -23,5 +24,8 @@ define [
       ]
       
       for model in models
-        model.extend(Spine.Model.Local) unless model is PaletteSpecification
-        model.fetch()
+        if model is PaletteSpecification
+          model.extend(Spine.Model.Local)
+          model.fetch()
+        else
+          model.extend(Spine.Model.Remote)

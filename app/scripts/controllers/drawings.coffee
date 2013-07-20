@@ -19,8 +19,9 @@ define [
     constructor: ->
       super
       @active @render
+      Drawing.bind("fetch", @render)
   
-    render: ->
+    render: =>
       context =
         drawings: Drawing.all()
         palette_specs: PaletteSpecification.all()

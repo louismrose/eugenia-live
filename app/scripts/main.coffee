@@ -8,9 +8,11 @@ require.config
     'codemirror.lint' : "../bower_components/codemirror/addon/lint/lint"
     'codemirror.jsonlint' : "../bower_components/codemirror/addon/lint/json-lint"
     'jsonlint' : "../bower_components/jsonlint/lib/jsonlint"
+    'rtc' : "./models/rtc"
     'spine': "../bower_components/spine/lib/spine"
     'spine.manager' : "../bower_components/spine/lib/manager"
     'spine.model.local' : "../bower_components/spine/lib/local"
+    'spine.model.remote' : "./models/realtime"
     'spine.relation' : "../bower_components/spine/lib/relation"
     'spine.route' : "../bower_components/spine/lib/route"
 
@@ -42,6 +44,9 @@ require.config
 
     'spine.model.local':
       deps: ["spine"]
+    
+    'spine.model.remote':
+      deps: ["spine", "rtc"]
     
     'spine.relation':
       deps: ["spine"]

@@ -16,6 +16,9 @@
     <link rel="stylesheet" href="bower_components/codemirror/addon/lint/lint.css">
     <!-- endbuild -->
     <!-- build:js scripts/vendor/modernizr.js -->
+    <script type="text/javascript" src="//www.google.com/jsapi"></script>
+    <script type="text/javascript" src="//apis.google.com/js/api.js"></script>
+    <script type="text/javascript" src="https://apis.google.com/js/api.js"></script>
     <script src="bower_components/modernizr/modernizr.js"></script>
     <!-- endbuild -->
   </head>
@@ -25,6 +28,10 @@
       <div class="navbar-inner">
         <div class="container">
           <a class="brand" href=".">EuGENia Live</a>
+          <button id="authorizeButton" disabled>Auth</button>
+          <button id="openDoc" >Open</button>
+          <button id="createDoc" >Create</button>
+          <button id="share" >Share</button>
           <ul class="nav">
                 <li><a href="https://github.com/louismrose/eugenia-live/issues">Issues / Feedback</a></li>
               </ul>
