@@ -27,7 +27,7 @@
     };
 
     var realtimeDoc = null;
-
+    var userId = null;
 
     var pickerCallback = function (data) {
       if (data.action == google.picker.Action.PICKED) {
@@ -67,6 +67,8 @@
       }
       realtimeDoc = doc;
       Spine.Model.trigger('Model:fileLoad',modelsMap);
+      installCollaboratorListener();
+      updateCollaborators();
     }
     
     var popupOpen = function () {
@@ -83,9 +85,10 @@
     };
 
     var popupShare = function() {
-      var shareClient = new gapi.drive.share.ShareClient(realTimeOptions.appId);
-      shareClient.setItemIds([rtclient.params['fileId']]);
-      shareClient.showSettingsDialog();
+      window.open('https://drive.google.com/#recent');
+      // var shareClient = new gapi.drive.share.ShareClient(realTimeOptions.appId);
+      // shareClient.setItemIds([rtclient.params['fileId']]);
+      // shareClient.showSettingsDialog();
     };
 
     var deleteJSON = function(evt){
@@ -95,7 +98,8 @@
     };
 
     var saveJSON = function (evt){
-      // console.log("saveJSON "+evt.toString());
+      var start = new Date().getTime();
+      console.log("saveJSON "+start);
       var modelsMap = realtimeDoc.getModel().getRoot().get('modelsMap');
       if(modelsMap.has(this.className)){
         var records = modelsMap.get(this.className);
@@ -126,6 +130,79 @@
         Spine.Model.trigger('Model:fileUpdate',evt);
       }
     };
+
+var installCollaboratorListener = function()
+{
+  realtimeDoc.addEventListener(gapi.drive.realtime.EventType.COLLABORATOR_JOINED, updateCollaborators);
+  realtimeDoc.addEventListener(gapi.drive.realtime.EventType.COLLABORATOR_LEFT, updateCollaborators);
+};
+
+/**
+ * Draw function for the collaborator list.
+ */
+var updateCollaborators = function()
+{
+  // Creating the Collaborators container in the Dom if it's not already there.
+  if (!document.getElementById("collaborators") && document.getElementsByClassName)
+  {
+    var toolbarElement = document.getElementsByClassName("brand")[0];
+    var collaboratorsElement = document.createElement('span');
+    collaboratorsElement.id = "collaborators";
+    collaboratorsElement.style.position = "absolute";
+    collaboratorsElement.style.right = "15px";
+    toolbarElement.appendChild(collaboratorsElement);
+  }
+
+  var collaboratorsElement = document.getElementById("collaborators");
+
+  if (collaboratorsElement)
+  {
+    
+    var collaboratorsList = realtimeDoc.getCollaborators();
+    
+    collaboratorsElement.innerHTML = ""; 
+      
+    if (collaboratorsList.length > 1)
+    {
+      var spanContainer = document.createElement('span');
+ 
+      spanContainer.style.horizontalAlign = "left";
+      collaboratorsElement.appendChild(spanContainer);
+
+      for (var i = 0; i < collaboratorsList.length; i = i + 1)
+      {
+        var collaborator = collaboratorsList[i];
+        
+        if (!collaborator.isMe)
+        {
+          var img = document.createElement('img');
+          img.src = collaborator.photoUrl;
+          img.alt = collaborator.displayName;
+          img.title = collaborator.displayName;
+          img.style.backgroundColor = collaborator.color;
+          img.style.marginLeft = "5px";
+          img.style.height = "25px";
+          img.style.width = "25px";
+          img.style.paddingBottom = "5px";
+          collaboratorsElement.appendChild(img);
+        }
+        else
+        {
+          userId = collaborator.userId;
+        }
+      }
+    }
+    else if (collaboratorsList.length == 1)
+    {
+      var collaborator = collaboratorsList[0];
+      
+      if (collaborator.isMe)
+      {
+        userId = collaborator.userId;
+      }
+    }
+  }
+};
 
 window.onload = startRealtime;
 exports.saveJSON = saveJSON;

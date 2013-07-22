@@ -18,12 +18,12 @@ define [
     select: (element) ->
       if element
         @selection.push(element)
-        # @save()
+        @save()
         @trigger("selectionChanged")
     
     clearSelection: ->
       @selection = []
-      # @save()
+      @save()
       @trigger("selectionChanged")
   
     validate: ->
