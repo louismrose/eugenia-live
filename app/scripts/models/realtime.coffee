@@ -3,7 +3,6 @@ rtc = require("models/rtc")
 Spine.Model.Realtime =
   extended:->
     @bind('save',rtc.saveJSON)
-    # @bind('create',rtc.createJSON)
     @bind('destroy',rtc.deleteJSON)
 
     Spine.Model.bind('Model:fileLoad',(map) =>
@@ -28,7 +27,6 @@ Spine.Model.Realtime =
   modelMapUpdate: (event) ->
     @unbind('save',rtc.saveJSON) # we dont want events to fire again on changes.
     @unbind('destroy',rtc.deleteJSON)
-    # @unbind('create',rtc.createJSON)
     console.log('modelMapUpdate')
     eventSource = event.property
     changeOnThisModel = eventSource.lastIndexOf(@className, 0) == 0
@@ -51,13 +49,7 @@ Spine.Model.Realtime =
         recordLocal.destroy()
    
     @bind('save',rtc.saveJSON)
-    # @bind('create',rtc.createJSON)
     @bind('destroy',rtc.deleteJSON)
-
- 
-    
-
-
 
 module?.exports = Spine.Model.Realtime
 

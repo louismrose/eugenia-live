@@ -86,9 +86,6 @@
 
     var popupShare = function() {
       window.open('https://drive.google.com/#recent');
-      // var shareClient = new gapi.drive.share.ShareClient(realTimeOptions.appId);
-      // shareClient.setItemIds([rtclient.params['fileId']]);
-      // shareClient.showSettingsDialog();
     };
 
     var deleteJSON = function(evt){
