@@ -3,6 +3,8 @@
 <button data-reset-simulation="">Reset</button>
 <p>Current time = <span id="current-simulation-time">0</span><p>
 
+<p>If you start a simulation, do you need a local copy of the drawing, such that others can still edit it, without disturbing your simulation? And saving the current state of the simulation should not influence the drawing in any way</p>
+
 <textarea id="function">
   return x + y + z;
 </textarea>

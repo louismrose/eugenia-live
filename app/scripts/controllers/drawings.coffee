@@ -82,7 +82,9 @@ define [
     changeMode: (event) =>
       event.preventDefault()
       @mode = $(event.target).data('mode')
-      @navigate('/simulate', @item.id) if @mode is 'simulate'    
+      if @mode is 'simulate'    
+        @toolbox.switchTo("select")
+        @navigate('/simulate', @item.id)
     
     deactivate: ->
       super

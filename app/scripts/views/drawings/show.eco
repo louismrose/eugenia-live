@@ -9,9 +9,8 @@
       </li>
     </ul>
   </legend>
-<div class="row-fluid">
-  <div id="toolbox" class="span2">
-      
+  <div class="row-fluid">
+    <div id="toolbox" class="span2">
     </div>
     <div class="span10">
       <div id="canvas" style="height:400px">
