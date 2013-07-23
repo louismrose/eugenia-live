@@ -28,6 +28,7 @@
 
     var realtimeDoc = null;
     var userId = null;
+    var lastReqTime=0;
 
     var pickerCallback = function (data) {
       if (data.action == google.picker.Action.PICKED) {
@@ -59,11 +60,11 @@
     function onFileLoaded (doc) {
       console.log('onFileLoaded');
       var modelsMap = doc.getModel().getRoot().get('modelsMap');
-      modelsMap.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, loadJSON);
+      modelsMap.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, remoteJSONAdded);
       var keys = modelsMap.keys();
       for(var i in keys){
         var record = modelsMap.get(keys[i]);
-        record.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, updateJSON);
+        record.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, remoteJSONUpdate);
       }
       realtimeDoc = doc;
       Spine.Model.trigger('Model:fileLoad',modelsMap);
@@ -96,34 +97,49 @@
       var records = modelsMap.get(this.className);
       records.delete(this.className+evt.id);
     };
-
-    var saveJSON = function (evt){
-      var start = new Date().getTime();
-      console.log("saveJSON "+start);
-      var modelsMap = realtimeDoc.getModel().getRoot().get('modelsMap');
-      if(modelsMap.has(this.className)){
-        var records = modelsMap.get(this.className);
-        records.set(this.className+evt.id,JSON.stringify(evt));
-      }else {
-        var records = realtimeDoc.getModel().createMap();
-        records.set(this.className+evt.id,JSON.stringify(evt));
-        records.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, updateJSON); //repetitive, maybe find better way
-        modelsMap.set(this.className,records);
-      }
+    var createJSON = function(evt){
+     var modelsMap = realtimeDoc.getModel().getRoot().get('modelsMap');
+     if(modelsMap.has(this.className)){
+         var records = modelsMap.get(this.className);
+         records.set(this.className+evt.id,JSON.stringify(evt));
+       } else {
+         var records = realtimeDoc.getModel().createMap();
+         records.set(this.className+evt.id,JSON.stringify(evt));
+         records.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, remoteJSONUpdate); //repetitive, maybe find better way
+         modelsMap.set(this.className,records);
+       }
     };
 
-    var loadJSON = function(evt){
-      console.log("loadJSON");
+    var updateJSON = function (evt){
+      var current = new Date().getTime();
+      if(current - lastReqTime > 100){
+        lastReqTime = current;
+        console.log("updateJSON ");
+        var modelsMap = realtimeDoc.getModel().getRoot().get('modelsMap');
+        if(modelsMap.has(this.className)){
+          var records = modelsMap.get(this.className);
+          records.set(this.className+evt.id,JSON.stringify(evt));
+        } else {
+          alert("UPDATEJSON - ELSE")
+          var records = realtimeDoc.getModel().createMap();
+          records.set(this.className+evt.id,JSON.stringify(evt));
+          records.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, remoteJSONUpdate); //repetitive, maybe find better way
+          modelsMap.set(this.className,records);
+        }
+      };
+    };
+
+    var remoteJSONAdded = function(evt){
       var isLocal = evt.isLocal;
       if(!isLocal){
         var modelsMap = realtimeDoc.getModel().getRoot().get('modelsMap');
         var records = modelsMap.get(evt.property);
-        records.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, updateJSON);
+        records.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, remoteJSONUpdate);
         Spine.Model.trigger('Model:fileLoad',modelsMap);
       }
     };
 
-    var updateJSON = function(evt){
+    var remoteJSONUpdate = function(evt){
       var isLocal = evt.isLocal;
       if(!isLocal){
         var modelsMap = realtimeDoc.getModel().getRoot().get('modelsMap');
@@ -205,9 +221,9 @@ var updateCollaborators = function()
 };
 
 window.onload = startRealtime;
-exports.saveJSON = saveJSON;
+exports.updateJSON = updateJSON;
 exports.deleteJSON = deleteJSON;
-exports.loadJSON = loadJSON;
+exports.createJSON = createJSON;
 
 /**
  *__________________________________________________________________________________________________
