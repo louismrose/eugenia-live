@@ -93,21 +93,29 @@ class SimulationControl extends Spine.Controller
     simulationPoll.stop()
 
   start: (event) =>
-    @startInteractive(@item.selection[0])
+    @startInteractive(@item.nodes().first())
 
     simulationPoll.start()
 
   startInteractive: (element) ->
 
-    updateWidth = (time, node) ->
-      node.moveTo([Math.cos(time) *100 + 200, Math.sin(time) * 100 + 200])
+    update = (currentTime, node) ->
+      console.log('update')
+      #console.log(node.getShape().behavior)
+      for property, expression of node.getShape().behavior.tick
+        console.log(property, expression)
+        node.setPropertyValue(property, eval(expression))
 
-      node.setPropertyValue("width", "" + Math.cos(time) * 100)
-      node.trigger("render")
+
+      #node.moveTo([Math.cos(time) *100 + 200, Math.sin(time) * 100 + 200])
+
+      #node.setPropertyValue("width", "" + Math.cos(time) * 100)
+      #node.trigger("render")
+
 
     #Bacon.combineWith(updateWidth, simulationPoll.counter)
     simulationPoll.currentTime.onValue (tick) ->
-      updateWidth(tick, element)
+      update(tick, element)
 
   reset: (event) =>
     simulationPoll.reset()
