@@ -9,22 +9,25 @@ define [
       @elements = elements
     
     draw: (node) ->
-      children = (@createElement(e, node.position) for e in @elements)
+      children = (@createElement(e, node) for e in @elements)
       new paper.Group(children)
 
-    createElement: (e, position) =>
+    createElement: (e, node) =>
       e.x or= 0
       e.y or= 0
-      path = @createPath(e)
-      path.position = new paper.Point(position).add(e.x, e.y)
-      path.fillColor = e.fillColor
-      path.strokeColor = e.borderColor
+      path = @createPath(e, node)
+      path.position = new paper.Point(node.position).add(@getOption(e.x, node, 0), @getOption(e.y, node, 0))      
+      path.fillColor = @getOption(e.fillColor, node, "white")
+      path.strokeColor = @getOption(e.borderColor, node, "black")
       path
 
-    createPath: (options) =>
+    createPath: (options, node) =>
+      width = @getOption(options.size.width, node, 100)
+      height = @getOption(options.size.height, node, 100)
+      
       switch options.figure
         when "rounded"
-          rect = new paper.Rectangle(0, 0, options.size.width, options.size.height)
+          rect = new paper.Rectangle(0, 0, width, height)
           new paper.Path.RoundRectangle(rect, new paper.Size(10, 10))
         when "ellipse"
           rect = new paper.Rectangle(0, 0, options.size.width*2, options.size.height*2)
@@ -40,6 +43,29 @@ define [
           for point in options.points
             path.add(new paper.Point(point.x, point.y))
           path
+          
+    getOption: (content, node, defaultValue) =>
+      if (typeof content is 'string' or content instanceof String) and content.length and content[0] is "$"
+        # What happens if there is a problem with the expression
+        # for example ${unknown} where unknown is not a property
+        # that is defined for this shape
+        
+        # strip off opening the ${ and the closing }
+        evalable = content.substring(2, content.length - 1)
+        content = node.getPropertyValue(evalable)
+      
+        # What happens if this fails?
+        if content is ""
+          defaultValue
+        else
+          # Eventually, we probably want to store type information
+          # for parameter values so that we can perform a more
+          # knowledgable conversion, rather than trial-and-error
+          value = parseInt(content,10)
+          value = content if isNaN(value)
+          value
+      else
+        content
 
 
   class NodeShape extends Spine.Model
