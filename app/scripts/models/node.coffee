@@ -64,6 +64,9 @@ define [
       @position = distance.add(@position)
       link.reconnectTo(@id, distance) for link in @links()
       @save()
+      
+    moveTo: (position) =>
+      @moveBy(new paper.Point(position).subtract(@position))
 
     paperId: =>
       "node" + @id
@@ -84,3 +87,8 @@ define [
   
     getShape: =>
       NodeShape.find(@shape) if @shape and NodeShape.exists(@shape)
+      
+    simulate: (currentTime) =>
+      if @getShape().behavior and @getShape().behavior.tick
+        for property, expression of @getShape().behavior.tick
+          @setPropertyValue(property, eval(expression))
