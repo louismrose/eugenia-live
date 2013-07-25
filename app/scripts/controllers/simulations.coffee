@@ -95,9 +95,8 @@ class SimulationControl extends Spine.Controller
     simulationPoll.stop()
 
   start: (event) =>
-
-    for node in @item.nodes().all()
-      simulationPoll.currentTime.onValue (tick) =>
+    simulationPoll.currentTime.onValue (tick) =>
+      for node in @item.nodes().all()
         node.simulate(tick)
 
     simulationPoll.start()
