@@ -6,11 +6,12 @@ define [
   class LinkTool extends Tool
     parameters: {'shape' : null}
     drafting: false
+    timer: 0
   
     onMouseMove: (event) =>
-      if @parameters.shape
-        @clearSelection()
-        @select(@hitTester.nodeAt(event.point))
+      # if @parameters.shape
+      #   @clearSelection()
+      #   @select(@hitTester.nodeAt(event.point))
   
     onMouseDown: (event) =>
       if @parameters.shape and @hitTester.nodeAt(event.point)
@@ -18,9 +19,13 @@ define [
         @draftLink = new DraftLink(event.point)
 
     onMouseDrag: (event) =>
-      if @drafting
-        @draftLink.extendTo(event.point)
-        @changeSelectionTo(@hitTester.nodeAt(event.point)) if @hitTester.nodeAt(event.point)
+      current = new Date().getTime()
+      console.log(current-@timer >90)
+      if(current - @timer > 90)
+        @timer = current
+        if @drafting
+          @draftLink.extendTo(event.point)
+          @changeSelectionTo(@hitTester.nodeAt(event.point)) if @hitTester.nodeAt(event.point)
   
     onMouseUp: (event) =>
       if @drafting 

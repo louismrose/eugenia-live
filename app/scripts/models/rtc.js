@@ -112,7 +112,7 @@
 
     var updateJSON = function (evt){
       var current = new Date().getTime();
-      if(current - lastReqTime > 100){
+      if(true){
         lastReqTime = current;
         console.log("updateJSON ");
         var modelsMap = realtimeDoc.getModel().getRoot().get('modelsMap');

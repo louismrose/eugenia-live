@@ -5,6 +5,7 @@ define [
 
   class NodeTool extends Tool
     parameters: {'shape' : null}
+    timer: 0
   
     onMouseDown: (event) =>
       if @parameters.shape
@@ -13,6 +14,6 @@ define [
         @clearSelection()
       
     onMouseMove: (event) =>
-      if @parameters.shape
-        @clearSelection()
-        @select(@hitTester.nodeAt(event.point))
+      # if @parameters.shape
+      #   @clearSelection()
+      #   @select(@hitTester.nodeAt(event.point))
