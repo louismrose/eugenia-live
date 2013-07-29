@@ -1,4 +1,4 @@
-<% unless $.isEmptyObject(@propertyValues): %>
+<% unless $.isEmptyObject(@getAllProperties()): %>
   <h2><%= @getShape().displayName()%> properties</h2>
   <table class="table table-bordered">
     <thead>
@@ -8,7 +8,7 @@
       </tr>
     </thead>
     <tbody>
-      <% for property,value of @propertyValues: %>
+      <% for property,value of @getAllProperties(): %>
       <tr>
         <td style="vertical-align:middle"><%=property%></td>
         <td><input type="text" data-property="<%=property%>" value="<%=value%>" style="margin-bottom: 0"></td>

@@ -74,6 +74,7 @@ define [
   
     constructor: (attributes) ->
       super
+      @properties or= []
       @createDelegates()
       @bind("update", @createDelegates)
       @bind("destroy", @destroyNodes)
@@ -84,7 +85,7 @@ define [
   
     defaultPropertyValues: =>
       defaults = {}
-      defaults[property] = "" for property in @properties if @properties
+      defaults[property] = "" for property in @properties
       defaults
   
     displayName: =>
