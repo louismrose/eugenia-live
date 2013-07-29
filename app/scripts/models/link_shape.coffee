@@ -1,6 +1,6 @@
 define [
   'spine'
-  'models/helpers/label'
+  'views/drawings/shapes/label'
   'spine.relation'
 ], (Spine, Label) ->
 
