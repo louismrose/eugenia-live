@@ -17,32 +17,34 @@ define [
       
     initialisePropertyValues: ->
       @propertyValues or= {}
-      @updatePropertyValuesWithDefaultsFromShape()
+      # Don't call save() during initialisation, as this causes
+      # duplicate Spine records to be created.
+      @updatePropertyValuesWithDefaultsFromShape(false)
       
     getAllProperties: ->
-      @updatePropertyValuesWithDefaultsFromShape()
+      @updatePropertyValuesWithDefaultsFromShape(true)
       @propertyValues
 
-    updatePropertyValuesWithDefaultsFromShape: ->
+    updatePropertyValuesWithDefaultsFromShape: (persist) ->
       for property,value of @defaultPropertyValues()
         # insert the default value unless there is already a value for this property
-        @setPropertyValue(property,value) unless property of @propertyValues
+        @setPropertyValue(property,value,persist) unless property of @propertyValues
       
       for property,value of @propertyValues
         # remove the current value unless this property is currently defined for this shape
-        @removePropertyValue(property) unless property of @defaultPropertyValues()
+        @removePropertyValue(property,persist) unless property of @defaultPropertyValues()
     
     defaultPropertyValues: ->
       if @getShape() then @getShape().defaultPropertyValues() else {}
   
-    setPropertyValue: (property, value) ->
+    setPropertyValue: (property, value, persist = true) ->
       @propertyValues[property] = value
-      @save()
+      @save() if persist
   
-    removePropertyValue: (property) ->
+    removePropertyValue: (property, persist = true) ->
       delete @propertyValues[property]
       @trigger("propertyRemove")
-      @save()
+      @save() if persist
   
     getPropertyValue: (property) ->
       @propertyValues[property]
