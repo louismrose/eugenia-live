@@ -10,6 +10,8 @@
   // fileref3.setAttribute("type","text/javascript");
   // fileref3.setAttribute("src", "//apis.google.com/js/api.js");
 
+var rtc = rtc || {};
+
 
   CREATE_SELECTOR = "#createDoc";
   OPEN_SELECTOR = "#openDoc";
@@ -36,8 +38,13 @@
         rtclient.redirectTo(fileId, realtimeLoader.authorizer.userId);
       }
     };
+    var beforeAuth = function (){
+      $(OPEN_SELECTOR).attr('disabled','true');
+      $(CREATE_SELECTOR).attr('disabled','true');
+    }
 
     function startRealtime() {
+      beforeAuth();
       realtimeLoader = new rtclient.RealtimeLoader(realTimeOptions);
       realtimeLoader.start(afterAuth);
     }
@@ -49,6 +56,8 @@
         var fileName = prompt("New file name:", "");
         realtimeLoader.createNewFileAndRedirect(fileName);
       });
+      $(OPEN_SELECTOR).removeAttr('disabled');
+      $(CREATE_SELECTOR).removeAttr('disabled');
     };
 
     function initializeModel (model) {
@@ -75,11 +84,13 @@
     var popupOpen = function () {
       var token = gapi.auth.getToken().access_token;
       var view = new google.picker.View(google.picker.ViewId.DOCS);
+      view.setMimeTypes(rtclient.REALTIME_MIMETYPE);
       var picker = new google.picker.PickerBuilder()
           .enableFeature(google.picker.Feature.NAV_HIDDEN)
           .setAppId(realTimeOptions.appId)
           .setOAuthToken(token)
           .addView(view)
+          .addView(new google.picker.DocsUploadView())
           .setCallback(pickerCallback)
           .build();
       picker.setVisible(true);
@@ -220,6 +231,7 @@ var updateCollaborators = function()
   }
 };
 
+
 window.onload = startRealtime;
 exports.updateJSON = updateJSON;
 exports.deleteJSON = deleteJSON;
@@ -259,7 +271,7 @@ rtclient.OPENID_SCOPE = 'openid';
  * MIME type for newly created Realtime files.
  * @const
  */
-rtclient.REALTIME_MIMETYPE = 'application/vnd.google-apps.drive-sdk';
+rtclient.REALTIME_MIMETYPE = 'application/vnd.google-apps.drive-sdk.'+realTimeOptions.appID;
 
 
 /**
@@ -484,7 +496,7 @@ rtclient.RealtimeLoader = function(options) {
   // Initialize configuration variables.
   this.onFileLoaded = rtclient.getOption(options, 'onFileLoaded');
   this.initializeModel = rtclient.getOption(options, 'initializeModel');
-  this.registerTypes = rtclient.getOption(options, 'registerTypes', function(){})
+  this.registerTypes = rtclient.getOption(options, 'registerTypes', function(){});
   this.autoCreate = rtclient.getOption(options, 'autoCreate', false); // This tells us if need to we automatically create a file after auth.
   this.defaultTitle = rtclient.getOption(options, 'defaultTitle', 'New Realtime File');
   this.authorizer = new rtclient.Authorizer(options);
