@@ -1,0 +1,12 @@
+Task
+  children.forAll(p|p.values.size>0) => trigger(children, "consume")
+  sim.currentTime - startTime > executionTime => trigger(outgoing, "produce")
+  
+Port
+  "consume" -> currentValue = values.pop()
+  
+AddEdge
+  "produce" -> target.currentValue = source.children.first.currentValue + 1
+
+LessThanConditionalEdge
+ "produce" -> target.currentValue = source.children.first.currentValue < threshold ? source.children.first.currentValue : source.children.second.currentValue

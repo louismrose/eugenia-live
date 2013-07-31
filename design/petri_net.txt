@@ -1,0 +1,8 @@
+Arc
+  incoming.exists(i|i.token>0) => trigger(self, "ready")
+  "ready" -> trigger(incoming.selectOne(i|i.tokens>0), "consume")
+  "ready" -> trigger(outgoing, "produce")
+  
+Transition
+  "consume" -> tokens--
+  "produce" -> tokens++

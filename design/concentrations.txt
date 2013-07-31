@@ -1,0 +1,14 @@
+// An alternative would be to allow events to have arguments, in which
+// case the process could calculate the amount by which a producer
+// increases its target concentration, and pass that amount as a 
+// parameter to Producer#process
+
+Process
+  => trigger(outgoing, "produce")
+  => trigger(incoming, "consume")
+  
+Consumer
+ "consume" -> source.c = source.c - rate * sim.timestep * source.c
+ 
+Producer
+  "produce" -> target.c = target.c + rate * sim.timestep * source.incoming.collect(c|c.rate * sim.timestep * c.source).sum()

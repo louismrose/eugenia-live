@@ -1,0 +1,12 @@
+Node
+  active => trigger(self, "deactivate")
+  active => trigger(self.outgoing.collect(o|o.target), "activate")
+  "deactivate" -> self.active = false
+  "activate" -> self.active = true
+  
+Node
+  sim.time > delay and active =>  trigger(self, "deactivate")
+  sim.time > delay and active => trigger(self.outgoing.collect(o|o.target), "activate")
+  "deactivate" -> self.active = false
+  "activate" -> self.active = true
+  
