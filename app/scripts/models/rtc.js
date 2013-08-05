@@ -127,16 +127,8 @@ var rtc = rtc || {};
         lastReqTime = current;
         console.log("updateJSON ");
         var modelsMap = realtimeDoc.getModel().getRoot().get('modelsMap');
-        if(modelsMap.has(this.className)){
-          var records = modelsMap.get(this.className);
-          records.set(this.className+evt.id,JSON.stringify(evt));
-        } else {
-          alert("UPDATEJSON - ELSE")
-          var records = realtimeDoc.getModel().createMap();
-          records.set(this.className+evt.id,JSON.stringify(evt));
-          records.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, remoteJSONUpdate); //repetitive, maybe find better way
-          modelsMap.set(this.className,records);
-        }
+        var records = modelsMap.get(this.className);
+        records.set(this.className+evt.id,JSON.stringify(evt));      
       };
     };
 
