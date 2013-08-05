@@ -43,5 +43,6 @@ define [
     updateCanvas: ->
       if paper.project
         paper.project.activeLayer.selected = false
-        for element in @selection?
-          element.select(paper.project.activeLayer)
+        for element in @selection
+          if element.select?
+            element.select(paper.project.activeLayer) 
