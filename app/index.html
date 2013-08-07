@@ -1,22 +1,23 @@
-<!DOCTYPE html>
-  <html>
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
   <head>
     <meta charset="utf-8">
     <title>EuGENia Live</title>
-    <link rel="stylesheet" href="application.css" type="text/css"/>
-    <script type="text/javascript" src="application.js"></script>
-    <script type="text/javascript" charset="utf-8">
-      var jQuery  = require("jqueryify");
-      var exports = this;
-      jQuery(function(){
-        var App = require("index");
-        exports.app = new App({el: $("#content")});      
-      });
-      
-      $(function(){
-        $('.popover-test').popover();
-      });
-    </script>
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css({.tmp,app}) styles/main.css -->
+    <link rel="stylesheet" href="bower_components/bootstrap.css/css/bootstrap.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+    <!-- build:css({.tmp,app}) styles/codemirror.css -->
+    <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="bower_components/codemirror/addon/lint/lint.css">
+    <!-- endbuild -->
+    <!-- build:js scripts/vendor/modernizr.js -->
+    <script src="bower_components/modernizr/modernizr.js"></script>
+    <!-- endbuild -->
   </head>
   <body>
     
@@ -35,5 +36,8 @@
 
     </div>
     
+    <!-- build:js scripts/main.js -->
+    <script data-main="scripts/main" src="bower_components/requirejs/require.js"></script>
+    <!-- endbuild -->
   </body>
-  </html>
+</html>
