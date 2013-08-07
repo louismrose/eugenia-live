@@ -10,6 +10,9 @@ require.config
     codemirror_json_lint: "../bower_components/codemirror/addon/lint/json-lint"
     jsonlint: "../bower_components/jsonlint/lib/jsonlint"
     spine: "../bower_components/spine/lib/spine"
+    spine_manager: "../bower_components/spine/lib/manager"
+    spine_relation: "../bower_components/spine/lib/relation"
+    spine_route: "../bower_components/spine/lib/route"
 
   shim:
     bootstrap:
@@ -33,6 +36,15 @@ require.config
     
     spine:
       exports: "Spine"
+
+    spine_manager:
+      deps: ["spine"]
+    
+    spine_relation:
+      deps: ["spine"]
+    
+    spine_route:
+      deps: ["spine"]
     
     bacon:
       deps: ["jquery"]

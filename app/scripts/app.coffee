@@ -1,24 +1,47 @@
-require('lib/setup')
-require('lib/fetch_models')
+define [
+  'spine'
+  'lib/model_loader'
+  'controllers/drawings'
+  'spine_route',
+  'bootstrap'
+], (Spine, ModelLoader, Drawings) ->
 
-Spine = require('spine')
-Drawings = require('controllers/drawings')
-Palettes = require('controllers/palettes')
-
-class App extends Spine.Stack
-  controllers:
-    palettes: Palettes
-    drawings: Drawings
+  class App extends Spine.Stack
+    controllers:
+      drawings: Drawings
       
-  routes:
-    '/drawings/:d_id/palette' : 'palettes'
-    '/drawings'               : 'drawings'
+    routes:
+      '/drawings'               : 'drawings'
   
-  default: 'drawings'
+    default: 'drawings'
   
-  constructor: ->
-    super
-    Spine.Route.setup()
-    @navigate('/drawings')
+    constructor: ->
+      super
+      ModelLoader.setup()
+      Spine.Route.setup()
+      @navigate('/drawings')
       
-module.exports = App  
+# define [
+#   'spine'
+#   'lib/model_loader'
+#   'controllers/palettes'
+#   'controllers/drawings'
+# ], (Spine, ModelLoader, Palettes, Drawings) ->
+# 
+#   class App extends Spine.Stack
+#     controllers:
+#       palettes: Palettes
+#       drawings: Drawings
+#       
+#     routes:
+#       '/drawings/:d_id/palette' : 'palettes'
+#       '/drawings'               : 'drawings'
+#   
+#     default: 'drawings'
+#   
+#     constructor: ->
+#       super
+#       ModelLoader.setup()
+#       Spine.Route.setup()
+#       @navigate('/drawings')
+#       

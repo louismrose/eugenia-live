@@ -19,7 +19,7 @@
       <div id="showcase" class="carousel slide">
         <div class="carousel-inner">
           <div class="active item">
-            <img src="./img/example_dsl.png" style="" />
+            <img src="./images/example_dsl.png" style="" />
             <!-- <div class="carousel-caption">
                           <h4>Build a DSL for seating plans...</h4>
                         </div> -->

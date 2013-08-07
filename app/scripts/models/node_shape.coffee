@@ -1,117 +1,117 @@
-Spine = require('spine')
+define [
+  'spine'
+], (Spine) ->
 
-class Label
-  constructor: (definition) ->
-    @definition = definition
+  class Label
+    constructor: (definition) ->
+      @definition = definition
     
-    if @definition and @definition.placement isnt "none"
-      @definition.for = [@definition.for] unless @definition.for instanceof Array
-      @definition.pattern = @default_pattern() unless @definition.pattern
-    else
-      @definition = { placement: "none" }
+      if @definition and @definition.placement isnt "none"
+        @definition.for = [@definition.for] unless @definition.for instanceof Array
+        @definition.pattern = @default_pattern() unless @definition.pattern
+      else
+        @definition = { placement: "none" }
   
-  default_pattern: ->
-    numbers = [0..@definition.for.length-1]
-    formattedNumbers = ("{#{n}}" for n in numbers)
-    formattedNumbers.join(",")
+    default_pattern: ->
+      numbers = [0..@definition.for.length-1]
+      formattedNumbers = ("{#{n}}" for n in numbers)
+      formattedNumbers.join(",")
   
-  draw: (node, shape) ->
-    result = new paper.Group(shape)
+    draw: (node, shape) ->
+      result = new paper.Group(shape)
     
-    unless @definition.placement is "none"
-      position = @positionFor(shape)
-      result.addChild(@createText(node, position))
+      unless @definition.placement is "none"
+        position = @positionFor(shape)
+        result.addChild(@createText(node, position))
     
-    result  
+      result  
   
-  positionFor: (shape) ->
-    if @definition.placement is "external"
-      shape.bounds.bottomCenter.add([0, 20]) # nudge outside shape
-    else
-      shape.position.add([0, 5]) # nudge down to middle of shape
+    positionFor: (shape) ->
+      if @definition.placement is "external"
+        shape.bounds.bottomCenter.add([0, 20]) # nudge outside shape
+      else
+        shape.position.add([0, 5]) # nudge down to middle of shape
 
-  createText: (node, position) ->
-    text = new paper.PointText(position)
-    text.justification = 'center'
-    text.fillColor = @definition.color
-    text.content = @contentFor(node)
-    text
+    createText: (node, position) ->
+      text = new paper.PointText(position)
+      text.justification = 'center'
+      text.fillColor = @definition.color
+      text.content = @contentFor(node)
+      text
   
-  contentFor: (node) ->
-    content = @definition.pattern    
-    for number in [0..@definition.for.length-1]
-      pattern = ///
-        \{
-        #{number}
-        \}
-      ///g
-      value = node.getPropertyValue(@definition.for[number])
-      content = content.replace(pattern, value)
+    contentFor: (node) ->
+      content = @definition.pattern    
+      for number in [0..@definition.for.length-1]
+        pattern = ///
+          \{
+          #{number}
+          \}
+        ///g
+        value = node.getPropertyValue(@definition.for[number])
+        content = content.replace(pattern, value)
     
-    @trimText(content)
+      @trimText(content)
   
-  trimText: (text) ->
-    return "" unless text
-    return text unless text.length > @definition.length
-    return text.substring(0, @definition.length-3).trim() + "..."
+    trimText: (text) ->
+      return "" unless text
+      return text unless text.length > @definition.length
+      return text.substring(0, @definition.length-3).trim() + "..."
       
 
 
-class Elements
-  constructor: (elements) ->
-    @elements = elements
+  class Elements
+    constructor: (elements) ->
+      @elements = elements
     
-  draw: (node) ->
-    children = (@createElement(e, node.position) for e in @elements)
-    new paper.Group(children)
+    draw: (node) ->
+      children = (@createElement(e, node.position) for e in @elements)
+      new paper.Group(children)
 
-  createElement: (e, position) =>
-    e.x or= 0
-    e.y or= 0
-    path = @createPath(e.figure, e.size)
-    path.position = new paper.Point(position).add(e.x, e.y)
-    path.fillColor = e.fillColor
-    path.strokeColor = e.borderColor
-    path
+    createElement: (e, position) =>
+      e.x or= 0
+      e.y or= 0
+      path = @createPath(e.figure, e.size)
+      path.position = new paper.Point(position).add(e.x, e.y)
+      path.fillColor = e.fillColor
+      path.strokeColor = e.borderColor
+      path
 
-  createPath: (figure, size) =>
-    switch figure
-      when "rounded"
-        rect = new paper.Rectangle(0, 0, size.width, size.height)
-        new paper.Path.RoundRectangle(rect, new paper.Size(10, 10))
-      when "ellipse"
-        rect = new paper.Rectangle(0, 0, size.width*2, size.height*2)
-        new paper.Path.Oval(rect)
-      when "rectangle"
-        new paper.Path.Rectangle(0, 0, size.width, size.height)
+    createPath: (figure, size) =>
+      switch figure
+        when "rounded"
+          rect = new paper.Rectangle(0, 0, size.width, size.height)
+          new paper.Path.RoundRectangle(rect, new paper.Size(10, 10))
+        when "ellipse"
+          rect = new paper.Rectangle(0, 0, size.width*2, size.height*2)
+          new paper.Path.Oval(rect)
+        when "rectangle"
+          new paper.Path.Rectangle(0, 0, size.width, size.height)
 
 
-class NodeShape extends Spine.Model
-  @configure "NodeShape", "name", "properties", "label", "elements"
-  @belongsTo 'palette', 'models/palette'
+  class NodeShape extends Spine.Model
+    @configure "NodeShape", "name", "properties", "label", "elements"
+    @belongsTo 'palette', 'models/palette'
   
-  constructor: (attributes) ->
-    super
-    @createDelegates()
-    @bind("update", @createDelegates)
-    @bind("destroy", @destroyNodes)
+    constructor: (attributes) ->
+      super
+      @createDelegates()
+      @bind("update", @createDelegates)
+      @bind("destroy", @destroyNodes)
   
-  createDelegates: =>
-    @_elements = new Elements(@elements)
-    @_label = new Label(@label)
+    createDelegates: =>
+      @_elements = new Elements(@elements)
+      @_label = new Label(@label)
   
-  defaultPropertyValues: =>
-    defaults = {}
-    defaults[property] = "" for property in @properties if @properties
-    defaults
+    defaultPropertyValues: =>
+      defaults = {}
+      defaults[property] = "" for property in @properties if @properties
+      defaults
   
-  displayName: =>
-    @name.charAt(0).toUpperCase() + @name.slice(1)
+    displayName: =>
+      @name.charAt(0).toUpperCase() + @name.slice(1)
   
-  draw: (node) =>
-    @_label.draw(node, @_elements.draw(node))
+    draw: (node) =>
+      @_label.draw(node, @_elements.draw(node))
       
-  destroyNodes: ->
-    node.destroy() for node in require('models/node').findAllByAttribute("shape", @id)
-    
-module.exports = NodeShape
+    destroyNodes: ->
+      node.destroy() for node in require('models/node').findAllByAttribute("shape", @id)
