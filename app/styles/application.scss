@@ -1,0 +1,62 @@
+$iconSpritePath: "../images/glyphicons-halflings.png";
+$iconWhiteSpritePath: "../images/glyphicons-halflings-white.png";
+
+.stack > *:not(.active) {
+  display: none;
+}
+
+.hero-unit {
+  padding: 30px 60px;
+  .carousel-caption {
+    h4, p {
+      color: #ddd;
+    }
+  }
+}
+
+.container-fluid {
+  padding-top: 50px;
+}
+
+#toolbox {
+  padding: 8px 0;
+  text-align: center;
+  ul {
+    text-align: left;
+  }
+}
+
+#canvas {
+  border: 1px solid #ccc;
+}
+
+#selection {
+  margin-top: 2em;
+  padding: 1em;
+  h6 {
+    padding-bottom: 0.5em;
+  }
+  #restore {
+    margin-left: 1em;
+  }
+}
+
+#palette-export {
+  margin-top: 2em;
+}
+
+ol.instructions {
+  margin-top: 2em;
+  li {
+    margin-bottom: 2em;
+    img, pre {
+      margin-top: 0.5em;
+    }
+  }
+  ol {
+    list-style-type: lower-latin;
+    li {
+      margin-top: 1em;
+    }
+  }
+}

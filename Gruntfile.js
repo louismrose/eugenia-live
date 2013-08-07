@@ -37,10 +37,6 @@ module.exports = function (grunt) {
                 files: ['<%= yeoman.app %>/scripts/views/**/*.eco'],
                 tasks: ['eco']
             },
-            compass: {
-                files: ['<%= yeoman.app %>/styles/**/*.{scss,sass}'],
-                tasks: ['compass:server']
-            },
             livereload: {
                 options: {
                     livereload: LIVERELOAD_PORT
