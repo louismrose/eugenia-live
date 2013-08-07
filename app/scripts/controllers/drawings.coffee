@@ -31,7 +31,6 @@ define [
       context =
         drawings: Drawing.all()
         palette_specs: PaletteSpecification.all()
-      @log(context)
       @html IndexTemplate(context)
       $('[data-toggle=popover]').popover()
     

@@ -11,6 +11,7 @@ require.config
     'jsonlint' : "../bower_components/jsonlint/lib/jsonlint"
     'spine': "../bower_components/spine/lib/spine"
     'spine.manager' : "../bower_components/spine/lib/manager"
+    'spine.model.local' : "../bower_components/spine/lib/local"
     'spine.relation' : "../bower_components/spine/lib/relation"
     'spine.route' : "../bower_components/spine/lib/route"
 
@@ -38,6 +39,9 @@ require.config
       exports: "Spine"
 
     'spine.manager':
+      deps: ["spine"]
+
+    'spine.model.local':
       deps: ["spine"]
     
     'spine.relation':

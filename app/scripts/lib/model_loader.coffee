@@ -1,20 +1,21 @@
 define [
   'spine'
+  'spine.model.local'
 ], (Spine) ->
 
   class ModelLoader
     @setup: ->
-      modelNames = []
-      #   "palette_specification"
-      #   "palette"
+      modelNames = [
+        "palette_specification"
+        "palette"]
       #   "link_shape"
-      #   "node_shape"
-      #   "drawing"
-      #   "node"
-      #   "link"
-      # ]
+      #   "node_shape"]
+      # #   "drawing"
+      # #   "node"
+      # #   "link"
+      # # ]
     
       for modelName in modelNames
-        model = require("models/#{model_name}")
+        model = require("models/#{modelName}")
         model.extend(Spine.Model.Local) unless modelName is "palette_specification"
         model.fetch()
