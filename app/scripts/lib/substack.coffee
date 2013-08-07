@@ -1,6 +1,6 @@
 define [
   'spine'
-  'spine_manager'
+  'spine.manager'
 ], (Spine) ->
 
   # SubStack by Niels van Hoorn

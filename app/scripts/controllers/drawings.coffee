@@ -15,7 +15,7 @@ define [
   'models/palette_specification'
   'models/drawing',
   'views/drawings/index'
-  'spine_route'
+  'spine.route'
 ], (Spine, SubStack, PaletteSpecification, Drawing, IndexTemplate) ->
 
   class Index extends Spine.Controller

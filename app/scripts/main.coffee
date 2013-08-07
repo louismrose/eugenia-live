@@ -1,53 +1,53 @@
 require.config
   paths:
-    jquery: "../bower_components/jquery/jquery"
-    bootstrap: "../bower_components/bootstrap.css/js/bootstrap"
-    paper: "../bower_components/paper/dist/paper-core"
-    bacon: "../bower_components/bacon/dist/Bacon"
-    codemirror: "../bower_components/codemirror/lib/codemirror"
-    codemirror_js: "../bower_components/codemirror/mode/javascript/javascript"
-    codemirror_lint: "../bower_components/codemirror/addon/lint/lint"
-    codemirror_json_lint: "../bower_components/codemirror/addon/lint/json-lint"
-    jsonlint: "../bower_components/jsonlint/lib/jsonlint"
-    spine: "../bower_components/spine/lib/spine"
-    spine_manager: "../bower_components/spine/lib/manager"
-    spine_relation: "../bower_components/spine/lib/relation"
-    spine_route: "../bower_components/spine/lib/route"
+    'jquery' : "../bower_components/jquery/jquery"
+    'bootstrap' : "../bower_components/bootstrap.css/js/bootstrap"
+    'paper' : "../bower_components/paper/dist/paper-core"
+    'bacon' : "../bower_components/bacon/dist/Bacon"
+    'codemirror' : "../bower_components/codemirror/lib/codemirror"
+    'codemirror.js' : "../bower_components/codemirror/mode/javascript/javascript"
+    'codemirror.lint' : "../bower_components/codemirror/addon/lint/lint"
+    'codemirror.jsonlint' : "../bower_components/codemirror/addon/lint/json-lint"
+    'jsonlint' : "../bower_components/jsonlint/lib/jsonlint"
+    'spine': "../bower_components/spine/lib/spine"
+    'spine.manager' : "../bower_components/spine/lib/manager"
+    'spine.relation' : "../bower_components/spine/lib/relation"
+    'spine.route' : "../bower_components/spine/lib/route"
 
   shim:
-    bootstrap:
+    'bootstrap':
       deps: ["jquery"]
       exports: "jquery"
 
-    codemirror:
+    'codemirror':
       exports: "CodeMirror"
 
-    codemirror_js:
+    'codemirror.js':
       deps: ["codemirror"]
 
-    codemirror_lint:
+    'codemirror.lint':
       deps: ["codemirror"]
 
-    codemirror_json_lint:
-      deps: ["codemirror", "codemirror_lint", "jsonlint"]
+    'codemirror.json_lint':
+      deps: ["codemirror", "codemirror.lint", "jsonlint"]
 
-    jsonlint:
+    'jsonlint':
       exports: "jsonlint"
     
-    spine:
+    'spine':
       exports: "Spine"
 
-    spine_manager:
+    'spine.manager':
       deps: ["spine"]
     
-    spine_relation:
+    'spine.relation':
       deps: ["spine"]
     
-    spine_route:
+    'spine.route':
       deps: ["spine"]
     
-    bacon:
+    'bacon':
       deps: ["jquery"]
 
 require ["app", "jquery"], (App, $) ->
-  new App(el: $('body'))
+  new App(el: $('div#content'))

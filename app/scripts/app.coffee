@@ -2,7 +2,7 @@ define [
   'spine'
   'lib/model_loader'
   'controllers/drawings'
-  'spine_route',
+  'spine.route',
   'bootstrap'
 ], (Spine, ModelLoader, Drawings) ->
 

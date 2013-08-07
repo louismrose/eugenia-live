@@ -1,6 +1,6 @@
 define [
   'spine'
-  'spine_relation'
+  'spine.relation'
 ], (Spine) ->
 
   class Drawing extends Spine.Model
