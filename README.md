@@ -51,10 +51,10 @@ Adding a new client-side dependency
 3. Edit `app/scripts/main.coffee` to load the new component. You will need to add a path, and possible a shim. See the [require.js](http://requirejs.org/docs/api.html#config) documentation for more information.
 4. In any other .coffee file, require your new component using the normal require.js syntax: 
 
-      define [
-        'component'
-      ], (Component) ->
-        // use your component, e.g. new Component()
+        define [
+          'component'
+        ], (Component) ->
+          // use your component, e.g. new Component()
 
 Adding a new development dependency
 -----------------------------------
@@ -63,18 +63,18 @@ Adding a new development dependency
 2. Run `npm install <package> --save-dev`
 3. Add a task to the `Gruntfile.js` that uses your new package:
 
-      symlink: {
-          bower: {
-              dest: '.tmp/bower_components',
-              relativeSrc: '../app/bower_components',
-              options: {type: 'dir'}
-          },
-          jasmine: {
-              dest: '.tmp/.grunt',
-              relativeSrc: '../.grunt',
-              options: {type: 'dir'}
-          }
-      }
+        symlink: {
+            bower: {
+                dest: '.tmp/bower_components',
+                relativeSrc: '../app/bower_components',
+                options: {type: 'dir'}
+            },
+            jasmine: {
+                dest: '.tmp/.grunt',
+                relativeSrc: '../.grunt',
+                options: {type: 'dir'}
+            }
+        }
 
 
 Deploying
