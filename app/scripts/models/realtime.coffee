@@ -42,7 +42,7 @@ Spine.Model.Realtime =
           recordNew.updateAttribute('selection', localSel) if localSel?
           recordLocal.updateAttributes(recordNew.attributes())
         else
-          console.log('create')
+          console.log('create:  '+@className)
           console.log(recordNew.attributes())
           @create(recordNew.attributes())
       else

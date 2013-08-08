@@ -19,6 +19,8 @@ define [
       @render()
       @createTools()
       @switchTo("select")
+      NodeShape.bind("change", @render)
+      LinkShape.bind("change", @render)
     
     createTools: ->
       # Remove any existing tools. This is a workaround
