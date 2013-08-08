@@ -3,13 +3,6 @@
 * Investigate Heroku generator for Yeoman
 * Substitute almond for require.js in production? grunt-requirejs had support for this, but has been removed from yeoman as it was bloated and the author unresponsive.
 
-## Documentation
-* How to setup the environment for the first time (e.g., npm install -g yo grunt-cli bower; bower install --save; npm install; install ruby; bundle install)
-* How to set the server
-* How to install a package and make use of it in a coffee file
-* How to run the tests
-* How to build and deploy
-
 
 # Testing
 * Need a few end-to-end tests for core functionality
