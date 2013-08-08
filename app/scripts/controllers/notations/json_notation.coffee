@@ -1,11 +1,11 @@
-class JsonNotation
-  serialiseNode: (item) ->
-    JSON.stringify(item, null, 2)
+define [], ->
   
-  serialiseLink: (item) ->
-    JSON.stringify(item, null, 2)
+  class JsonNotation
+    serialiseNode: (item) ->
+      JSON.stringify(item, null, 2)
   
-  deserialise: (definition) ->
-    JSON.parse(definition)
-    
-module.exports = JsonNotation
+    serialiseLink: (item) ->
+      JSON.stringify(item, null, 2)
+  
+    deserialise: (definition) ->
+      JSON.parse(definition)
