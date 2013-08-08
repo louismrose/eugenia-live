@@ -1,10 +1,9 @@
 define [
   'spine'
   'models/moves_path'
-  'models/simplifies_segments'
   'models/link_shape'
   'spine.relation'
-], (Spine, MovesPath, SimplifiesSegments, LinkShape) ->
+], (Spine, MovesPath, LinkShape) ->
 
   class Link extends Spine.Model
     @configure "Link", "sourceId", "targetId", "segments", "shape"
@@ -14,19 +13,15 @@ define [
     constructor: (attributes) ->
       super
       @k = v for k,v of attributes
-      @updateSegments(attributes.segments) if attributes
   
     select: ->
       @drawing().select(@)
-  
-    updateSegments: (segments) =>
-      @segments = new SimplifiesSegments().for(segments)
   
     reconnectTo: (nodeId, offset) =>
       mover = new MovesPath(@toPath(), offset)
       mover.moveStart() if nodeId is @sourceId
       mover.moveEnd() if nodeId is @targetId
-      @updateSegments(mover.finalise())
+      @segments = mover.finalise()
       @save()
   
     paperId: =>
@@ -34,7 +29,7 @@ define [
       
     toPath: =>
       s = LinkShape.find(@shape)
-      path = s.draw(@toSegments())
+      path = s.draw(@segments)
       path.name = @paperId()
       path
 
@@ -48,7 +43,3 @@ define [
         targetId: destroyed.targetId
         segments: destroyed.segments
         shape: destroyed.shape
-
-    toSegments: =>
-      for s in @segments
-        new paper.Segment(s.point, s.handleIn, s.handleOut)
