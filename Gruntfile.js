@@ -118,6 +118,9 @@ module.exports = function (grunt) {
                     specs: '.tmp/spec/**/*.js',
                     outfile: '.tmp/index.html',
                     keepRunner: true,
+                    junit: {
+                        path: '.tmp/results'
+                    },
                     template: require('grunt-template-jasmine-requirejs'),
                     templateOptions: {
                         requireConfigFile: '.tmp/scripts/main.js',

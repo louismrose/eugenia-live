@@ -4,3 +4,4 @@ app/bower_components
 /.bundle
 .tmp
 .sass-cache
+.grunt
