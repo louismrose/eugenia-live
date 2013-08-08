@@ -26,13 +26,13 @@ Running a development server
 ----------------------------
 
 1. Run `grunt server`
-2. Edit the source files (in `app\scripts`)
+2. Edit the source files (in `app/scripts`)
 3. When you save your changes, the server will automatically reload the app
 
 Running the unit tests
 ----------------------
 
-1. Edit the unit tests (in `test\spec`)
+1. Edit the unit tests (in `test/spec`)
 2. Run `grunt test`
 3. The results will be reported on the console.
 
