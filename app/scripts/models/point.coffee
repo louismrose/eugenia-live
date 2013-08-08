@@ -1,13 +1,13 @@
-class Point
-  constructor: (@x, @y) ->
-  
-  add: (other) ->
-    new Point(@x + other.x, @y + other.y)
-  
-  subtract: (other) ->
-    add(-other)
-  
-  invert: ->
-    new Point(-@x, -@y)
+define [], ->
 
-module.exports = Point
+  class Point
+    constructor: (@x, @y) ->
+  
+    add: (other) ->
+      new Point(@x + other.x, @y + other.y)
+  
+    subtract: (other) ->
+      add(-other)
+  
+    invert: ->
+      new Point(-@x, -@y)

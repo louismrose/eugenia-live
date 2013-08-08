@@ -1,49 +1,61 @@
-Spine = require('spine')
-LinkTool = require('controllers/link_tool')
-NodeTool = require('controllers/node_tool')
-SelectTool = require('controllers/select_tool')
-NodeShape = require ('models/node_shape')
-LinkShape = require ('models/link_shape')
+define [
+  'spine'
+  'paper'
+  'controllers/link_tool'
+  'controllers/node_tool'
+  'controllers/select_tool'
+  'models/node_shape'
+  'models/link_shape'
+  'views/drawings/toolbox'
+], (Spine, Paper, LinkTool, NodeTool, SelectTool, NodeShape, LinkShape, ToolboxTemplate) ->
 
-class Toolbox extends Spine.Controller
-  events:
-    "click a[data-tool-name]": "reactToToolSelection"
-    "dblclick a": "showEditor"
+  class Toolbox extends Spine.Controller
+    events:
+      "click a[data-tool-name]": "reactToToolSelection"
+      "dblclick a": "showEditor"
   
-  constructor: ->
-    super
-    @render()
-    @tools =
-      node:   new NodeTool(commander: @commander, drawing: @item)
-      select: new SelectTool(commander: @commander, drawing: @item)
-      link:   new LinkTool(commander: @commander, drawing: @item)
-    @switchTo("select")
+    constructor: ->
+      super
+      @render()
+      @createTools()
+      @switchTo("select")
     
-  render: =>
-    @html require('views/drawings/toolbox')(@item) if @item
-  
-  showEditor: (event) =>
-    event.preventDefault()
-    link = $(event.currentTarget)
-    toolName = link.data('toolName')
+    createTools: ->
+      # Remove any existing tools. This is a workaround
+      # for when the user performs a refresh (F5) when on
+      # the drawing page. It seems the Spine (possibly Substack)
+      # redirects back to the drawings index, and then when 
+      # the user next selects a drawing, another set of 
+      # tools will be created
+      Paper.tools = []
+      
+      @tools =
+        node:   new NodeTool(commander: @commander, drawing: @item)
+        select: new SelectTool(commander: @commander, drawing: @item)
+        link:   new LinkTool(commander: @commander, drawing: @item)
     
-    unless toolName is 'select'
-      @navigate("/drawings/#{@item.id}/#{toolName}s/#{link.data('toolShape')}")
+    render: =>
+      @html ToolboxTemplate(@item) if @item
   
-  reactToToolSelection: (event) =>
-    link = $(event.currentTarget)
+    showEditor: (event) =>
+      event.preventDefault()
+      link = $(event.currentTarget)
+      toolName = link.data('toolName')
+    
+      unless toolName is 'select'
+        @navigate("/drawings/#{@item.id}/#{toolName}s/#{link.data('toolShape')}")
+  
+    reactToToolSelection: (event) =>
+      link = $(event.currentTarget)
 
-    @switchTo(link.data('toolName'))
-    @currentTool.setParameter('shape', link.data('toolShape'))
+      @switchTo(link.data('toolName'))
+      @currentTool.setParameter('shape', link.data('toolShape'))
     
-    $("li.active").removeClass("active")
-    link.parent().addClass("active")
-    event.preventDefault()
+      $("li.active").removeClass("active")
+      link.parent().addClass("active")
+      event.preventDefault()
     
-  switchTo: (toolName) =>
-    throw "There is no tool named '#{toolName}'" unless @tools[toolName]
-    @currentTool = @tools[toolName]
-    @currentTool.activate()
-
-    
-module.exports = Toolbox
+    switchTo: (toolName) =>
+      throw "There is no tool named '#{toolName}'" unless @tools[toolName]
+      @currentTool = @tools[toolName]
+      @currentTool.activate()

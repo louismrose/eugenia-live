@@ -1,10 +1,10 @@
-class CreateLink
-  constructor: (@drawing, @parameters) ->
+define [], ->
+
+  class CreateLink
+    constructor: (@drawing, @parameters) ->
   
-  run: =>
-    @link = @drawing.addLink(@parameters)
+    run: =>
+      @link = @drawing.addLink(@parameters)
   
-  undo: =>
-    @link.destroy()
-    
-module.exports = CreateLink
+    undo: =>
+      @link.destroy()

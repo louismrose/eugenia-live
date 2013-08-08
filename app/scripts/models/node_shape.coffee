@@ -1,5 +1,6 @@
 define [
   'spine'
+  'spine.relation'
 ], (Spine) ->
 
   class Label

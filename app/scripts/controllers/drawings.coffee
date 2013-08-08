@@ -1,22 +1,15 @@
-# define [
-#   'spine'
-#   'substack'
-#   'models/palette_specification'
-#   'models/drawing'
-#   'models/commands/commander'
-#   'views/drawings/canvas_renderer'
-#   'controllers/toolbox'
-#   'controllers/selection'
-# ], (Spine, SubStack, PaletteSpecification, Drawing, Commander, CanvasRenderer, Toolbox, Selection) ->
-
 define [
   'spine'
   'lib/substack'
   'models/palette_specification'
-  'models/drawing',
+  'models/drawing'
+  'models/commands/commander'
   'views/drawings/index'
-  'spine.route'
-], (Spine, SubStack, PaletteSpecification, Drawing, IndexTemplate) ->
+  'views/drawings/show'
+  'views/drawings/canvas_renderer'
+  'controllers/toolbox'
+  'controllers/selection'
+], (Spine, SubStack, PaletteSpecification, Drawing, Commander, IndexTemplate, ShowTemplate, CanvasRenderer, Toolbox, Selection) ->
 
   class Index extends Spine.Controller
     events:
@@ -60,36 +53,38 @@ define [
         result[key.name] = key.value
       result
 
-  # class Show extends Spine.Controller
-  #   constructor: ->
-  #     super
-  #     @active @change
-  # 
-  #   change: (params) =>
-  #     # LoggingCommander = require ('models/commands/logging_commander')
-  #     # @commander = new LoggingCommander(new Commander())
-  #     @commander = new Commander()
-  #     @item = Drawing.find(params.id)
-  #     @item.clearSelection()
-  #     @log "Palette: #{@item.palette().id}"
-  #     @render()
-  # 
-  #   render: ->
-  #     @html require('views/drawings/show')
-  #     if @item
-  #       new CanvasRenderer(drawing: @item, canvas: @$('#drawing')[0])
-  #       @toolbox = new Toolbox(commander: @commander, item: @item, el: @$('#toolbox'))  
-  #       @selection = new Selection(commander: @commander, item: @item, el: @$('#selection'))
-  # 
-  #   deactivate: ->
-  #     super
-  #     @toolbox.release() if @toolbox
+  class Show extends Spine.Controller
+    constructor: ->
+      super
+      @active @change
+  
+    change: (params) =>
+      # LoggingCommander = require ('models/commands/logging_commander')
+      # @commander = new LoggingCommander(new Commander())
+      @commander = new Commander()
+      @item = Drawing.find(params.id)
+      @item.clearSelection()
+      @log "Palette: #{@item.palette().id}"
+      @render()
+  
+    render: ->
+      @html ShowTemplate
+      if @item
+        new CanvasRenderer(drawing: @item, canvas: @$('#drawing')[0])
+        @toolbox = new Toolbox(commander: @commander, item: @item, el: @$('#toolbox'))  
+        @selection = new Selection(commander: @commander, item: @item, el: @$('#selection'))
+  
+    deactivate: ->
+      super
+      @toolbox.release() if @toolbox
 
   class Drawings extends SubStack
     controllers:
       index: Index
+      show: Show
     
     routes:
       '/drawings'     : 'index'
+      '/drawings/:id' : 'show'
 
     default: 'index'

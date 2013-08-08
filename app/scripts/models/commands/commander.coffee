@@ -1,15 +1,16 @@
-class Commander
-  constructor: ->
-    @history = []
-  
-  add: (command) =>
-    @history.push command
-  
-  run: (command, options={undoable: true}) =>
-    @add(command) if options.undoable
-    command.run()
+define [], ->
 
-  undo: =>
-    @history.pop().undo() if @history.length
+  class Commander
+    constructor: ->
+      @history = []
   
-module.exports = Commander
+    add: (command) =>
+      @history.push command
+  
+    run: (command, options={undoable: true}) =>
+      @add(command) if options.undoable
+      command.run()
+
+    undo: =>
+      @history.pop().undo() if @history.length
+  

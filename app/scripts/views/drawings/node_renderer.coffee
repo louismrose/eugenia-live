@@ -1,11 +1,10 @@
-ElementRenderer = require('views/drawings/element_renderer')
+define [
+  'views/drawings/element_renderer'
+], (ElementRenderer) ->
 
-class NodeRenderer extends ElementRenderer
+  class NodeRenderer extends ElementRenderer
+    constructor: (item) ->
+      super(item)
 
-  constructor: (item) ->
-    super(item)
-
-  draw: =>
-    @el = @item.toPath()
-      
-module.exports = NodeRenderer
+    draw: =>
+      @el = @item.toPath()
