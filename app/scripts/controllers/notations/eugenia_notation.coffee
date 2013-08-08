@@ -1,6 +1,7 @@
 define [
+  'paper'
   'models/node_shape'
-], (NodeShape) ->
+], (Paper, NodeShape) ->
 
   class EugeniaNotation 
     reconstruct: (item) ->
@@ -114,7 +115,7 @@ define [
       """
 
     serialiseColor: (color) ->
-      c = new paper.Color(color)
+      c = new Paper.Color(color)
       "#{c.red*255},#{c.green*255},#{c.blue*255}"
   
   
@@ -185,7 +186,7 @@ define [
   
     deserialiseColor: (color) ->
       [all,r,g,b] = color.match("(\\d+),(\\d+),(\\d+)")
-      new paper.Color(r/255, g/255, b/255).toCssString()
+      new Paper.Color(r/255, g/255, b/255).toCSS()
     
     deserialiseName: (definition) ->
       class_pattern = /class\s+(\w*)/
