@@ -1,9 +1,10 @@
 define [
+  'require'
   'spine'
   'models/moves_path'
   'models/link_shape'
   'spine.relation'
-], (Spine, MovesPath, LinkShape) ->
+], (require, Spine, MovesPath, LinkShape) ->
 
   class Link extends Spine.Model
     @configure "Link", "sourceId", "targetId", "segments", "shape", "propertyValues"
@@ -80,3 +81,13 @@ define [
         
     getShape: =>
       LinkShape.find(@shape) if @shape and LinkShape.exists(@shape)
+    
+    source: =>
+      # Avoid circular dependencies with dynamic require
+      Node = require('models/node')
+      Node.find(@sourceId)
+
+    target: =>
+      # Avoid circular dependencies with dynamic require
+      Node = require('models/node')
+      Node.find(@targetId)
