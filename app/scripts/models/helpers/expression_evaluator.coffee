@@ -34,7 +34,9 @@ class ExpressionEvaluator
         target = [context]
         # check if this element has this propertyValue:
         propertyName = expression
-        throw new Error("Element does not contain that property") unless context.hasPropertyValue expression
+        unless context.hasPropertyValue expression
+          console.warn(context, expression)
+          throw new Error("Element does not contain that property") 
       else
         throw new Error('Element is not of type Node or Link and cannot contain a Property')
     else
@@ -100,6 +102,71 @@ class ExpressionEvaluator
           )
           #console.log('wut', expr)
     return source
+
+
+  # TODO: we may want to move 'evaluate' and 'execute' to another location, 
+  # as it seems to be more related to a simulation
+  evaluate:(context, expression) =>
+    pattern = ///\$\{(.+)\}///g
+    evalable = expression.replace(pattern, (match, subExpression) ->
+      return "(context.getPropertyValue('#{subExpression}'))"
+    )
+    return eval(evalable)
+
+  execute: (element, simulationControl, statement, context) =>
+    switch true
+      when statement.indexOf('trigger(') is 0
+        args = statement[statement.indexOf('(')+1..statement.lastIndexOf(')')-1].split(',')
+        if args.length is 1
+          simulationControl.triggerAll(eventName)
+        else if args.length is 2
+          eventTargetExpression = args[0]
+          eventName = args[1].trim()
+          eventName = eventName[1..eventName.length-2] # FIXME: we shouldn't need to trim the quotes...
+          simulationControl.trigger(@getElements(eventTargetExpression, element), eventName) 
+        else
+          throw new Error("Incorrect syntax for trigger")
+      when statement.indexOf('+=') > -1
+        # TODO: refactor cases for +=, -= and = as they are extremely similar.
+        # use some kind of lambda to specify the final action (i.e. respectively current + a or current - a or just a)
+        assignmentParts = statement.split('+=')
+        if assignmentParts.length is 2
+          # TODO: assign the value of the last assignmentPart to each other assignmentPart
+          # TODO: eval the right hand side
+          valueToAdd = parseFloat(assignmentParts[1])
+          result = @getProperty(assignmentParts[0], element)
+          return ()-> 
+            result.target.map((target) -> 
+              currentValue = parseFloat(target.getPropertyValue(result.propertyName))
+              target.setPropertyValue(result.propertyName, currentValue + valueToAdd)
+            )
+
+      when statement.indexOf('-=') > -1
+        assignmentParts = statement.split('-=')
+        if assignmentParts.length > 1
+          # TODO: assign the value of the last assignmentPart to each other assignmentPart
+          # TODO: eval the right hand side
+          assignmentParts[assignmentParts.length-1]
+          valueToSubtract = parseFloat(assignmentParts[1])
+          result = @getProperty(assignmentParts[0], element)
+          return ()-> 
+            result.target.map((target) -> 
+              currentValue = parseFloat(target.getPropertyValue(result.propertyName))
+              target.setPropertyValue(result.propertyName, currentValue - valueToSubtract)
+            )
+      when statement.indexOf('=') > -1
+        assignmentParts = statement.split('=')
+
+        if assignmentParts.length > 1
+          # TODO: assign the value of the last assignmentPart to each other assignmentPart
+          assignmentParts[assignmentParts.length-1]
+          newValue = assignmentParts[1]
+          result = @getProperty(assignmentParts[0], element)
+          return ()-> 
+            result.target.map((target) -> target.setPropertyValue(result.propertyName, newValue))
+        else
+          throw new Error('Unsupported/unrecognized statement kind')
+          matches = statement.match(pattern)
 
 ###  getAttributeOfElement: (attributeName, element) ->
     switch true
