@@ -11,6 +11,7 @@ Spine.SubStack = require('lib/substack')
 FunctionBuilder = require('controllers/helpers/function_builder')
 
 simulationPoll = require('controllers/simulation_poll')
+Node = require('models/node')
 
 class Simulation extends Spine.Controller
   events:
@@ -18,7 +19,10 @@ class Simulation extends Spine.Controller
 
   constructor: ->
     super
+    # prevent rendering from the constructor, as it will register a simulation loop on the Bacon stream, which I don't know how/when to get rid of
+    @constructing = true
     @active @change
+    @constructing = false
 
   change: (params) =>    
 
@@ -27,13 +31,18 @@ class Simulation extends Spine.Controller
     @item = Drawing.find(params.id)
     @item.clearSelection()
 
-    @render()  
+    @render() unless @constructing
 
   changeMode: (event) =>
     event.preventDefault()
     @mode = $(event.target).data('mode')
 
-    @navigate('/drawings', @item.id) if @mode is 'edit'
+    if @mode is 'edit'
+      @navigate('/drawings', @item.id) 
+
+      @simulation.deactivate()
+      # reset the simulation in case we switch to a different view (not just the drawing)
+      @simulation.reset()
 
   render: =>
     # if we navigate directly to here (without the intermediate drawing), then 
@@ -43,8 +52,8 @@ class Simulation extends Spine.Controller
     @html require('views/drawings/simulate')(@item)
 
     new CanvasRenderer(drawing: @item, canvas: @$('#drawing')[0])
-    @simulation = new SimulationControl(drawing: @drawing, commander: @commander, item: @item, el: @$('#simulation'))  
-    @selection = new Selection(commander: @commander, item: @item, el: @$('#selection'), readOnly: true)    
+    @simulation = new SimulationControl(drawing: @drawing, commander: @commander, item: @item, el: @$('#simulation'))
+    @selection = new Selection(commander: @commander, item: @item, el: @$('#selection'), readOnly: true)
   
   ###
   # The SubStack implementation currently does not call the deactivate properly, so 
@@ -68,58 +77,127 @@ class SimulationControl extends Spine.Controller
 
   constructor: (@item) ->
     super
+    @changeCommands = []
     @render()
- 
-    getCurrentValue = (event) ->
-      parseInt(event.currentTarget.value, 10) # always use base 10, even if it starts with 0 or 0x
-    
-    get = (id) ->
-      $('#'+id).asEventStream('change').map(getCurrentValue)
 
-    x = get('x')
-    y = get('y')
-    z = get('z')
+    #console.log("Building event->trigger map")
+    @eventMap = {}
+    for node in @item.nodes().all()
+      if node.getShape().behavior # and link.getShape().behavior
+        behavior = node.getShape().behavior
+        for eventDefinition of behavior
 
-    func = () ->
-      body = $('#function')[0].value
-      # TODO: build function and event streams based on properties etc
-      argvalues = Array.prototype.slice.call(arguments)
-      argnames = ['currentTime', 'x','y','z']
+          ## refactor to a new function
+          bracketIndex = eventDefinition.indexOf('[')
+          unless bracketIndex is -1
+            eventName = eventDefinition.substr(0,bracketIndex)
+            closingBracketIndex = eventDefinition.indexOf(']')
+            closingBracketIndex = eventDefinition.length+1 if closingBracketIndex <= 0
+            eventGuard = eventDefinition[bracketIndex+1.. closingBracketIndex-1]
+          else
+            eventName = eventDefinition
+            eventGuard = "true"
 
-      builder = new FunctionBuilder(argnames, argvalues)
-      builder.addBody body
-      return builder.execute()
+          # create the associative objects/maps, if none existed yet
+          @eventMap[eventName] = {} unless @eventMap[eventName] 
+          @eventMap[eventName][node.paperId()] = {} unless @eventMap[eventName][node.paperId()]
+          @eventMap[eventName][node.paperId()][eventGuard]= [] unless @eventMap[eventName][node.paperId()][eventGuard]
+
+          # concat the expressions to the ones that were already defined
+          Array.prototype.push.apply(@eventMap[eventName][node.paperId()][eventGuard], behavior[eventDefinition])
+
+    #console.log(@eventMap)
+    @unsub = simulationPoll.currentTime.onValue (tick) =>
+      if tick is 0
+        return
+
+      simulationPoll.calculatingSimulation = true
+      @setters = []
       
-    f = Bacon.combineWith(func, simulationPoll.currentTime, x, y, z)
-    f.onValue $('#f'), "attr", "value"
+      #console.log('Priming simulation tick')
+      @primeSimulation()
+      # use @events as a FIFO queue; @events.push() to add an element to the end of the queue, and @events.shift() to get one from the front of the queue
+      
+      while event = @events.shift()
+        unless (event.target)
+          @fireAll(event.name, event.context)
+        else
+          @fire(event.target, event.name, event.context)
+        #console.log('Fired '+ event.name, event.target, '(' + @events.length+' events remaining)')
+      ###for node in @item.nodes().all()
+        newSetters = node.simulate(@)
+        # gather all the triggers, built by the simulation statements
+        setters = setters.concat(newSetters)
+###
+      # fire all the setters
+      #console.group('executing setters')
+      while setter = @setters.shift()
+        if setter instanceof Function
+          #console.log('setter', setter)
+          setter()
+
+      #console.groupEnd()
+      simulationPoll.calculatingSimulation = false
+
+  primeSimulation: () ->
+    @events = []
+    @triggerAll('tick')
+
+  addSetters: (setters) =>
+    # Repeated push is fastest in most browsers: http://jsperf.com/concat-vs-repeated-push-vs-push-apply/4
+    setters = [setters] unless setters instanceof Array
+    # http://discontinuously.com/2012/05/iteration-in-coffeescript/
+    for i in [0..setters.length-1] by 1
+      @setters.push(setters[i])
+
+  triggerAll:(name, context) =>
+    #if name in @eventMap
+    #  for element of @eventMap[name]
+    #    @trigger(node, name, context)
+    @events.push({name: name, context:context})
+
+  trigger: (elements, name, context) =>
+    unless elements instanceof Array
+      # check for Collection, or if it is a single element:
+      elements = [elements]
+
+    for element in elements
+      @events.push({name: name, target: element, context: context})
+
+  fire: (element, event, context) =>
+    # find and fire all triggers that listen to this event
+    #console.log @eventMap[event]
+    if listening = @eventMap[event]
+      if listening[element.paperId()]
+        # for each guarded list of triggers
+        for guard of listening[element.paperId()]
+          if element.evaluate(guard)
+            # fire each trigger, as the guard allows us
+            #console.group("Activating triggers", event, guard)
+            for trigger in listening[element.paperId()][guard]
+              #console.log("Executing", trigger, 'on', element.paperId())
+              newSetters = element.execute(@, trigger, context)
+              @addSetters(newSetters)
+            #console.groupEnd()
+          else
+            #console.log('event not activated, guard not satisfied', element, event, guard)
+      else
+        console.log('element is not listening', element, event)
+
+  fireAll: (event, context) =>
+    #console.group("fireall", event)
+    for node in @item.nodes().all()
+      #console.log("fireall", event, node.id)
+      @fire(node, event, context)
+    #console.groupEnd()
+#    for link in @item.links().all()
+#      fire(link, event)
 
   stop: (event) =>
     simulationPoll.stop()
 
   start: (event) =>
-    simulationPoll.currentTime.onValue (tick) =>
-      for node in @item.nodes().all()
-        node.simulate(tick)
-
     simulationPoll.start()
-
-  startInteractive: (element) ->
-
-    update = (currentTime, node) ->
-      console.log('update')
-      #console.log(node.getShape().behavior)
-     ### for property, expression of node.getShape().behavior.tick
-        console.log(property, expression)
-        node.setPropertyValue(property, eval(expression))
-###
-
-      #node.moveTo([Math.cos(time) *100 + 200, Math.sin(time) * 100 + 200])
-
-      #node.setPropertyValue("width", "" + Math.cos(time) * 100)
-      #node.trigger("render")
-
-
-    #Bacon.combineWith(updateWidth, simulationPoll.counter)
 
   reset: (event) =>
     simulationPoll.reset()
@@ -127,6 +205,9 @@ class SimulationControl extends Spine.Controller
   render: =>
     simulationPoll.reset()
     @html require('views/drawings/simulation')(@item)
+
+  deactivate: =>
+    @unsub()
 
 class Simulations extends Spine.SubStack
   controllers:

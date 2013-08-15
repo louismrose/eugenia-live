@@ -2,10 +2,10 @@ Bacon = require('baconjs/dist/Bacon').Bacon
 
 class SimulationPoll
   Boolean isRunning = false
-
+  Boolean calculatingSimulation = false
   constructor: ->
     # If we make this and displayResolution a Bacon Property, we don't have to worry about updates anymore
-    @timeStep = 0.04 # 25 frames per second
+    @timeStep = 1 # 25 frames per second
 
     @counter = new Counter()
     @runningStatus = new Bacon.Bus()
@@ -15,7 +15,7 @@ class SimulationPoll
           @timeStep
 
     combine = (counter, increment) =>
-      if @isRunning
+      if @isRunning and not @calculatingSimulation
          counter.ticks += increment
        return counter
     
@@ -34,7 +34,7 @@ class SimulationPoll
   ###
   start: ->
     if @isRunning
-      console.warn('Simulation Poll is already running! Use reset in order to reset time')
+      console.warn('Simulation is already running! Use reset in order to reset time')
       return
 
     @isRunning = true 
