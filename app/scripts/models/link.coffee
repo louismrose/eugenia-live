@@ -29,7 +29,7 @@ define [
     updatePropertyValuesWithDefaultsFromShape: (persist) ->
       for property,value of @defaultPropertyValues()
         # insert the default value unless there is already a value for this property
-        @setPropertyValue(property,value,persist) unless property of @propertyValues
+        @setPropertyValue(property,value,persist) unless @hasPropertyValue(property)
       
       for property,value of @propertyValues
         # remove the current value unless this property is currently defined for this shape
@@ -46,7 +46,10 @@ define [
       delete @propertyValues[property]
       @trigger("propertyRemove")
       @save() if persist
-  
+
+    hasPropertyValue: (property) ->
+      property of @propertyValues  
+
     getPropertyValue: (property) ->
       @propertyValues[property]
   

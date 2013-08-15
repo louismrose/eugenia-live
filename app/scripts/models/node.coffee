@@ -27,7 +27,7 @@ define [
     updatePropertyValuesWithDefaultsFromShape: (persist) ->
       for property,value of @defaultPropertyValues()
         # insert the default value unless there is already a value for this property
-        @setPropertyValue(property,value,persist) unless property of @propertyValues
+        @setPropertyValue(property,value,persist) unless @hasPropertyValue(property)
       
       for property,value of @propertyValues
         # remove the current value unless this property is currently defined for this shape
@@ -44,12 +44,21 @@ define [
       delete @propertyValues[property]
       @trigger("propertyRemove")
       @save() if persist
+
+    hasPropertyValue: (property) ->
+      property of @propertyValues
   
     getPropertyValue: (property) ->
       @propertyValues[property]
     
     links: =>
       Link.select (link) => (link.sourceId is @id) or (link.targetId is @id)
+      
+    incomingLinks: =>
+      Link.select (link) => (link.targetId is @id)
+    
+    outgoingLinks: =>
+      Link.select (link) => (link.sourceId is @id)
 
     moveBy: (distance) =>
       @position = distance.add(@position)
