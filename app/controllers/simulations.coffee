@@ -12,6 +12,7 @@ FunctionBuilder = require('controllers/helpers/function_builder')
 
 simulationPoll = require('controllers/simulation_poll')
 Node = require('models/node')
+ExpressionEvaluator = require('models/helper/expression_evaluator')
 
 class Simulation extends Spine.Controller
   events:
@@ -75,6 +76,31 @@ class SimulationControl extends Spine.Controller
     "click button[data-start-simulation]" : "start"
     "click button[data-reset-simulation]" : "reset"
 
+  addBehavior: (element) ->
+    if element.getShape().behavior # and link.getShape().behavior
+      behavior = element.getShape().behavior
+      for eventDefinition of behavior
+
+        ## refactor to a new function
+        bracketIndex = eventDefinition.indexOf('[')
+        unless bracketIndex is -1
+          eventName = eventDefinition.substr(0,bracketIndex)
+          closingBracketIndex = eventDefinition.indexOf(']')
+          closingBracketIndex = eventDefinition.length+1 if closingBracketIndex <= 0
+          eventGuard = eventDefinition[bracketIndex+1.. closingBracketIndex-1]
+        else
+          eventName = eventDefinition
+          eventGuard = "true"
+
+        # create the associative objects/maps, if none existed yet
+        @eventMap[eventName] = {} unless @eventMap[eventName] 
+        @eventMap[eventName][element.paperId()] = {} unless @eventMap[eventName][element.paperId()]
+        @eventMap[eventName][element.paperId()][eventGuard]= [] unless @eventMap[eventName][element.paperId()][eventGuard]
+
+        # concat the expressions to the ones that were already defined
+        Array.prototype.push.apply(@eventMap[eventName][element.paperId()][eventGuard], behavior[eventDefinition])
+
+
   constructor: (@item) ->
     super
     @changeCommands = []
@@ -83,34 +109,17 @@ class SimulationControl extends Spine.Controller
     #console.log("Building event->trigger map")
     @eventMap = {}
     for node in @item.nodes().all()
-      if node.getShape().behavior # and link.getShape().behavior
-        behavior = node.getShape().behavior
-        for eventDefinition of behavior
-
-          ## refactor to a new function
-          bracketIndex = eventDefinition.indexOf('[')
-          unless bracketIndex is -1
-            eventName = eventDefinition.substr(0,bracketIndex)
-            closingBracketIndex = eventDefinition.indexOf(']')
-            closingBracketIndex = eventDefinition.length+1 if closingBracketIndex <= 0
-            eventGuard = eventDefinition[bracketIndex+1.. closingBracketIndex-1]
-          else
-            eventName = eventDefinition
-            eventGuard = "true"
-
-          # create the associative objects/maps, if none existed yet
-          @eventMap[eventName] = {} unless @eventMap[eventName] 
-          @eventMap[eventName][node.paperId()] = {} unless @eventMap[eventName][node.paperId()]
-          @eventMap[eventName][node.paperId()][eventGuard]= [] unless @eventMap[eventName][node.paperId()][eventGuard]
-
-          # concat the expressions to the ones that were already defined
-          Array.prototype.push.apply(@eventMap[eventName][node.paperId()][eventGuard], behavior[eventDefinition])
+      @addBehavior(node)
+    for link in @item.links().all()
+      @addBehavior(link)
 
     #console.log(@eventMap)
+
+    @expressionEvaluator = new ExpressionEvaluator
+
     @unsub = simulationPoll.currentTime.onValue (tick) =>
       if tick is 0
         return
-
       simulationPoll.calculatingSimulation = true
       @setters = []
       
@@ -141,7 +150,7 @@ class SimulationControl extends Spine.Controller
 
   primeSimulation: () ->
     @events = []
-    @triggerAll('tick')
+    @triggerAll('tick', {"Math" : Math}) # add stuff to the environment if it should be available to the user as an object
 
   addSetters: (setters) =>
     # Repeated push is fastest in most browsers: http://jsperf.com/concat-vs-repeated-push-vs-push-apply/4
@@ -164,34 +173,35 @@ class SimulationControl extends Spine.Controller
     for element in elements
       @events.push({name: name, target: element, context: context})
 
-  fire: (element, event, context) =>
+  fire: (element, event, context, global = false) =>
     # find and fire all triggers that listen to this event
-    #console.log @eventMap[event]
     if listening = @eventMap[event]
       if listening[element.paperId()]
         # for each guarded list of triggers
         for guard of listening[element.paperId()]
-          if element.evaluate(guard)
+          if @expressionEvaluator.evaluate(element, guard)
             # fire each trigger, as the guard allows us
             #console.group("Activating triggers", event, guard)
             for trigger in listening[element.paperId()][guard]
               #console.log("Executing", trigger, 'on', element.paperId())
-              newSetters = element.execute(@, trigger, context)
+              newSetters = @expressionEvaluator.execute(element, @, trigger, context)
               @addSetters(newSetters)
             #console.groupEnd()
           else
             #console.log('event not activated, guard not satisfied', element, event, guard)
-      else
-        console.log('element is not listening', element, event)
+      else if not global
+        console.warn('Element is not listening to this event', element, event)
+    else
+      console.warn('Nobody is listening to this event', event)
 
   fireAll: (event, context) =>
     #console.group("fireall", event)
     for node in @item.nodes().all()
       #console.log("fireall", event, node.id)
-      @fire(node, event, context)
+      @fire(node, event, context, true)
     #console.groupEnd()
-#    for link in @item.links().all()
-#      fire(link, event)
+    for link in @item.links().all()
+      @fire(link, event, context, true)
 
   stop: (event) =>
     simulationPoll.stop()
