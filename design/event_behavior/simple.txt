@@ -1,12 +1,46 @@
 Node
   active => trigger(self, "deactivate")
   active => trigger(self.outgoing.collect(o|o.target), "activate")
-  "deactivate" -> self.active = false
-  "activate" -> self.active = true
+  "deactivate" -> active = "false"
+  "activate" -> active = "true"
   
 Node
   sim.time > delay and active =>  trigger(self, "deactivate")
   sim.time > delay and active => trigger(self.outgoing.collect(o|o.target), "activate")
-  "deactivate" -> self.active = false
-  "activate" -> self.active = true
-  
+  "deactivate" -> self.active = "false"
+  "activate" -> self.active = "true"
+
+Actual implementation:
+{
+  "name": "Ping",
+  "properties": [
+    "active",
+    "rate"
+  ],
+  "elements": [
+    {
+      "figure": "ellipse",
+      "size": {
+        "width": 25,
+        "height": 25
+      },
+      "fillColor": "${active}=='true'?'green':'red'",
+      "borderColor": "black",
+      "x": 0,
+      "y": 0,
+      "strokeColor": "black"
+    }
+  ],
+  "behavior": {
+    "tick[${active}=='true']": [
+      "trigger(self, 'deactivate')",
+      "trigger(outgoing.target(), 'activate')"
+    ],
+    "deactivate": [
+      "active=false"
+    ],
+    "activate": [
+      "active=true"
+    ]
+  }
+}

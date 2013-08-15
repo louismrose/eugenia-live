@@ -8,7 +8,7 @@ Process
   => trigger(incoming, "consume")
   
 Consumer
- "consume" -> source.c = source.c - rate * sim.timestep * source.c
+ "consume" -> source.c -= rate * sim.timestep * source.c
  
 Producer
-  "produce" -> target.c = target.c + rate * sim.timestep * source.incoming.collect(c|c.rate * sim.timestep * c.source).sum()
+  "produce" -> target.c += rate * sim.timestep * source.incoming.collect(c|c.rate * sim.timestep * c.source).sum()

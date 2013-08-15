@@ -1,3 +1,28 @@
+Petrinet (Tokens on Nets, Transitions have a 'rate' property)
+Arc
+  incoming.all(i|i.token>=i.rate) => trigger(self, "fire")
+  "fire" -> trigger(incoming, "consume")
+  "fire" -> trigger(outgoing, "produce")
+
+Transition
+  "consume" -> source().tokens -= rate
+  "produce" -> target().tokens += rate
+
+Petrinet with fixed rate
+Arc
+  incoming.all(i|i.token>=1) => trigger(self, "fire")
+  "fire" -> trigger(incoming, "consume")
+  "fire" -> trigger(outgoing, "produce")
+
+Transition
+  "consume" -> source().tokens -= 1
+  "produce" -> target().tokens += 1
+  
+Possible problems: two arcs consuming tokens from a Net, which does not contain that many tokens
+How to avoid more than one Arc firing per tick? Global event to set a flag?
+
+
+Alternative to Petrinet (tokens on transitions)
 Arc
   incoming.exists(i|i.token>0) => trigger(self, "ready")
   "ready" -> trigger(incoming.selectOne(i|i.tokens>0), "consume")
@@ -6,3 +31,4 @@ Arc
 Transition
   "consume" -> tokens--
   "produce" -> tokens++
+  

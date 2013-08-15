@@ -1,0 +1,15 @@
+Incrementor
+  true => trigger(self, "increment")
+  "increment" -> outgoing.target().value -= 1
+  
+Decrementor
+  true => trigger(self, "decrement")
+  "decrement" -> outgoing.target().value += 1
+  
+Instantiating two Incrementors (I1, I2) and one Decrementor (D1) and connecting them as:
+I1 -> I1
+I1 -> I2
+D1 -> D1
+D1 -> I2
+
+Should not increase nor decrease the value of I2, but should increase/decrease of I1, D1 respectively.
