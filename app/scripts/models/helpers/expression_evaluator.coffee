@@ -96,7 +96,6 @@ class ExpressionEvaluator
               console.log(el)
               throw new Error("Element does not contain the requested function")
           )
-          #console.log('wut', expr)
     return source
 
 
@@ -117,7 +116,21 @@ class ExpressionEvaluator
     try 
       eval(evalable)
     catch e
-      console.error(e)
+      console.error(expression, e)
+
+  createSetters: (element, statement, operator, internalSetter, context) ->
+    assignmentParts = statement.split(operator)
+    if assignmentParts.length isnt 2
+      throw new Error("Incorrect flow for assignment operator, check your guards")
+
+    # TODO: assign the value of the last assignmentPart to each other assignmentPart
+    otherValue = @evaluate(element, assignmentParts[1], context)
+    result = @getProperty(assignmentParts[0], element)
+    return ()-> 
+      result.target.map((target) -> 
+        currentValue = parseFloat(target.getPropertyValue(result.propertyName))
+        target.setPropertyValue(result.propertyName, internalSetter(currentValue, otherValue))
+      )
 
   execute: (element, simulationControl, statement, context) =>
     switch true
@@ -132,48 +145,29 @@ class ExpressionEvaluator
           simulationControl.trigger(@getElements(eventTargetExpression, element), eventName) 
         else
           throw new Error("Incorrect syntax for trigger")
+      ## addition
       when statement.indexOf('+=') > -1
-        # TODO: refactor cases for +=, -= and = as they are extremely similar.
-        # use some kind of lambda to specify the final action (i.e. respectively current + a or current - a or just a)
-
-        #TODO: add support for |= and &=? this would help solve the race condition for setting something to true
-        assignmentParts = statement.split('+=')
-        if assignmentParts.length is 2
-          # TODO: assign the value of the last assignmentPart to each other assignmentPart
-          # TODO: eval the right hand side
-          valueToAdd = @evaluate(element, assignmentParts[1], context)
-          result = @getProperty(assignmentParts[0], element)
-          return ()-> 
-            result.target.map((target) -> 
-              currentValue = parseFloat(target.getPropertyValue(result.propertyName))
-              target.setPropertyValue(result.propertyName, currentValue + valueToAdd)
-            )
-
+        return @createSetters(element, statement, '+=', ((current, other) -> current + other), context)
+      ## subtraction
       when statement.indexOf('-=') > -1
-        assignmentParts = statement.split('-=')
-        if assignmentParts.length > 1
-          # TODO: assign the value of the last assignmentPart to each other assignmentPart
-          # TODO: eval the right hand side
-          assignmentParts[assignmentParts.length-1]
-          valueToSubtract = @evaluate(element, assignmentParts[1], context)
-          result = @getProperty(assignmentParts[0], element)
-          return ()-> 
-            result.target.map((target) -> 
-              currentValue = parseFloat(target.getPropertyValue(result.propertyName))
-              target.setPropertyValue(result.propertyName, currentValue - valueToSubtract)
-            )
+        return @createSetters(element, statement, '-=', ((current, other) -> current - other), context)
+      ## multiplication
+      when statement.indexOf('*=') > -1
+        return @createSetters(element, statement, '*=', ((current, other) -> current * other), context)
+      ## division
+      when statement.indexOf('/=') > -1
+        return @createSetters(element, statement, '/=', ((current, other) -> current / other), context)
+      ## logical or
+      when statement.indexOf('|=') > -1
+        return @createSetters(element, statement, '|=', ((current, other) -> current || other), context)
+      ## logical and
+      when statement.indexOf('&=') > -1
+        return @createSetters(element, statement, '&=', ((current, other) -> current && other), context)
+      ## assignment of literal
       when statement.indexOf('=') > -1
-        assignmentParts = statement.split('=')
-
-        if assignmentParts.length > 1
-          # TODO: assign the value of the last assignmentPart to each other assignmentPart
-          assignmentParts[assignmentParts.length-1]
-          newValue = @evaluate(element, assignmentParts[1], context)
-          result = @getProperty(assignmentParts[0], element)
-          return ()-> 
-            result.target.map((target) -> target.setPropertyValue(result.propertyName, newValue))
-        else
-          throw new Error('Unsupported/unrecognized statement kind')
+        return @createSetters(element, statement, '=', ((current, other) -> other), context)
+      else
+        throw new Error('Unsupported/unrecognized statement kind')
 
 ###  getAttributeOfElement: (attributeName, element) ->
     switch true
