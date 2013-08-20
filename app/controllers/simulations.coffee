@@ -150,7 +150,7 @@ class SimulationControl extends Spine.Controller
 
   primeSimulation: () ->
     @events = []
-    @triggerAll('tick', {"Math" : Math}) # add stuff to the environment if it should be available to the user as an object
+    @triggerAll('tick', {"Math" : Math, simulationControl: @}) # add stuff to the environment if it should be available to the user as an object
 
   addSetters: (setters) =>
     # Repeated push is fastest in most browsers: http://jsperf.com/concat-vs-repeated-push-vs-push-apply/4
@@ -159,32 +159,32 @@ class SimulationControl extends Spine.Controller
     for i in [0..setters.length-1] by 1
       @setters.push(setters[i])
 
-  triggerAll:(name, context) =>
+  triggerAll:(name, environment) =>
     #if name in @eventMap
     #  for element of @eventMap[name]
     #    @trigger(node, name, context)
-    @events.push({name: name, context:context})
+    @events.push({name: name, context:environment})
 
-  trigger: (elements, name, context) =>
+  trigger: (elements, name, environment) =>
     unless elements instanceof Array
       # check for Collection, or if it is a single element:
       elements = [elements]
 
     for element in elements
-      @events.push({name: name, target: element, context: context})
+      @events.push({name: name, target: element, context: environment})
 
-  fire: (element, event, context, global = false) =>
+  fire: (element, event, environment, global = false) =>
     # find and fire all triggers that listen to this event
     if listening = @eventMap[event]
       if listening[element.paperId()]
         # for each guarded list of triggers
         for guard of listening[element.paperId()]
-          if @expressionEvaluator.evaluate(element, guard)
+          if @expressionEvaluator.evaluate(element, guard, environment)
             # fire each trigger, as the guard allows us
             #console.group("Activating triggers", event, guard)
             for trigger in listening[element.paperId()][guard]
               #console.log("Executing", trigger, 'on', element.paperId())
-              newSetters = @expressionEvaluator.execute(element, @, trigger, context)
+              newSetters = @expressionEvaluator.execute(element, @, trigger, environment)
               @addSetters(newSetters)
             #console.groupEnd()
           else
@@ -194,14 +194,14 @@ class SimulationControl extends Spine.Controller
     else
       console.warn('Nobody is listening to this event', event)
 
-  fireAll: (event, context) =>
+  fireAll: (event, environment) =>
     #console.group("fireall", event)
     for node in @item.nodes().all()
       #console.log("fireall", event, node.id)
-      @fire(node, event, context, true)
+      @fire(node, event, environment, true)
     #console.groupEnd()
     for link in @item.links().all()
-      @fire(link, event, context, true)
+      @fire(link, event, environment, true)
 
   stop: (event) =>
     simulationPoll.stop()
