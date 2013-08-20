@@ -1,5 +1,6 @@
 Node = require('models/node')
 Link = require('models/link')
+simulationPoll = require('controllers/simulation_poll')
 
 class ExpressionEvaluator
 
@@ -75,7 +76,6 @@ class ExpressionEvaluator
       switch true
         # special cases first
         when part.trim().toLowerCase() is 'outgoing'
-          sources = source.map (el)->el.outgoingLinks()
           # FIXME: what about non-unique occurrences, need to have them twice?
           # e.g. from N1--L1-->N2 and N1--L2-->N3--L3-->N2
           # where N1.outgoing.target().outgoing.target() would include N2 twice
@@ -86,22 +86,31 @@ class ExpressionEvaluator
           console.log 'collect op'
 
         when part.indexOf('(') > -1 and part.indexOf(')') > -1
-          # it should be a function of some kind
-          functionName = part[0..part.indexOf('(')-1]
-          source = source.map((el) -> 
-            if functionName of el and el[functionName] instanceof Function
-              # use apply instead, with defined arguments as array, or use the FunctionBuilder perhaps
-              return el[functionName]()
-            else
-              console.log(el)
-              throw new Error("Element does not contain the requested function")
-          )
+
+          if part.indexOf('ofType') is 0
+            args = part.split('(')[1].split(')')[0].split(',') # this is too awful for words, but works when using a lot of assumptions
+            source = source.filter((el)-> el.ofType(args[0]))
+          else if part.indexOf('first()') > -1
+            source = [source[0]]
+          else if part.indexOf('last()') > -1
+            source = [source[source.length-1]]
+          else
+            # it should be a function of some kind
+            functionName = part[0..part.indexOf('(')-1]
+            source = source.map((el) -> 
+              if functionName of el and el[functionName] instanceof Function
+                args = part.split('(')[1].split(')')[0].split(',') # this is too awful for words, but works when using a lot of assumptions
+                # use apply instead, with defined arguments as array, or use the FunctionBuilder perhaps
+                return el[functionName].apply(el, args)
+              else
+                console.log(el, part, functionName, args)
+                throw new Error("Element does not contain the requested function")
+            )
     return source
 
-
-  # TODO: we may want to move 'evaluate' and 'execute' to another location, 
-  # as it seems to be more related to a simulation
   evaluate:(context, expression, environment) ->
+    expression = expression.replace("sim.time", simulationPoll.displayTime(), "gi")
+    expression = expression.replace("sim.step", simulationPoll.timeStep, "gi")
     pattern = ///\$\{([^\}]*)\}///g
     evalable = expression.replace(pattern, (match, subExpression) =>
       lastDot = subExpression.lastIndexOf '.'
@@ -109,19 +118,30 @@ class ExpressionEvaluator
       target = @getElements(subExpression[0..lastDot-1], context)
       # assert that the result is (a list of) Nodes/Links here?
       propertyName = subExpression.substr(lastDot+1).trim()
-      if target.length isnt 1
-        throw new Error("Cannot evaluate simple property on List of Nodes/Links containing more or less than 1 Element")
-      target[0].getPropertyValue(propertyName)
+      if target.length > 1
+        #throw new Error("Cannot evaluate simple property on List of Nodes/Links containing more or less than 1 Element")
+        console.warn('Using first element in the list of elements found')
+
+      if target.length >= 1 and target[0]
+        target[0].getPropertyValue(propertyName) 
+      else
+        return undefined
     )
-    try 
-      eval(evalable)
-    catch e
-      console.error(expression, e)
+    if evalable.indexOf(';') > -1
+      try
+        return eval(evalable)
+      catch e
+        console.error(expression, e, evalable)
+    else
+      number = parseFloat(evalable)
+      if not isNaN(number)
+        return number
+      return evalable
 
   createSetters: (element, statement, operator, internalSetter, context) ->
     assignmentParts = statement.split(operator)
     if assignmentParts.length isnt 2
-      throw new Error("Incorrect flow for assignment operator, check your guards")
+      throw new Error("Incorrect flow for assignment operator, check your assignment statements", statement)
 
     # TODO: assign the value of the last assignmentPart to each other assignmentPart
     otherValue = @evaluate(element, assignmentParts[1], context)
@@ -129,7 +149,7 @@ class ExpressionEvaluator
     return ()-> 
       result.target.map((target) -> 
         currentValue = parseFloat(target.getPropertyValue(result.propertyName))
-        target.setPropertyValue(result.propertyName, internalSetter(currentValue, otherValue))
+        target.setPropertyValue(result.propertyName, internalSetter(currentValue, otherValue), false)
       )
 
   execute: (element, simulationControl, statement, context) =>
