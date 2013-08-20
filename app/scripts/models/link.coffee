@@ -94,3 +94,6 @@ define [
       # Avoid circular dependencies with dynamic require
       Node = require('models/node')
       Node.find(@targetId)
+    
+    ofType: (typeName) =>
+      @getShape().name.toLowerCase() is typeName.toLowerCase()

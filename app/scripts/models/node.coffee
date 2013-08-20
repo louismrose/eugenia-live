@@ -87,3 +87,6 @@ define [
   
     getShape: =>
       NodeShape.find(@shape) if @shape and NodeShape.exists(@shape)
+      
+    ofType: (typeName) =>
+      @getShape().name.toLowerCase() is typeName.toLowerCase()
