@@ -140,15 +140,16 @@ define [
         "name": "Concentration",
         "nodeShapes": [
           {
-            "name": "External influence",
+            "name": "DNA",
             "properties": [
-              "name"
+              "name",
+              "copies"
             ],
             "label": {
               "for": [
                 "name"
               ],
-              "color": "black",
+              "color": "white",
               "placement": "internal",
               "length": 15,
               "pattern": "{0}"
@@ -158,31 +159,15 @@ define [
                 "figure": "rectangle",
                 "size": {
                   "width": 100,
-                  "height": 100
+                  "height": 25
                 },
-                "fillColor": "white",
+                "fillColor": "blue",
                 "borderColor": "black",
                 "x": 0,
                 "y": 0
               },
-              {
-                "figure": "path",
-                "points": [
-                  {"x": -20, "y" : 40},
-                  {"x": 50,  "y" : 40},
-                  {"x": 40,  "y" : 10},
-                  {"x": 80,  "y" : 50},
-                  {"x": 40,  "y" : 90},                
-                  {"x": 50,  "y" : 60},
-                  {"x": -20, "y" : 60},
-                  {"x": -20, "y" : 40}
-                ],
-                "fillColor": "white",
-                "borderColor": "green",
-                "x": -30,
-                "y": -35
-              }
-            ]
+            ],
+            "behavior": {}
           },
           {
             "name": "Process",
@@ -213,43 +198,312 @@ define [
             ]
           },
           {
-            "name": "Concentration",
+            "name": "RNA",
             "properties": [
-              "name"
+              "name",
+              "copies"
             ],
             "label": {
               "for": [
-                "name"
+                "name",
+                "copies"
               ],
-              "color": "green",
-              "placement": "internal",
+              "color": "black",
+              "placement": "external",
               "length": 15,
-              "pattern": "{0}"
+              "pattern": "{0}/{1}"
             },
  
             "elements": [
               {
-                "figure": "polygon",
-                "fillColor": "#FFCCFF",
+                "figure": "path",
+                "fillColor": "orange",
                 "borderColor": "black",
-                "sides" : 5,
-                "radius" : 50,
+                "points": [
+                  {"x": 0, "y": 0},
+                  {"x": -10, "y": 10},
+                  {"x": 10, "y": 40},
+                  {"x": -15, "y": 60},
+                  {"x": -5, "y": 60},
+                  {"x": 20, "y": 40},
+                  {"x": 0, "y": 10},
+                  {"x": 10, "y": 0},
+                  {"x": 0, "y": 0}
+                ],
                 "x": 0,
-                "y": 0
+                "y": 0,
+                "strokeColor": "black",
+                "size": {
+                  "width": 50,
+                  "height": 100
+                }
+              },
+              {
+                "figure": "path",
+                "fillColor": "orange",
+                "borderColor": "black",
+                "x": 20,
+                "y": 10,
+                "points": [
+                  {"x": 0, "y": 0},
+                  {"x": -10, "y": 10},
+                  {"x": 10, "y": 40},
+                  {"x": -15, "y": 60},
+                  {"x": -5, "y": 60},
+                  {"x": 20, "y": 40},
+                  {"x": 0, "y": 10},
+                  {"x": 10, "y": 0},
+                  {"x": 0, "y": 0}
+                ],
+                "strokeColor": "black",
+                "size": {
+                  "width": 50,
+                  "height": 100
+                }
+              },
+              {
+                "figure": "path",
+                "fillColor": "orange",
+                "borderColor": "black",
+                "x": 45,
+                "y": -5,
+                "points": [
+                  {"x": 0, "y": 0},
+                  {"x": -10, "y": 10},
+                  {"x": 10, "y": 40},
+                  {"x": -15, "y": 60},
+                  {"x": -5, "y": 60},
+                  {"x": 20, "y": 40},
+                  {"x": 0, "y": 10},
+                  {"x": 10, "y": 0},
+                  {"x": 0, "y": 0}
+                ],
+ 
+                "strokeColor": "black",
+                "size": {
+                  "width": 50,
+                  "height": 100
+                }
               }
-            ]
-          }
+            ],
+            "behavior": {
+              "tick[sim.time<=1;]": [
+                "copies=0"
+              ]
+            },
+            
+            "name": "Degraded RNA",
+            "properties": [
+              "name",
+              "copies"
+            ],
+            "label": {
+              "for": [
+                "name",
+                "copies"
+              ],
+              "color": "black",
+              "placement": "internal",
+              "length": 15,
+              "pattern": "{1}"
+            },
+            "elements": [
+              {
+                "figure": "path",
+                "fillColor": "grey",
+                "borderColor": "grey",
+                "points" : [
+                  {"x":0, "y":0},
+                  {"x":-10, "y":10},
+                  {"x": 10, "y":40},
+                  {"x":-15, "y":60},
+                  {"x":-5, "y":60},
+                  {"x": 20, "y":40},
+                  {"x":0, "y":10},
+                  {"x":10, "y":0},
+                  {"x":0, "y":0}
+                ],
+                "x": 0,
+                "y": 0,
+                "strokeColor": "black",
+                "size": {
+                  "width": 50,
+                  "height": 100
+                }
+              }
+            ],
+            "behavior": {
+              "tick[sim.time<=1;]": [
+                "copies=0"
+              ]
+            },
+            {
+              "name": "Protein",
+              "properties": [
+                "name",
+                "copies"
+              ],
+              "label": {
+                "for": [
+                  "name",
+                  "copies"
+                ],
+                "color": "black",
+                "placement": "external",
+                "length": 15,
+                "pattern": "{0}/{1}"
+              },
+           "elements": [
+             {
+               "figure": "ellipse",
+               "fillColor": "#009900",
+               "borderColor": "black",
+               "size": {
+                 "width": 50,
+                 "height": 50
+               },
+               "x": 0,
+               "y": 0
+             },
+             {
+               "figure": "ellipse",
+               "fillColor": "#009900",
+               "borderColor": "black",
+               "size": {
+                 "width": 50,
+                 "height": 50
+               },
+               "x": 30,
+               "y": 55
+             },
+             {
+               "figure": "ellipse",
+               "fillColor": "#009900",
+               "borderColor": "black",
+               "size": {
+                 "width": 50,
+                 "height": 50
+               },
+               "x": 65,
+               "y": 15
+             }
+           ],
+           "behavior": {
+             "tick[sim.time<=1;]": [
+               "copies=0"
+             ]
+           }
+         },
+         {
+           "name": "Degraded Protein",
+           "properties": [
+             "name",
+             "copies"
+           ],
+           "label": {
+             "for": [
+               "name",
+               "copies"
+             ],
+             "color": "black",
+             "placement": "internal",
+             "length": 15,
+             "pattern": "{1}"
+           },
+           "elements": [
+             {
+               "figure": "ellipse",
+               "fillColor": "grey",
+               "borderColor": "black",
+               "size": {
+                 "width": 50,
+                 "height": 50
+               },
+               "x": 65,
+               "y": 15
+             }
+           ],
+           "behavior": {
+             "tick[sim.time<=1;]": [
+               "copies=0"
+             ]
+           }
+         }
         ],
         "linkShapes": [
-          {
-            "name": "Transition",
-            "color": "black",
-            "style": "solid"
+         {
+            "name": "Inhibits",
+            "properties": [],
+            "color": "red",
+            "style": "dash"
           },
           {
-            "name": "Dependency",
-            "color": "gray",
-            "style": "dash"
+            "name": "Stimulates",
+            "properties": [],
+            "color": "red",
+            "style": "solid",
+            "width": 1
+          },
+          {
+            "name": "Produces",
+            "properties": [
+              "rate",
+              "expired"
+            ],
+            "color": "black",
+            "style": "solid",
+            "label": {
+              "for": [
+                "rate"
+              ],
+              "placement": "external",
+              "pattern": "{0}/s",
+              "color": "black"
+            },
+            "width": 1,
+            "behavior": {
+              "tick": [
+                "expired+=sim.step"
+              ],
+              "tick[10*${expired}*${rate}*${source().copies} >= 1;]": [
+                "expired=0",
+                "target().copies+=Math.floor(10*${expired}*${source().copies}*${rate});"
+              ]
+            }
+          }, 
+          {
+            "name": "Consumes",
+            "properties": [],
+            "color": "black",
+            "style": "dash",
+            "width": 1
+          }, {
+            "name": "Degrades",
+            "properties": [
+              "rate",
+              "expired"
+            ],
+            "color": "red",
+            "style": "dash",
+            "label": {
+              "for": [
+                "rate"
+              ],
+              "placement": "external",
+              "pattern": "{0}/s",
+              "color": "black"
+            },
+            "width": 1,
+            "behavior": {
+              "tick": [
+                "expired+=sim.step"
+              ],
+              "tick[10*${expired}*${rate}*${source().copies} >= 1;]": [
+                "expired=0",
+                "source().copies-=Math.floor(10*${expired}*${source().copies}*${rate});",
+                "target().copies+=Math.floor(10*${expired}*${source().copies}*${rate});"
+              ]
+            }
           }
         ]
       }'
