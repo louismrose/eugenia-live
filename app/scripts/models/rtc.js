@@ -1,5 +1,6 @@
   Spine = require("spine");
-
+  // Script loading currently happens in index.html, but could be moved here.
+  
   // fileref=document.createElement('script');
   // fileref.setAttribute("type","text/javascript");
   // fileref.setAttribute("src", "//www.google.com/jsapi");
@@ -11,13 +12,12 @@
   // fileref3.setAttribute("src", "//apis.google.com/js/api.js");
 
 var rtc = rtc || {};
-
-
+  // Pointers to interface button IDs for interacting with realtime code
   CREATE_SELECTOR = "#createDoc";
   OPEN_SELECTOR = "#openDoc";
   AUTH_BUTTON = "authorizeButton";
   SHARE_SELECTOR = "#share";
-
+  //appID and clientID should be copied from Google Console
    realTimeOptions = {
       appID: '465627783329',
       clientId: '465627783329-5rt9n9o1m3oum4i1o9quvhe5641u182f.apps.googleusercontent.com',
@@ -32,12 +32,7 @@ var rtc = rtc || {};
     var userId = null;
     var lastReqTime=0;
 
-    var pickerCallback = function (data) {
-      if (data.action == google.picker.Action.PICKED) {
-       var fileId = data.docs[0].id;
-        rtclient.redirectTo(fileId, realtimeLoader.authorizer.userId);
-      }
-    };
+
     var beforeAuth = function (){
       $(OPEN_SELECTOR).attr('disabled','true');
       $(CREATE_SELECTOR).attr('disabled','true');
@@ -48,24 +43,26 @@ var rtc = rtc || {};
       realtimeLoader = new rtclient.RealtimeLoader(realTimeOptions);
       realtimeLoader.start(afterAuth);
     }
-
+    // add button listeners after successful authorization and make them enabled
     var afterAuth = function(){
       $(SHARE_SELECTOR).click(popupShare);
       $(OPEN_SELECTOR).click(popupOpen);
       $(CREATE_SELECTOR).click(function() {
         var fileName = prompt("New file name:", "");
-        realtimeLoader.createNewFileAndRedirect(fileName);
+        if(fileName){
+          realtimeLoader.createNewFileAndRedirect(fileName);
+        }
       });
       $(OPEN_SELECTOR).removeAttr('disabled');
       $(CREATE_SELECTOR).removeAttr('disabled');
     };
-
+    // Called when a realtime model is loaded for the first time
     function initializeModel (model) {
       console.log('initializeModel');
       var map = model.createMap();
       model.getRoot().set('modelsMap', map);
     }
-
+    //Called everytime a realtime model is loaded
     function onFileLoaded (doc) {
       console.log('onFileLoaded');
       var modelsMap = doc.getModel().getRoot().get('modelsMap');
@@ -73,6 +70,7 @@ var rtc = rtc || {};
       var keys = modelsMap.keys();
       for(var i in keys){
         var record = modelsMap.get(keys[i]);
+        //add change listeners to every map entry. This only affects local copy of map
         record.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, remoteJSONUpdate);
       }
       realtimeDoc = doc;
@@ -80,11 +78,11 @@ var rtc = rtc || {};
       installCollaboratorListener();
       updateCollaborators();
     }
-    
+    // Displays Google Picker, for selecting rt file to load
     var popupOpen = function () {
       var token = gapi.auth.getToken().access_token;
       var view = new google.picker.View(google.picker.ViewId.DOCS);
-      view.setMimeTypes(rtclient.REALTIME_MIMETYPE);
+      view.setMimeTypes(rtclient.REALTIME_MIMETYPE); // filters files, and only displays realtime files
       var picker = new google.picker.PickerBuilder()
           .enableFeature(google.picker.Feature.NAV_HIDDEN)
           .setAppId(realTimeOptions.appId)
@@ -95,32 +93,47 @@ var rtc = rtc || {};
           .build();
       picker.setVisible(true);
     };
-
+    // redirects client to the selected realtime document
+    var pickerCallback = function (data) {
+      if (data.action == google.picker.Action.PICKED) {
+       var fileId = data.docs[0].id;
+        console.log(fileId);
+        rtclient.redirectTo(fileId, realtimeLoader.authorizer.userId);
+      }
+    };
+    // commented code is required for modular share window. Currently not working.
+    // The reason is most likely wrong configuration of Drive SDK within Google Console
     var popupShare = function() {
       window.open('https://drive.google.com/#recent');
-      // var shareClient = new gapi.drive.share.ShareClient(realTimeOptions.appId);
-      // shareClient.setItemIds([rtclient.params['fileId']]);
-      // shareClient.showSettingsDialog();
+      // var fileID = [rtclient.params['fileId']];
+      // if(fileID!=""){
+      //   var shareClient = new gapi.drive.share.ShareClient(realTimeOptions.appId);
+      //   shareClient.setItemIds(fileID);
+      //   shareClient.showSettingsDialog();
+      // }else{
+      //   alert("Please open the file you wish to share first.");
+      // }
     };
-
+    // deletes a collaborative map entry. Called from realtime.coffee
     var deleteJSON = function(evt){
       var modelsMap = realtimeDoc.getModel().getRoot().get('modelsMap');
       var records = modelsMap.get(this.className);
       records.delete(this.className+evt.id);
     };
+    //create a new collaborative map entry. Called from realtime.coffee
     var createJSON = function(evt){
      var modelsMap = realtimeDoc.getModel().getRoot().get('modelsMap');
      if(modelsMap.has(this.className)){
          var records = modelsMap.get(this.className);
          records.set(this.className+evt.id,JSON.stringify(evt));
-       } else {
+      }else {
          var records = realtimeDoc.getModel().createMap();
          records.set(this.className+evt.id,JSON.stringify(evt));
          records.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, remoteJSONUpdate); //repetitive, maybe find better way
          modelsMap.set(this.className,records);
        }
     };
-
+    //update a collaborative map entry. Called from realtime.coffee
     var updateJSON = function (evt){
       var current = new Date().getTime();
       if(true){
@@ -131,7 +144,8 @@ var rtc = rtc || {};
         records.set(this.className+evt.id,JSON.stringify(evt));      
       };
     };
-
+    // called when a new entry is added on outer map. This will happen when a new Model type
+    // is created.
     var remoteJSONAdded = function(evt){
       var isLocal = evt.isLocal;
       if(!isLocal){
@@ -141,7 +155,7 @@ var rtc = rtc || {};
         Spine.Model.trigger('Model:fileLoad',modelsMap);
       }
     };
-
+    // called when a change is made in the collaborative map
     var remoteJSONUpdate = function(evt){
       var isLocal = evt.isLocal;
       if(!isLocal){
@@ -157,7 +171,8 @@ var installCollaboratorListener = function()
 };
 
 /**
- * Draw function for the collaborator list.
+ * Draw function for the collaborator list. It will search the DOM for the specified 
+ location and add it self.
  */
 var updateCollaborators = function()
 {
@@ -225,6 +240,7 @@ var updateCollaborators = function()
 
 
 window.onload = startRealtime;
+// make update/delete/create JSON function available to external files. Used for realtime.coffee
 exports.updateJSON = updateJSON;
 exports.deleteJSON = deleteJSON;
 exports.createJSON = createJSON;
@@ -241,7 +257,8 @@ exports.createJSON = createJSON;
 
 var rtclient = rtclient || {}
 
-
+// Scopes are required when requesting application rights, when a user accesses realtime Eugenia for
+// the first time
 rtclient.INSTALL_SCOPE = 'https://www.googleapis.com/auth/drive.install';
 
 
@@ -260,7 +277,7 @@ rtclient.OPENID_SCOPE = 'openid';
 
 
 /**
- * MIME type for newly created Realtime files.
+ * MIME type for newly created Realtime files. Used also for filtering available Google drive files
  * @const
  */
 rtclient.REALTIME_MIMETYPE = 'application/vnd.google-apps.drive-sdk.'+realTimeOptions.appID;
