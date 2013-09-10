@@ -1,4 +1,4 @@
-<div class="row-fluid">
+<div id="<%=@verb%>" class="row-fluid">
   <form>
     <legend><%=@verb%> <%=@type%>
       <ul class="nav nav-pills" style="display: inline; float: right;">
@@ -18,8 +18,8 @@
         </div>
         <div class="span6" style="padding-right: 20px">
           <p class="help-block">
-			For example:
-			<pre><%=@example%></pre>
+            <label>For example:</label>
+            <textarea class="input-xlarge" style="width: 90%;" id="example" name="example" rows="12" required><%=@example%></textarea>
           </p>
         </div>
       </div>

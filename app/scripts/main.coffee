@@ -5,7 +5,7 @@ require.config
     'paper' : "../bower_components/paper/dist/paper-core"
     'bacon' : "../bower_components/bacon/dist/Bacon"
     'codemirror' : "../bower_components/codemirror/lib/codemirror"
-    'codemirror.js' : "../bower_components/codemirror/mode/javascript/javascript"
+    'codemirror.javascript' : "../bower_components/codemirror/mode/javascript/javascript"
     'codemirror.lint' : "../bower_components/codemirror/addon/lint/lint"
     'codemirror.jsonlint' : "../bower_components/codemirror/addon/lint/json-lint"
     'jsonlint' : "../bower_components/jsonlint/lib/jsonlint"
@@ -23,13 +23,13 @@ require.config
     'codemirror':
       exports: "CodeMirror"
 
-    'codemirror.js':
+    'codemirror.javascript':
       deps: ["codemirror"]
 
     'codemirror.lint':
       deps: ["codemirror"]
 
-    'codemirror.json_lint':
+    'codemirror.jsonlint':
       deps: ["codemirror", "codemirror.lint", "jsonlint"]
 
     'jsonlint':
