@@ -203,11 +203,21 @@ define [
     deserialiseProperties: (definition) ->
       result = {}
     
-      properties_pattern = /@gmf\.\w*\((.*)\)/
+      # As Javascript regex doesn't have a flag that allows the . character
+      # to match newlines, we use the [\s\S] character class instead.
+      # [\s\S] means "whitespace or non-whitespace" and is equivalent to 
+      # any character (including a newline)
+      properties_pattern = /@gmf\.\w*\(([\s\S]*)\)/
+      
       properties = definition.match(properties_pattern)[1]
       for property in properties.split(', ')
         property_pattern = /([^=]*)="([^"]*)"/
         [key, value] = property.match(property_pattern)[1..2]
-        result[key] = value
+        result[@strip(key)] = @strip(value)
     
       result
+      
+    # Remove leading / trailing whitespace
+    strip: (string) ->
+      string.replace /^\s+|\s+$/g, ""
+      
