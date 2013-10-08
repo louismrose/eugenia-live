@@ -177,6 +177,7 @@ define [
     deserialiseLink: (definition) ->
       link = @deserialiseProperties(definition)
       link.name = @deserialiseName(definition)
+      link.properties = []
       link.color = @deserialiseColor(link.color) if link.color
     
       delete link.source if link.source
@@ -199,6 +200,8 @@ define [
       if definition.match(attrDefsPattern)
         for attributeDefinition in definition.match(attrDefsPattern)
           attributeDefinition.match(attrDefPattern)[1]
+      else 
+        []
    
     deserialiseProperties: (definition) ->
       result = {}

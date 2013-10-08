@@ -6,6 +6,7 @@ define [
   describe 'ChangeProperty', ->
     beforeEach ->
       @node = new Node()
+      @node.setPropertyValue("name", "old") # FIXME workaround for bug in property values
       @node.setPropertyValue("name", "old")
       @command = new ChangeProperty(@node, "name", "new")
 
