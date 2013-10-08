@@ -3,6 +3,7 @@ require.config
     'jquery' : "../bower_components/jquery/jquery"
     'bootstrap' : "../bower_components/bootstrap.css/js/bootstrap"
     'paper' : "../bower_components/paper/dist/paper-core"
+    'bacon' : "../bower_components/bacon/dist/Bacon"
     'codemirror' : "../bower_components/codemirror/lib/codemirror"
     'codemirror.javascript' : "../bower_components/codemirror/mode/javascript/javascript"
     'codemirror.lint' : "../bower_components/codemirror/addon/lint/lint"
@@ -49,5 +50,8 @@ require.config
     'spine.route':
       deps: ["spine"]
     
+    'bacon':
+      deps: ["jquery"]
+
 require ["app", "jquery"], (App, $) ->
   new App(el: $('div#content'))
