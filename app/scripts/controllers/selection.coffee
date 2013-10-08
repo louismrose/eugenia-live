@@ -17,7 +17,7 @@ define [
       if @item
         @selection = null
         @selection = @item.selection[0] if @item.selection.length is 1
-        @html SelectionTemplate(@selection)
+        @html SelectionTemplate({ selection: @selection })
   
     updatePropertyValue: (event) =>
       property = $(event.target).data('property')
