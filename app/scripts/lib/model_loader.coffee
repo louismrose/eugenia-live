@@ -8,7 +8,7 @@ define [
   'models/node'
   'models/link'
   'spine.model.local'
-  'spine.model.remote'
+  'spine.model.realtime'
 ], (Spine, PaletteSpecification, Palette, LinkShape, NodeShape, Drawing, Node, Link) ->
 
   class ModelLoader
@@ -28,4 +28,4 @@ define [
           model.extend(Spine.Model.Local)
           model.fetch()
         else
-          model.extend(Spine.Model.Remote)
+          model.extend(Spine.Model.Realtime)
