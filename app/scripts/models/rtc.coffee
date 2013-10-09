@@ -51,8 +51,7 @@ define [
   AUTH_BUTTON = "authorizeButton"
   SHARE_SELECTOR = "#share"
   realTimeOptions =
-    appID: "465627783329"
-    clientId: "465627783329-5rt9n9o1m3oum4i1o9quvhe5641u182f.apps.googleusercontent.com"
+    clientId: "968158167486-fl2aaah2hgh65jmmtv8l6k33v3qcb92u.apps.googleusercontent.com"
     authButtonElementId: AUTH_BUTTON
     initializeModel: initializeModel
     autoCreate: false
