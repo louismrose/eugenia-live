@@ -8,7 +8,7 @@ define [
   
     onMouseDown: (event) =>
       if @parameters.shape
-        @parameters.position = event.point
+        @parameters.position = { x: event.point.x, y: event.point.y }
         @run(new CreateNode(@drawing, @parameters))
         @clearSelection()
       
