@@ -19,11 +19,9 @@ define [], () ->
       result = new paper.Group(shape)
     
       unless @definition.placement is "none"
-        position = @positionFor(shape)
-      
-        result.addChild(@createText(node, position))
+        result.addChild(@createText(node, @positionFor(shape)))
 
-      result  
+      result
   
     positionFor: (shape) ->
       if @definition.placement is "external"
