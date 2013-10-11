@@ -24,10 +24,16 @@ define [
     it 'creates a new node', ->
       spyOn(@drawing, 'addNode')
   
-      @tool.onMouseDown({point: "dummy-position"})
+      @tool.onMouseDown(
+        point:
+          x: 1
+          y: 2
+      )
     
       expect(@drawing.addNode).toHaveBeenCalledWith(
-        shape : 'a-shape'
-        position : "dummy-position"
+        shape: 'a-shape'
+        position:
+          x: 1
+          y: 2
       )
   
