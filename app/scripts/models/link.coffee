@@ -57,7 +57,7 @@ define [
       @drawing().select(@)
   
     reconnectTo: (nodeId, offset) =>
-      mover = new MovesPath(@toPath().firstChild, offset)
+      mover = new MovesPath(new paper.Path(@segments), offset)
       mover.moveStart() if nodeId is @sourceId
       mover.moveEnd() if nodeId is @targetId
       @segments = mover.finalise()
