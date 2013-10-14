@@ -6,8 +6,8 @@ define [], ->
     add: (command) =>
       @delegate.add(command)
   
-    run: (command, options={undoable: true}) =>
-      @delegate.run(command, options)
+    run: (command) =>
+      @delegate.run(command)
       @log("Run", command)
   
     undo: (command) =>

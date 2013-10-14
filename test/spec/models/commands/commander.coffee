@@ -37,29 +37,3 @@ define [
       @commander.undo()
       @commander.undo()
       expect(@command.undo.callCount).toBe(1)
- 
- 
-    describe 'run with undoable set to false', ->
-      it 'does not undo commands', ->
-        @commander.run(@command, undoable: false)
-        @commander.undo()
-        expect(@command.undo).not.toHaveBeenCalled()
- 
-      it 'does undo the last undoable command', ->
-        uc = jasmine.createSpyObj('command', ['run', 'undo'])
-        nuc = jasmine.createSpyObj('command', ['run', 'undo'])
-      
-        @commander.run(uc, undoable: true)
-        @commander.run(nuc, undoable: false)
-        @commander.undo()
-        expect(uc.undo).toHaveBeenCalled()
- 
-    describe 'add', ->
-      it 'does not run commands', ->
-        @commander.add(@command)
-        expect(@command.run).not.toHaveBeenCalled()
-  
-      it 'does prepare commands to be undone', ->
-        @commander.add(@command)
-        @commander.undo()
-        expect(@command.undo).toHaveBeenCalled()
