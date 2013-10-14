@@ -19,19 +19,20 @@ define [
       @drawAll(Node)
       @drawAll(Link)
 
-      @redraw()
+      paper.view.draw()
+      @updateDrawingCache()
       
     drawAll: (type) =>
       associationMethod = type.className.toLowerCase() + 's' #e.g. Node -> nodes
       elements = @drawing[associationMethod]().all()         #e.g. @drawing.nodes().all()
       console.log("adding all " + elements.length + " " + type.className + "s")
-      @draw(element, false) for element in elements
+      @draw(element, persist: false) for element in elements
   
-    draw: (element, redraw = true) =>
+    draw: (element, options={persist: true}) =>
       canvasElement = new CanvasElement(element, @)
       @elements[element.id] = canvasElement
       canvasElement
-      @redraw() if redraw
+      @updateDrawingCache() if options.persist
   
     addNode: (parameters) =>
       node = @commander.run(new CreateNode(@drawing, parameters))
@@ -39,7 +40,6 @@ define [
       
     addLink: (parameters) =>
       link = @commander.run(new CreateLink(@drawing, parameters))
-      console.log(parameters, link)
       @draw(link)
   
     elementAt: (point) =>
@@ -52,8 +52,7 @@ define [
     elementFor: (element) =>
       @elements[element.id]
   
-    redraw: =>
-      paper.view.draw()
+    updateDrawingCache: =>
       @drawing.cache = @canvasElement.toDataURL()
       @drawing.save()
       

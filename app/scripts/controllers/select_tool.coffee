@@ -13,10 +13,9 @@ define [
       
     onMouseDrag: (event) =>
       for item in @canvas.selection() when item.isNode()
-        item.moveBy(event.point.subtract(@current))
+        item.moveBy(event.point.subtract(@current), persist: false)
         @current = event.point
   
     onMouseUp: (event) =>
       for item in @canvas.selection() when item.isNode()
-        item.moveBy(event.point.subtract(@current))
-        item.updateModel()
+        item.moveBy(event.point.subtract(@current), persist: true)
