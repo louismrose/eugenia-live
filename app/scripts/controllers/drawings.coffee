@@ -6,7 +6,7 @@ define [
   'models/commands/commander'
   'views/drawings/index'
   'views/drawings/show'
-  'views/drawings/canvas'
+  'viewmodels/drawings/canvas'
   'controllers/toolbox'
   'controllers/selection'
 ], (Spine, SubStack, PaletteSpecification, Drawing, Commander, IndexTemplate, ShowTemplate, Canvas, Toolbox, Selection) ->
