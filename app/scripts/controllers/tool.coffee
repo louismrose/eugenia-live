@@ -4,8 +4,6 @@ define [
 
   class Tool
     constructor: (options) ->
-      @commander = options.commander
-      @drawing = options.drawing
       @canvas = options.canvas
       
       @_tool = new paper.Tool
@@ -23,9 +21,6 @@ define [
       @parameters or= {}
       @parameters[parameterKey] = parameterValue
   
-    run: (command, options={undoable: true}) ->
-      @commander.run(command, options)
-
     onKeyDown: (event) =>
       # don't intercept key events if any DOM element
       # (e.g. form field) has focus

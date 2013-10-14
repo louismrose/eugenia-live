@@ -83,7 +83,7 @@ define [
 
   class Canvas
     constructor: (options) ->
-      @canvasElement = options.canvas
+      @canvasElement = options.el
       @drawing = options.drawing
       @commander = options.commander
       @elements = {}

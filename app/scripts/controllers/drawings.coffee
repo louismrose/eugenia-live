@@ -72,8 +72,8 @@ define [
     render: ->
       @html ShowTemplate
       if @item
-        @canvas = new Canvas(drawing: @item, commander: @commander, canvas: @$('#drawing')[0])
-        @toolbox = new Toolbox(commander: @commander, canvas: @canvas, item: @item, el: @$('#toolbox'))  
+        @canvas = new Canvas(drawing: @item, commander: @commander, el: @$('#drawing')[0])
+        @toolbox = new Toolbox(canvas: @canvas, item: @item, el: @$('#toolbox'))
         @selection = new Selection(commander: @commander, item: @item, el: @$('#selection'))
   
     deactivate: ->
