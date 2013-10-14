@@ -3,30 +3,11 @@ define [
   'models/node'
   'models/link'
   'models/commands/delete_element'
-], (Paper, Node, Link, DeleteElement) ->
-
-  class PaperHitTester
-    nodeOrLinkAt: (point) ->
-      result = @nodeAt(point)
-      result = @linkAt(point) unless result
-      result
-  
-    linkAt: (point) ->
-      @xAt(point, Link)
-  
-    nodeAt: (point) ->
-      @xAt(point, Node)
-
-    xAt: (point, type) ->
-      hitResult = Paper.project.hitTest(point)
-      hitResult.item.model if hitResult and (hitResult.item.model instanceof type)
-
+], (paper, Node, Link, DeleteElement) ->
 
   class Tool
     constructor: (options) ->
       @commander = options.commander
-      @hitTester = options.hitTester
-      @hitTester or= new PaperHitTester
       @drawing = options.drawing
       @canvas = options.canvas
       

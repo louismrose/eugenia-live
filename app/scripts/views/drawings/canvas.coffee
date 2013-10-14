@@ -6,11 +6,6 @@ define [
   'models/moves_path'
 ], (paper, Point, Link, Node, MovesPath) ->
 
-  class PaperHitTester2
-    elementAt: (point) ->
-      hitResult = paper.project.hitTest(point)
-      hitResult.item if hitResult
-
   class CanvasElement
     constructor: (@element, @canvas) ->
       @canvasElement = @element.toPath()
@@ -52,6 +47,19 @@ define [
 
     isNode: =>
       @element instanceof Node
+      
+    select: =>
+      @canvasElement.selected = true
+
+  class NullCanvasElement
+    select: =>
+      # do nothing
+    
+    isNode: =>
+      false
+    
+    isLink: =>
+      false
 
   class Canvas
     constructor: (options) ->
@@ -77,7 +85,14 @@ define [
       canvasElement
       if redraw
         paper.view.draw()
-        @updateDrawingCache()        
+        @updateDrawingCache()
+  
+    elementAt: (point) =>
+      hitResult = paper.project.hitTest(point)
+      if hitResult and hitResult.item.canvasElement
+        hitResult.item.canvasElement 
+      else 
+        new NullCanvasElement
   
     elementFor: (element) =>
       @elements[element.id]
@@ -91,7 +106,3 @@ define [
       
     selection: =>
       i.canvasElement for i in paper.project.selectedItems
-      
-    selectAt: (point) =>
-      element = new PaperHitTester2().elementAt(point)
-      element.selected = true if element

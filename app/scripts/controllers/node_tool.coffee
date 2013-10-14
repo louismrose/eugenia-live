@@ -15,4 +15,4 @@ define [
     onMouseMove: (event) =>
       if @parameters.shape
         @canvas.clearSelection()
-        @canvas.selectAt(event.point)
+        @canvas.elementAt(event.point).select()

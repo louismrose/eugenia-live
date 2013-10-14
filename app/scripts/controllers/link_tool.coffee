@@ -9,30 +9,31 @@ define [
   
     onMouseMove: (event) =>
       if @parameters.shape
-        @clearSelection()
-        @select(@hitTester.nodeAt(event.point))
+        @canvas.clearSelection()
+        @canvas.elementAt(event.point).select()
   
     onMouseDown: (event) =>
-      if @parameters.shape and @hitTester.nodeAt(event.point)
+      if @parameters.shape and @canvas.elementAt(event.point).isNode()
         @drafting = true
         @draftLink = new DraftLink(event.point)
 
     onMouseDrag: (event) =>
       if @drafting
         @draftLink.extendTo(event.point)
-        @changeSelectionTo(@hitTester.nodeAt(event.point)) if @hitTester.nodeAt(event.point)
+        @canvas.clearSelection()
+        @canvas.elementAt(event.point).select() if @canvas.elementAt(event.point).isNode()
   
     onMouseUp: (event) =>
       if @drafting 
-        if @hitTester.nodeAt(event.point)
+        if @canvas.elementAt(event.point).isNode()
           path = @draftLink.finalise()
-          @parameters.sourceId = @hitTester.nodeAt(path.firstSegment.point).id
-          @parameters.targetId = @hitTester.nodeAt(path.lastSegment.point).id
+          @parameters.sourceId = @canvas.elementAt(path.firstSegment.point).id
+          @parameters.targetId = @canvas.elementAt(path.lastSegment.point).id
           @parameters.segments = path.segments
-          @run(new CreateLink(@drawing, @parameters))
+          @canvas.add(@run(new CreateLink(@drawing, @parameters)))
       
         @draftLink.remove()
-        @clearSelection()
+        @canvas.clearSelection()
         @drafting = false
 
 
