@@ -18,7 +18,7 @@ define [
       @initialisePropertySet()
   
     initialisePropertySet: ->
-      @properties = new PropertySet(@propertyValues, @getShape())
+      @properties = new PropertySet(@getShape(), @propertyValues)
       updatePropertyValues = =>
         @propertyValues = @properties.propertyValues
         @save()

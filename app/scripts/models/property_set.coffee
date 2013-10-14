@@ -5,13 +5,16 @@ define [
   class PropertySet extends Spine.Module
     @include(Spine.Events)
     
-    constructor: (@propertyValues, @shape) ->
+    constructor: (@shape, @propertyValues = {}) ->
       @updateDefaultsFromShape()
       
     all: ->
       @updateDefaultsFromShape()
       @propertyValues
 
+    size: ->
+      Object.keys(@propertyValues).length
+    
     has: (property) ->
       property of @propertyValues
 
