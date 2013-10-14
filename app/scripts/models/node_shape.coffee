@@ -52,7 +52,7 @@ define [
         
         # strip off opening the ${ and the closing }
         evalable = content.substring(2, content.length - 1)
-        content = node.getPropertyValue(evalable)
+        content = node.properties.get(evalable)
       
         # What happens if this fails?
         if content is ""

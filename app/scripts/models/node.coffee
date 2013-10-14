@@ -2,8 +2,9 @@ define [
   'spine'
   'models/link'
   'models/node_shape'
+  'models/property_set'
   'spine.relation'
-], (Spine, Link, NodeShape) ->
+], (Spine, Link, NodeShape, PropertySet) ->
   
   class Node extends Spine.Model
     @configure "Node", "shape", "position", "propertyValues"
@@ -12,45 +13,16 @@ define [
     constructor: (attributes) ->
       super
       @k = v for k,v of attributes
-      @initialisePropertyValues()
-
-    initialisePropertyValues: ->
       @propertyValues or= {}
-      # Don't call save() during initialisation, as this causes
-      # duplicate Spine records to be created.
-      @updatePropertyValuesWithDefaultsFromShape(false)
-      
-    getAllProperties: ->
-      @updatePropertyValuesWithDefaultsFromShape(true)
-      @propertyValues
-
-    updatePropertyValuesWithDefaultsFromShape: (persist) ->
-      for property,value of @defaultPropertyValues()
-        # insert the default value unless there is already a value for this property
-        @setPropertyValue(property,value,persist) unless @hasPropertyValue(property)
-      
-      for property,value of @propertyValues
-        # remove the current value unless this property is currently defined for this shape
-        @removePropertyValue(property,persist) unless property of @defaultPropertyValues()
-    
-    defaultPropertyValues: ->
-      if @getShape() then @getShape().defaultPropertyValues() else {}
+      @initialisePropertySet()
   
-    setPropertyValue: (property, value, persist = true) ->
-      @propertyValues[property] = value
-      @save() if persist
+    initialisePropertySet: ->
+      @properties = new PropertySet(@propertyValues, @getShape())
+      updatePropertyValues = =>
+        @propertyValues = @properties.propertyValues
+        @save()
+      @properties.bind("propertyChanged propertyRemoved", updatePropertyValues)
   
-    removePropertyValue: (property, persist = true) ->
-      delete @propertyValues[property]
-      @trigger("propertyRemove")
-      @save() if persist
-
-    hasPropertyValue: (property) ->
-      property of @propertyValues
-  
-    getPropertyValue: (property) ->
-      @propertyValues[property]
-    
     links: =>
       Link.select (link) => (link.sourceId is @id) or (link.targetId is @id)
       
@@ -75,3 +47,6 @@ define [
   
     getShape: =>
       NodeShape.find(@shape) if @shape and NodeShape.exists(@shape)
+      
+    select: =>
+      @drawing().select(@)

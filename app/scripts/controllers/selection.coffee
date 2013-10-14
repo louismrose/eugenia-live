@@ -10,16 +10,14 @@ define [
   
     constructor: ->
       super
-      @item.bind("update", @render)
+      @item.bind("selectionChanged", @render)
       @render()
     
     render: =>
       if @item
-        @selection = null
-        @selection = @item.selection[0] if @item.selection.length is 1
-        @html SelectionTemplate({ selection: @selection })
+        @html SelectionTemplate({ selection: @item.getSelection() })
   
     updatePropertyValue: (event) =>
       property = $(event.target).data('property')
       newValue = $(event.target).val()
-      @commander.run(new ChangeProperty(@selection, property, newValue))
+      @commander.run(new ChangeProperty(@item.getSelection(), property, newValue))

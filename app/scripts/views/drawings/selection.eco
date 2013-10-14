@@ -1,4 +1,4 @@
-<% unless @selection is null or $.isEmptyObject(@selection.getAllProperties()): %>
+<% unless @selection is undefined or $.isEmptyObject(@selection.properties.all()): %>
   <h2><%= @selection.getShape().displayName()%> properties</h2>
   <table class="table table-bordered">
     <thead>
@@ -8,7 +8,7 @@
       </tr>
     </thead>
     <tbody>
-      <% for property,value of @selection.getAllProperties(): %>
+      <% for property,value of @selection.properties.all(): %>
       <tr>
         <td style="vertical-align:middle"><%=property%></td>
         <td><input type="text" data-property="<%=property%>" value="<%=value%>" style="margin-bottom: 0"></td>

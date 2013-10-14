@@ -45,7 +45,7 @@ define [], () ->
           #{number}
           \}
         ///g
-        value = node.getPropertyValue(@definition.for[number])
+        value = node.properties.get(@definition.for[number])
         content = content.replace(pattern, value)
     
       @trimText(content)

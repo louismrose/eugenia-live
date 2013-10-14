@@ -64,4 +64,5 @@ define [
       
     select: =>
       @canvasElement.selected = true
+      @element.select()
 

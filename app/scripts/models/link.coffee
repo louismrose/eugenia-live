@@ -2,8 +2,9 @@ define [
   'require'
   'spine'
   'models/link_shape'
+  'models/property_set'
   'spine.relation'
-], (require, Spine, LinkShape) ->
+], (require, Spine, LinkShape, PropertySet) ->
 
   class Link extends Spine.Model
     @configure "Link", "sourceId", "targetId", "segments", "shape", "propertyValues"
@@ -13,45 +14,16 @@ define [
     constructor: (attributes) ->
       super
       @k = v for k,v of attributes
-      @initialisePropertyValues()
-      
-    initialisePropertyValues: ->
       @propertyValues or= {}
-      # Don't call save() during initialisation, as this causes
-      # duplicate Spine records to be created.
-      @updatePropertyValuesWithDefaultsFromShape(false)
-      
-    getAllProperties: ->
-      @updatePropertyValuesWithDefaultsFromShape(true)
-      @propertyValues
-
-    updatePropertyValuesWithDefaultsFromShape: (persist) ->
-      for property,value of @defaultPropertyValues()
-        # insert the default value unless there is already a value for this property
-        @setPropertyValue(property,value,persist) unless @hasPropertyValue(property)
-      
-      for property,value of @propertyValues
-        # remove the current value unless this property is currently defined for this shape
-        @removePropertyValue(property,persist) unless property of @defaultPropertyValues()
+      @initialisePropertySet()
+  
+    initialisePropertySet: ->
+      @properties = new PropertySet(@propertyValues, @getShape())
+      updatePropertyValues = =>
+        @propertyValues = @properties.propertyValues
+        @save()
+      @properties.bind("propertyChanged propertyRemoved", updatePropertyValues)
     
-    defaultPropertyValues: ->
-      if @getShape() then @getShape().defaultPropertyValues() else {}
-  
-    setPropertyValue: (property, value, persist = true) ->
-      @propertyValues[property] = value
-      @save() if persist
-  
-    removePropertyValue: (property, persist = true) ->
-      delete @propertyValues[property]
-      @trigger("propertyRemove")
-      @save() if persist
-
-    hasPropertyValue: (property) ->
-      property of @propertyValues  
-
-    getPropertyValue: (property) ->
-      @propertyValues[property]
-  
     reshape: (newSegments) =>
       @segments = newSegments
       @save()
@@ -79,3 +51,6 @@ define [
       # Avoid circular dependencies with dynamic require
       Node = require('models/node')
       Node.find(@targetId)
+      
+    select: =>
+      @drawing().select(@)

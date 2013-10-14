@@ -5,18 +5,19 @@ define [
 
   describe 'ChangeProperty', ->
     beforeEach ->
-      @node = new Node()
-      @node.setPropertyValue("name", "old") # FIXME workaround for bug in property values
-      @node.setPropertyValue("name", "old")
+      @node = Node.create()
+      @node.properties.set("name", "old")
       @command = new ChangeProperty(@node, "name", "new")
 
+    afterEach ->
+      @node.destroy()
 
     it "changes the value of the node's property", ->
       @command.run()
-      expect(@node.getPropertyValue("name")).toBe("new")
+      expect(@node.properties.get("name")).toBe("new")
   
     it "restores the value of the node's property when undone", ->
       @command.run()
       @command.undo()
   
-      expect(@node.getPropertyValue("name")).toBe("old")
+      expect(@node.properties.get("name")).toBe("old")

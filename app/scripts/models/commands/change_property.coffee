@@ -4,8 +4,8 @@ define [], () ->
     constructor: (@element, @property, @newValue) ->
   
     run: =>
-      @oldValue = @element.getPropertyValue(@property)
-      @element.setPropertyValue(@property, @newValue)
+      @oldValue = @element.properties.get(@property)
+      @element.properties.set(@property, @newValue)
   
     undo: =>
-      @element.setPropertyValue(@property, @oldValue)
+      @element.properties.set(@property, @oldValue)
