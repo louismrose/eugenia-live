@@ -69,12 +69,15 @@ define [
       associationMethod = type.className.toLowerCase() + 's' #e.g. Node -> nodes
       elements = @drawing[associationMethod]().all()         #e.g. @drawing.nodes().all()
       console.log("adding all " + elements.length + " " + type.className + "s")
-      @add(element) for element in elements
+      @add(element, false) for element in elements
   
-    add: (element) =>
+    add: (element, redraw = true) =>
       canvasElement = new CanvasElement(element, @)
       @elements[element.id] = canvasElement
       canvasElement
+      if redraw
+        paper.view.draw()
+        @updateDrawingCache()        
   
     elementFor: (element) =>
       @elements[element.id]

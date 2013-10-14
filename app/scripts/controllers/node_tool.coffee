@@ -9,10 +9,10 @@ define [
     onMouseDown: (event) =>
       if @parameters.shape
         @parameters.position = { x: event.point.x, y: event.point.y }
-        @run(new CreateNode(@drawing, @parameters))
-        @clearSelection()
+        @canvas.add(@run(new CreateNode(@drawing, @parameters)))
+        @canvas.clearSelection()
       
     onMouseMove: (event) =>
       if @parameters.shape
-        @clearSelection()
-        @select(@hitTester.nodeAt(event.point))
+        @canvas.clearSelection()
+        @canvas.selectAt(event.point)
