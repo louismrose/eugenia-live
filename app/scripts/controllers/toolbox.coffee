@@ -1,13 +1,11 @@
 define [
   'spine'
   'paper'
-  'controllers/link_tool'
-  'controllers/node_tool'
-  'controllers/select_tool'
-  'models/node_shape'
-  'models/link_shape'
+  'viewmodels/drawings/tools/link_tool'
+  'viewmodels/drawings/tools/node_tool'
+  'viewmodels/drawings/tools/select_tool'
   'views/drawings/toolbox'
-], (Spine, Paper, LinkTool, NodeTool, SelectTool, NodeShape, LinkShape, ToolboxTemplate) ->
+], (Spine, Paper, LinkTool, NodeTool, SelectTool, ToolboxTemplate) ->
 
   class Toolbox extends Spine.Controller
     events:

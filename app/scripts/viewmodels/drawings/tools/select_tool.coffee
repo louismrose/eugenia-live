@@ -1,5 +1,5 @@
 define [
-  'controllers/tool'
+  'viewmodels/drawings/tools/tool'
 ], (Tool) ->
 
   class SelectTool extends Tool

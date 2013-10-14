@@ -1,5 +1,5 @@
 define [
-  'controllers/node_tool'
+  'viewmodels/drawings/tools/node_tool'
   'viewmodels/drawings/canvas'
 ], (NodeTool, Canvas)  ->
 
