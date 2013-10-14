@@ -1,6 +1,6 @@
 # Rendering changes
-* Tests for PropertySet
 * Fix undo
+* Does undoing a shape also undo the deletion of its links? If not, this is a bug.
 * Labels should be redrawn when property value changes
 * Move views/drawings/shapes/label.coffee. Probably to the viewmodel folder?
 * Factor out LinkCanvasElement and NodeCanvasElement classes from CanvasElement
