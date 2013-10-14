@@ -53,23 +53,12 @@ define [
     getPropertyValue: (property) ->
       @propertyValues[property]
   
-    select: ->
-      @drawing().select(@)
-  
     reshape: (newSegments) =>
       @segments = newSegments
       @save()
   
-    paperId: =>
-      "link" + @id
-      
     toPath: =>
-      path = @getShape().draw(@)
-      path.name = @paperId()
-      path
-
-    select: (layer) =>
-      layer.children[@paperId()].selected = true
+      @getShape().draw(@)
 
     destroy: (options = {}) =>
       destroyed = super(options)

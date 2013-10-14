@@ -65,7 +65,6 @@ define [
       # @commander = new LoggingCommander(new Commander())
       @commander = new Commander()
       @item = Drawing.find(params.id)
-      @item.clearSelection()
       @log "Palette: #{@item.palette().id}"
       @render()
   
