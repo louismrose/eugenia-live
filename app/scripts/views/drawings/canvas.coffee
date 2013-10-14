@@ -23,12 +23,17 @@ define [
     linkToModel: (canvasElement) =>
       canvasElement.model = @element
       @linkToModel(c) for c in canvasElement.children if canvasElement.children
+
+    remove: (redraw = true) =>
+      @canvasElement.remove()
+      link.remove(false) for link in @links() if @isNode()
+      @canvas.redraw() if redraw
     
     moveBy: (point) =>
       offset = new Point(point.x, point.y)
       @canvasElement.position = offset.add(@canvasElement.position)
       link.reconnectTo(@element, offset) for link in @links()
-      @canvas.updateDrawingCache()
+      @canvas.redraw()
 
     links: =>
       @canvas.elementFor(link) for link in @element.links()
@@ -70,8 +75,8 @@ define [
       paper.setup(@canvasElement)
       @addAll(Node)
       @addAll(Link)
-      paper.view.draw()
-      @updateDrawingCache()
+
+      @redraw()
       
     addAll: (type) =>
       associationMethod = type.className.toLowerCase() + 's' #e.g. Node -> nodes
@@ -83,9 +88,7 @@ define [
       canvasElement = new CanvasElement(element, @)
       @elements[element.id] = canvasElement
       canvasElement
-      if redraw
-        paper.view.draw()
-        @updateDrawingCache()
+      @redraw() if redraw
   
     elementAt: (point) =>
       hitResult = paper.project.hitTest(point)
@@ -97,7 +100,8 @@ define [
     elementFor: (element) =>
       @elements[element.id]
   
-    updateDrawingCache: =>
+    redraw: =>
+      paper.view.draw()
       @drawing.cache = @canvasElement.toDataURL()
       @drawing.save()
       

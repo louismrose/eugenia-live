@@ -34,7 +34,9 @@ define [
       # (e.g. form field) has focus
       if (document.activeElement is document.body)      
         if (event.key is 'delete')
-          @run(new DeleteElement(@drawing, e)) for e in @selection()
+          for e in @canvas.selection()
+            e.remove()
+            @run(new DeleteElement(@drawing, e.element))
           @clearSelection()
 
         else if (event.key is 'z')
