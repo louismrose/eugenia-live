@@ -1,7 +1,6 @@
 define [
   'controllers/tool'
-  'models/commands/create_link'
-], (Tool, CreateLink) ->
+], (Tool) ->
 
   class LinkTool extends Tool
     parameters: {'shape' : null}
@@ -27,10 +26,10 @@ define [
       if @drafting 
         if @canvas.elementAt(event.point).isNode()
           path = @draftLink.finalise()
-          @parameters.sourceId = @canvas.elementAt(path.firstSegment.point).id
-          @parameters.targetId = @canvas.elementAt(path.lastSegment.point).id
+          @parameters.sourceId = @canvas.elementAt(path.firstSegment.point).element.id
+          @parameters.targetId = @canvas.elementAt(path.lastSegment.point).element.id
           @parameters.segments = path.segments
-          @canvas.add(@run(new CreateLink(@drawing, @parameters)))
+          @canvas.addLink(@parameters)
       
         @draftLink.remove()
         @canvas.clearSelection()

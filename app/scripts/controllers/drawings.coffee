@@ -72,7 +72,7 @@ define [
     render: ->
       @html ShowTemplate
       if @item
-        @canvas = new Canvas(drawing: @item, canvas: @$('#drawing')[0])
+        @canvas = new Canvas(drawing: @item, commander: @commander, canvas: @$('#drawing')[0])
         @toolbox = new Toolbox(commander: @commander, canvas: @canvas, item: @item, el: @$('#toolbox'))  
         @selection = new Selection(commander: @commander, item: @item, el: @$('#selection'))
   

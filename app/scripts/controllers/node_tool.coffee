@@ -1,7 +1,6 @@
 define [
   'controllers/tool'
-  'models/commands/create_node'
-], (Tool, CreateNode) ->
+], (Tool) ->
 
   class NodeTool extends Tool
     parameters: {'shape' : null}
@@ -9,7 +8,7 @@ define [
     onMouseDown: (event) =>
       if @parameters.shape
         @parameters.position = { x: event.point.x, y: event.point.y }
-        @canvas.add(@run(new CreateNode(@drawing, @parameters)))
+        @canvas.addNode(@parameters)
         @canvas.clearSelection()
       
     onMouseMove: (event) =>

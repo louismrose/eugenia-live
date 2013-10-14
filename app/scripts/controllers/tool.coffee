@@ -1,9 +1,6 @@
 define [
   'paper'
-  'models/node'
-  'models/link'
-  'models/commands/delete_element'
-], (paper, Node, Link, DeleteElement) ->
+], (paper) ->
 
   class Tool
     constructor: (options) ->
@@ -34,10 +31,8 @@ define [
       # (e.g. form field) has focus
       if (document.activeElement is document.body)      
         if (event.key is 'delete')
-          for e in @canvas.selection()
-            e.remove()
-            @run(new DeleteElement(@drawing, e.element))
+          e.remove() for e in @canvas.selection()
           @canvas.clearSelection()
 
         else if (event.key is 'z')
-          @commander.undo()
+          @canvas.undo()
