@@ -1,3 +1,14 @@
+# Rendering changes
+* Tests for PropertySet
+* Fix undo
+* Labels should be redrawn when property value changes
+* Move views/drawings/shapes/label.coffee. Probably to the viewmodel folder?
+* Factor out LinkCanvasElement and NodeCanvasElement classes from CanvasElement
+* Tests for CanvasElement, Canvas, etc
+* Move paper logic out of NodeShape and LinkShape and into the viewmodel layer
+* Promote Elements#getOption to a class in its own right, and add some tests
+* Labels for Links
+
 # Yeoman (migration from Hem)
 ## Building an app ready for deployment
 * Investigate Heroku generator for Yeoman
