@@ -60,9 +60,8 @@ define [
     outgoingLinks: =>
       Link.select (link) => (link.sourceId is @id)
 
-    moveBy: (distance) =>
-      @position = distance.add(@position)
-      link.reconnectTo(@id, distance) for link in @links()
+    moveTo: (newPosition) =>
+      @position = newPosition
       @save()
 
     paperId: =>

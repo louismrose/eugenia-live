@@ -30,9 +30,9 @@ define [
       Paper.tools = []
       
       @tools =
-        node:   new NodeTool(commander: @commander, drawing: @item)
-        select: new SelectTool(commander: @commander, drawing: @item)
-        link:   new LinkTool(commander: @commander, drawing: @item)
+        node:   new NodeTool(commander: @commander, canvas: @canvas, drawing: @item)
+        select: new SelectTool(commander: @commander, canvas: @canvas, drawing: @item)
+        link:   new LinkTool(commander: @commander, canvas: @canvas, drawing: @item)
     
     render: =>
       @html ToolboxTemplate(@item) if @item

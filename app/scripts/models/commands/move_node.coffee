@@ -3,12 +3,13 @@ define [
 ], (Point) ->
   
   class MoveNode
-    constructor: (@node, offset) ->
-      @offset = new Point(offset.x, offset.y)
+    constructor: (@node, source, target) ->
+      @source = new Point(source.x, source.y)
+      @target = new Point(target.x, target.y)
   
     run: =>
-      @node.moveBy(@offset)
+      @node.moveTo(@target)
   
     undo: =>
-      @node.moveBy(@offset.invert())
+      @node.moveTo(@source)
     

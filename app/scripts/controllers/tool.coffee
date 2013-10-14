@@ -28,6 +28,7 @@ define [
       @hitTester = options.hitTester
       @hitTester or= new PaperHitTester
       @drawing = options.drawing
+      @canvas = options.canvas
       
       @_tool = new paper.Tool
       @_tool.onMouseMove = @onMouseMove

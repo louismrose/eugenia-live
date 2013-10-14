@@ -1,23 +1,32 @@
 define [
   'controllers/tool'
   'models/node'
+  'models/commands/composite_command'
   'models/commands/move_node'
-], (Tool, Node, MoveNode) ->
+  'models/commands/reshape_link'
+], (Tool, Node, CompositeCommand, MoveNode, ReshapeLink) ->
 
   class SelectTool extends Tool
     parameters: {}
   
     onMouseDown: (event) =>
-      @clearSelection()
-      @select(@hitTester.nodeOrLinkAt(event.point))
+      @canvas.clearSelection()
+      @canvas.selectAt(event.point)
       @current = event.point
       @start = event.point
       
     onMouseDrag: (event) =>
-      for item in @selection() when item instanceof Node
-        @run(new MoveNode(item, event.point.subtract(@current)), undoable: false)
+      for item in @canvas.selection() when item.isNode()
+        item.moveBy(event.point.subtract(@current))
         @current = event.point
   
     onMouseUp: (event) =>
-      for item in @selection() when item instanceof Node
-        @commander.add(new MoveNode(item, event.point.subtract(@start)))
+      for item in @canvas.selection() when item.isNode()
+        item.moveBy(event.point.subtract(@current))
+
+        commands = []
+        commands.push new MoveNode(item.element, item.element.position, item.canvasElement.position)
+        for link in item.links()
+          commands.push new ReshapeLink(link.element, link.element.segments, link.canvasElement.firstChild.segments)
+
+        @commander.run(new CompositeCommand(commands))
