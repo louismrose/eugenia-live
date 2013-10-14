@@ -37,20 +37,7 @@ define [
           for e in @canvas.selection()
             e.remove()
             @run(new DeleteElement(@drawing, e.element))
-          @clearSelection()
+          @canvas.clearSelection()
 
         else if (event.key is 'z')
           @commander.undo()
-
-    changeSelectionTo: (nodeOrLink) ->
-      @clearSelection()
-      @select(nodeOrLink)
-
-    clearSelection: ->
-      @drawing.clearSelection()
-  
-    select: (nodeOrLink) ->
-      @drawing.select(nodeOrLink)
-  
-    selection: ->
-      @drawing.selection
