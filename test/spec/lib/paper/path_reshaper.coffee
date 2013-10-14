@@ -1,24 +1,24 @@
 define [
-  'models/moves_path'
+  'lib/paper/path_reshaper'
   'paper'
   'jquery'
-], (MovesPath, Paper, $) ->
+], (PathReshaper, paper, $) ->
 
-  describe 'MovesPath', ->
+  describe 'PathReshaper', ->
     beforeEach ->
-      Paper.setup($('canvas')[0])
+      paper.setup($('canvas')[0])
 
-      @start  = new Paper.Point(10, 20)
-      @middle = new Paper.Point(20, 30)
-      @end    = new Paper.Point(30, 40)
+      @start  = new paper.Point(10, 20)
+      @middle = new paper.Point(20, 30)
+      @end    = new paper.Point(30, 40)
 
-      @path = new Paper.Path()
+      @path = new paper.Path()
       @path.add(@start)
       @path.add(@middle)
       @path.add(@end)
     
-      @offset = new Paper.Point(50, 100)
-      @mover = new MovesPath(@path, @offset)
+      @offset = new paper.Point(50, 100)
+      @mover = new PathReshaper(@path, @offset)
 
       @addMatchers(
         toBeInTheSamePlaceAs: (expected) ->

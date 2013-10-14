@@ -2,12 +2,12 @@ define [
   'paper'
   'models/point' # TODO: remove this dependency?
   'models/node'
-  'models/moves_path'
+  'lib/paper/path_reshaper'
   'models/commands/delete_element'
   'models/commands/composite_command'
   'models/commands/move_node'
   'models/commands/reshape_link'
-], (paper, Point, Node, MovesPath, DeleteElement, CompositeCommand, MoveNode, ReshapeLink) ->
+], (paper, Point, Node, PathReshaper, DeleteElement, CompositeCommand, MoveNode, ReshapeLink) ->
 
   class CanvasElement
     constructor: (@element, @canvas) ->
@@ -43,7 +43,7 @@ define [
       @canvas.elementFor(link) for link in @element.links()
 
     reconnectTo: (node, offset) =>
-      mover = new MovesPath(@canvasElement.firstChild, offset)
+      mover = new PathReshaper(@canvasElement.firstChild, offset)
       mover.moveStart() if @isSource(node)
       mover.moveEnd() if @isTarget(node)
       mover.finalise()

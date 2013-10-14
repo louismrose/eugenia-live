@@ -1,10 +1,9 @@
 define [
   'require'
   'spine'
-  'models/moves_path'
   'models/link_shape'
   'spine.relation'
-], (require, Spine, MovesPath, LinkShape) ->
+], (require, Spine, LinkShape) ->
 
   class Link extends Spine.Model
     @configure "Link", "sourceId", "targetId", "segments", "shape", "propertyValues"

@@ -1,6 +1,6 @@
 define [], ->
   
-  class MovesPath 
+  class PaperPathMover 
     constructor: (path, offset) ->
       @path = path
       @offset = offset
