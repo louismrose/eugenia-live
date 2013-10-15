@@ -1,6 +1,11 @@
 # Rendering changes
 * Fix undo
 ** property change
+* Fix updateDrawingCache
+** create node / create link
+** delete node / delete link
+** move node
+** undo of each of the above
 * move and updatePosition / updateSegments methods both adjust the canvas element => seems redundant?
 * Don't select labels when select node canvas elements
 * Does undoing a shape also undo the deletion of its links? If not, this is a bug.
