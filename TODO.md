@@ -1,17 +1,22 @@
 # Rendering changes
-* Fix updateDrawingCache
-** create node / create link
-** delete node / delete link
-** move node
-** undo of each of the above
-* move and updatePosition / updateSegments methods both adjust the canvas element => seems redundant?
-* Does undoing a shape also undo the deletion of its links? If not, this is a bug.
-* The label of a node is no longer updated when its property changes after that node is moved
-* Move views/drawings/shapes/label.coffee. Probably to the viewmodel folder?
-* Tests for NodeCanvasElement, LinkCanvasElement, Canvas, etc
+* Does undoing the deletion of a node also undo the deletion of its links? If not, this is a bug.
 * Move paper logic out of NodeShape and LinkShape and into the viewmodel layer
-* Promote Elements#getOption to a class in its own right, and add some tests
-* Labels for Links
+* Test and refactor canvas
+* Test and refactor NodeCanvasElement and LinkCanvasElement
+    * Extract common superclass?
+    * move (reconnect) and updatePosition (updateSegments) methods both adjust the canvas element => seems redundant?
+* Test and refactor label
+    * The label of a node is no longer updated when its property changes after that node is moved
+    * Move views/drawings/shapes/label.coffee. Probably to the viewmodel folder?
+    * Add labels for Links
+* Test and refactor Elements
+    * Promote #getOption to a class in its own right
+* Fix updateDrawingCache
+    * create node / create link
+    * delete node / delete link
+    * move node
+    * undo of each of the above
+
 
 # Yeoman (migration from Hem)
 ## Building an app ready for deployment
