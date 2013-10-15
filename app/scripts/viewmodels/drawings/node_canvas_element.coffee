@@ -19,9 +19,9 @@ define [
       @element.bind("destroy", @remove)
 
     draw: =>
-      @elements = new Elements(@element.getShape().elements)
-      @label = new Label(@element.getShape().label)
-      @label.draw(@element, @elements.draw(@element))
+      elements = new Elements(@element.getShape().elements)
+      label = new Label(@element.getShape().label)
+      label.draw(@element, elements.draw(@element))
 
     linkToThis: (canvasElement) =>
       canvasElement.canvasElement = @
