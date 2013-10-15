@@ -30,7 +30,9 @@ define [
       @links().create(parameters)
       
     clearSelection: ->
-      @select(undefined)
+      @selection = undefined
+      @save()
+      @trigger('selectionChanged')
     
     select: (element) ->
       @selection = {id: element.id, type: element.constructor.className}

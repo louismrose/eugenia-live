@@ -8,7 +8,6 @@ define [
   
     onMouseMove: (event) =>
       if @parameters.shape
-        @canvas.clearSelection()
         @canvas.elementAt(event.point).select()
   
     onMouseDown: (event) =>

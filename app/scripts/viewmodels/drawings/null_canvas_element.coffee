@@ -1,8 +1,10 @@
 define [], () ->
 
   class NullCanvasElement
+    constructor: (@canvas) ->
+    
     select: =>
-      # do nothing
+      @canvas.clearSelection()
     
     isNode: =>
       false

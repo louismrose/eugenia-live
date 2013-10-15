@@ -41,13 +41,13 @@ define [
     addLink: (parameters) =>
       link = @commander.run(new CreateLink(@drawing, parameters))
       @draw(link)
-  
+        
     elementAt: (point) =>
       hitResult = paper.project.hitTest(point)
       if hitResult and hitResult.item.canvasElement
         hitResult.item.canvasElement 
       else 
-        new NullCanvasElement
+        new NullCanvasElement(@)
   
     elementFor: (element) =>
       @elements[element.id]
@@ -58,6 +58,7 @@ define [
       
     clearSelection: =>
       paper.project.deselectAll()
+      @drawing.clearSelection()
       
     selection: =>
       i.canvasElement for i in paper.project.selectedItems

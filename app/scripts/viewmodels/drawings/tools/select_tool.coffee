@@ -6,7 +6,6 @@ define [
     parameters: {}
   
     onMouseDown: (event) =>
-      @canvas.clearSelection()
       @canvas.elementAt(event.point).select()
       @current = event.point
       @start = event.point
