@@ -1,5 +1,4 @@
 # Rendering changes
-* Does undoing the deletion of a node also undo the deletion of its links? If not, this is a bug.
 * Move paper logic out of NodeShape and LinkShape and into the viewmodel layer
 * Test and refactor canvas
 * Test and refactor NodeCanvasElement and LinkCanvasElement
