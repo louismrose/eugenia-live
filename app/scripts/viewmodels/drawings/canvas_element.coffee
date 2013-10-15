@@ -89,6 +89,9 @@ define [
       
     select: =>
       @canvas.clearSelection()
-      @canvasElement.selected = true
+      if @isNode()
+        @canvasElement.firstChild.selected = true
+      else
+        @canvasElement.selected = true
       @element.select()
 
