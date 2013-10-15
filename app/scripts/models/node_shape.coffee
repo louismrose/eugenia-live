@@ -1,7 +1,8 @@
 define [
+  'require'
   'spine'
   'spine.relation'
-], (Spine) ->
+], (require, Spine) ->
 
   class NodeShape extends Spine.Model
     @configure "NodeShape", "name", "properties", "label", "elements"

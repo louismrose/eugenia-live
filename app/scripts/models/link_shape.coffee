@@ -1,7 +1,8 @@
 define [
+  'require'
   'spine'
   'spine.relation'
-], (Spine) ->
+], (require, Spine) ->
 
   class LinkShape extends Spine.Model
     @configure "LinkShape", "name", "properties", "label", "color", "style"

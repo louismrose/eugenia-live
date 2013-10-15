@@ -1,5 +1,4 @@
 # Rendering changes
-* Are NodeShape#destroyNodes and LinkShape#destroyLinks working?
 * Test and refactor canvas
 * Test and refactor NodeCanvasElement and LinkCanvasElement
     * Extract common superclass?
