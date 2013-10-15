@@ -31,8 +31,12 @@ define [
     draw: (element, options={persist: true}) =>
       canvasElement = new CanvasElement(element, @)
       @elements[element.id] = canvasElement
-      canvasElement
+      canvasElement.bind("destroy", => 
+        delete @elements[element.id]
+        @updateDrawingCache()
+      )
       @updateDrawingCache() if options.persist
+      canvasElement
   
     addNode: (parameters) =>
       node = @commander.run(new CreateNode(@drawing, parameters))

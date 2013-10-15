@@ -26,7 +26,7 @@ define [
       # (e.g. form field) has focus
       if (document.activeElement is document.body)      
         if (event.key is 'delete')
-          e.remove() for e in @canvas.selection()
+          e.destroy() for e in @canvas.selection()
           @canvas.clearSelection()
 
         else if (event.key is 'z')

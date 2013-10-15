@@ -1,4 +1,5 @@
 define [
+  'spine'
   'paper'
   'models/point' # TODO: remove this dependency?
   'models/node'
@@ -7,13 +8,16 @@ define [
   'models/commands/composite_command'
   'models/commands/move_node'
   'models/commands/reshape_link'
-], (paper, Point, Node, PathReshaper, DeleteElement, CompositeCommand, MoveNode, ReshapeLink) ->
+], (Spine, paper, Point, Node, PathReshaper, DeleteElement, CompositeCommand, MoveNode, ReshapeLink) ->
 
-  class CanvasElement
+  class CanvasElement extends Spine.Module
+    @include(Spine.Events)
+    
     constructor: (@element, @canvas) ->
       @canvasElement = @element.toPath()
       @linkToThis(@canvasElement)
       @linkToModel(@canvasElement)
+      @element.bind("destroy", @remove)
       
       # TODO trim the line in the tool
       # rather than hiding the overlap behind the nodes here
@@ -27,11 +31,13 @@ define [
       canvasElement.model = @element
       @linkToModel(c) for c in canvasElement.children if canvasElement.children
 
-    remove: (options={persist: true}) =>
+    # TODO make "private"
+    remove: =>
       @canvasElement.remove()
-      link.remove(persist: false) for link in @links() if @isNode()
+      @trigger("destroy")
+
+    destroy: =>
       @canvas.commander.run(new DeleteElement(@canvas.drawing, @element))
-      @canvas.updateDrawingCache() if options.persist
     
     moveBy: (point, options={persist: true}) =>
       @canvasElement.position = point.add(@canvasElement.position)
