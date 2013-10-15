@@ -69,6 +69,7 @@ define [
       @element instanceof Node
       
     select: =>
+      @canvas.clearSelection()
       @canvasElement.selected = true
       @element.select()
 
