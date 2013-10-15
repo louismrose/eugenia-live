@@ -1,12 +1,13 @@
 define [
   'paper'
-  'viewmodels/drawings/canvas_element'
+  'viewmodels/drawings/node_canvas_element'
+  'viewmodels/drawings/link_canvas_element'
   'viewmodels/drawings/null_canvas_element'
   'models/link'
   'models/node'
   'models/commands/create_node'
   'models/commands/create_link'
-], (paper, CanvasElement, NullCanvasElement, Link, Node, CreateNode, CreateLink) ->
+], (paper, NodeCanvasElement, LinkCanvasElement, NullCanvasElement, Link, Node, CreateNode, CreateLink) ->
 
   class Canvas
     constructor: (options) ->
@@ -32,7 +33,8 @@ define [
       @draw(element, persist: false) for element in elements
   
     draw: (element, options={persist: true}) =>
-      canvasElement = new CanvasElement(element, @)
+      canvasElement = if element instanceof Node then new NodeCanvasElement(element, @) else new LinkCanvasElement(element, @)
+      
       @elements[element.id] = canvasElement
       canvasElement.bind("destroy", => 
         delete @elements[element.id]
