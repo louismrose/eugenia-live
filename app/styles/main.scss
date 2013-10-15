@@ -1,6 +1,10 @@
 $iconSpritePath: "../images/glyphicons-halflings.png";
 $iconWhiteSpritePath: "../images/glyphicons-halflings-white.png";
 
+body {
+  overflow-y: scroll;
+}
+
 .stack > *:not(.active) {
   display: none;
 }
