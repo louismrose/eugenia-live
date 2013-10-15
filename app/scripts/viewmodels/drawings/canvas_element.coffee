@@ -17,11 +17,14 @@ define [
       @canvasElement = @element.toPath()
       @linkToThis(@canvasElement)
       @linkToModel(@canvasElement)
-      @element.bind("destroy", @remove)
       
       # TODO trim the line in the tool
       # rather than hiding the overlap behind the nodes here
       paper.project.activeLayer.insertChild(0, @canvasElement)
+      
+      @element.bind("move", @updatePosition)
+      @element.bind("reshape", @updateSegments)
+      @element.bind("destroy", @remove)
 
     linkToThis: (canvasElement) =>
       canvasElement.canvasElement = @
@@ -36,12 +39,28 @@ define [
       @canvasElement.remove()
       @trigger("destroy")
 
+    # TODO make "private"
+    updatePosition: =>
+      @canvasElement.position = @element.position
+
+    # TODO make "private"
+    updateSegments: =>
+      @canvasElement.remove()
+      @canvasElement = @element.toPath()
+      @linkToThis(@canvasElement)
+      @linkToModel(@canvasElement)
+      
+      # TODO trim the line in the tool
+      # rather than hiding the overlap behind the nodes here
+      paper.project.activeLayer.insertChild(0, @canvasElement)
+
     destroy: =>
       @canvas.commander.run(new DeleteElement(@canvas.drawing, @element))
     
     moveBy: (point, options={persist: true}) =>
       @canvasElement.position = point.add(@canvasElement.position)
       link.reconnectTo(@element, point) for link in @links()
+      
       if options.persist
         commands = []
         commands.push new MoveNode(@element, @element.position, @canvasElement.position)

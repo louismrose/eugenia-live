@@ -22,6 +22,9 @@ define [
       paper.view.draw()
       @updateDrawingCache()
       
+      Node.bind("create", @draw)
+      Link.bind("create", @draw)
+      
     drawAll: (type) =>
       associationMethod = type.className.toLowerCase() + 's' #e.g. Node -> nodes
       elements = @drawing[associationMethod]().all()         #e.g. @drawing.nodes().all()
@@ -65,7 +68,10 @@ define [
       @drawing.clearSelection()
       
     selection: =>
-      i.canvasElement for i in paper.project.selectedItems
+      if @drawing.getSelection()
+        [@elementFor(@drawing.getSelection())]
+      else
+        []
       
     undo: =>
       @commander.undo()

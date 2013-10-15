@@ -35,6 +35,7 @@ define [
     moveTo: (newPosition) =>
       @position = newPosition
       @save()
+      @trigger("move")
 
     toPath: =>
       @getShape().draw(@)

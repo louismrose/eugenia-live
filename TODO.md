@@ -1,5 +1,8 @@
 # Rendering changes
 * Fix undo
+** property change
+* move and updatePosition / updateSegments methods both adjust the canvas element => seems redundant?
+* Don't select labels when select node canvas elements
 * Does undoing a shape also undo the deletion of its links? If not, this is a bug.
 * Labels should be redrawn when property value changes
 * Move views/drawings/shapes/label.coffee. Probably to the viewmodel folder?

@@ -27,6 +27,7 @@ define [
     reshape: (newSegments) =>
       @segments = newSegments
       @save()
+      @trigger("reshape")
   
     toPath: =>
       @getShape().draw(@)
