@@ -37,9 +37,6 @@ define [
       @save()
       @trigger("move")
 
-    toPath: =>
-      @getShape().draw(@)
-  
     destroy: (options = {}) =>
       destroyed = super(options)
       memento =

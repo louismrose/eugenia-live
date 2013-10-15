@@ -1,20 +1,27 @@
 define [
   'spine'
+  'viewmodels/drawings/elements'
+  'viewmodels/drawings/label'
   'models/commands/delete_node'
   'models/commands/composite_command'
   'models/commands/move_node'
-], (Spine, DeleteNode, CompositeCommand, MoveNode) ->
+], (Spine, Elements, Label, DeleteNode, CompositeCommand, MoveNode) ->
 
   class NodeCanvasElement extends Spine.Module
     @include(Spine.Events)
     
     constructor: (@element, @canvas) ->
-      @canvasElement = @element.toPath()
+      @canvasElement = @draw()
       @linkToThis(@canvasElement)
       @linkToModel(@canvasElement)
             
       @element.bind("move", @updatePosition)
       @element.bind("destroy", @remove)
+
+    draw: =>
+      @elements = new Elements(@element.getShape().elements)
+      @label = new Label(@element.getShape().label)
+      @label.draw(@element, @elements.draw(@element))
 
     linkToThis: (canvasElement) =>
       canvasElement.canvasElement = @

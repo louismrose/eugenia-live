@@ -29,9 +29,6 @@ define [
       @save()
       @trigger("reshape")
   
-    toPath: =>
-      @getShape().draw(@)
-
     destroy: (options = {}) =>
       destroyed = super(options)
       memento =

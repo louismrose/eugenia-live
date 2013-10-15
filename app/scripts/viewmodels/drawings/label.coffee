@@ -1,4 +1,6 @@
-define [], () ->
+define [
+  'paper'
+], (paper) ->
 
   class Label
     constructor: (definition) ->

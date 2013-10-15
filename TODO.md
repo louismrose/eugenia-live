@@ -1,5 +1,5 @@
 # Rendering changes
-* Move paper logic out of NodeShape and LinkShape and into the viewmodel layer
+* Are NodeShape#destroyNodes and LinkShape#destroyLinks working?
 * Test and refactor canvas
 * Test and refactor NodeCanvasElement and LinkCanvasElement
     * Extract common superclass?

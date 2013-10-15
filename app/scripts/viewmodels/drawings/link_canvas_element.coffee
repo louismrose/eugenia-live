@@ -2,15 +2,16 @@ define [
   'spine'
   'paper'
   'lib/paper/path_reshaper'
+  'viewmodels/drawings/label'
   'models/commands/delete_link'
   'models/commands/reshape_link'
-], (Spine, paper, PathReshaper, DeleteLink, ReshapeLink) ->
+], (Spine, paper, PathReshaper, Label, DeleteLink, ReshapeLink) ->
 
   class LinkCanvasElement extends Spine.Module
     @include(Spine.Events)
     
     constructor: (@element, @canvas) ->
-      @canvasElement = @element.toPath()
+      @canvasElement = @draw()
       @linkToThis(@canvasElement)
       @linkToModel(@canvasElement)
       
@@ -20,6 +21,16 @@ define [
       
       @element.bind("reshape", @updateSegments)
       @element.bind("destroy", @remove)
+
+    draw: =>
+      label = new Label(@element.getShape().label)
+      label.draw(@element, @drawPath())
+      
+    drawPath: =>
+      path = new paper.Path(@element.segments)
+      path.strokeColor = @element.getShape().color
+      path.dashArray = [4, 4] if @element.getShape().style is "dash"
+      path
 
     linkToThis: (canvasElement) =>
       canvasElement.canvasElement = @
