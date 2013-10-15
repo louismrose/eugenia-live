@@ -12,13 +12,8 @@ define [
     @include(Spine.Events)
     
     constructor: (@element, @canvas) ->
-      @canvasElement = @draw()
+      @draw()
       @linkToThis(@canvasElement)
-      @linkToModel(@canvasElement)
-      
-      # TODO trim the line in the tool
-      # rather than hiding the overlap behind the nodes here
-      paper.project.activeLayer.insertChild(0, @canvasElement)
       
       @element.bind("reshape", @updateSegments)
       @element.bind("destroy", @remove)
@@ -26,16 +21,16 @@ define [
     draw: =>
       path = new Path(@element.getShape().color, @element.getShape().style)
       label = new Label(@element.getShape().label)
-      label.draw(@element, path.draw(@element))
+      @canvasElement = label.draw(@element, path.draw(@element))
+      # TODO add logic to Path that trims the line at the
+      # intersection with its start and end node, rather
+      # than hiding the overlap behind the nodes here
+      paper.project.activeLayer.insertChild(0, @canvasElement)
     
     linkToThis: (canvasElement) =>
       canvasElement.canvasElement = @
       @linkToThis(c) for c in canvasElement.children if canvasElement.children
     
-    linkToModel: (canvasElement) =>
-      canvasElement.model = @element
-      @linkToModel(c) for c in canvasElement.children if canvasElement.children
-
     # TODO make "private"
     remove: =>
       @canvasElement.remove()

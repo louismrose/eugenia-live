@@ -11,9 +11,8 @@ define [
     @include(Spine.Events)
     
     constructor: (@element, @canvas) ->
-      @canvasElement = @draw()
+      @draw()
       @linkToThis(@canvasElement)
-      @linkToModel(@canvasElement)
             
       @element.bind("move", @updatePosition)
       @element.bind("destroy", @remove)
@@ -21,16 +20,12 @@ define [
     draw: =>
       elements = new Elements(@element.getShape().elements)
       label = new Label(@element.getShape().label)
-      label.draw(@element, elements.draw(@element))
+      @canvasElement = label.draw(@element, elements.draw(@element))
 
     linkToThis: (canvasElement) =>
       canvasElement.canvasElement = @
       @linkToThis(c) for c in canvasElement.children if canvasElement.children
     
-    linkToModel: (canvasElement) =>
-      canvasElement.model = @element
-      @linkToModel(c) for c in canvasElement.children if canvasElement.children
-
     # TODO make "private"
     remove: =>
       @canvasElement.remove()
