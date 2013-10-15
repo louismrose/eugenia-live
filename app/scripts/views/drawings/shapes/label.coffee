@@ -34,6 +34,11 @@ define [], () ->
       text.justification = 'center'
       text.fillColor = @definition.color
       text.content = @contentFor(node)
+      node.properties.bind("propertyChanged propertyRemoved", => 
+        text.content = @contentFor(node)
+        # FIXME this should call canvas.updateDrawingCache()
+        paper.view.draw()
+      )
       text
   
     contentFor: (node) ->
