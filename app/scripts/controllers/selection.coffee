@@ -25,4 +25,7 @@ define [
     updatePropertyValue: (event) =>
       property = $(event.target).data('property')
       newValue = $(event.target).val()
-      @commander.run(new ChangeProperty(@item.getSelection(), property, newValue))
+      oldValue = @selection.properties.get(property)
+      
+      unless newValue is oldValue
+        @commander.run(new ChangeProperty(@item.getSelection(), property, newValue))
