@@ -5,8 +5,7 @@
     * move (reconnect) and updatePosition (updateSegments) methods both adjust the canvas element => seems redundant?
 * Test and refactor label
     * The label of a node is no longer updated when its property changes after that node is moved
-    * Move views/drawings/shapes/label.coffee. Probably to the viewmodel folder?
-    * Add labels for Links
+    * Ensure labels are display near the midpoint of a link
 * Test and refactor Elements
     * Promote #getOption to a class in its own right
 * Fix updateDrawingCache
