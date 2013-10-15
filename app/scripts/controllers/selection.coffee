@@ -10,12 +10,17 @@ define [
   
     constructor: ->
       super
-      @item.bind("selectionChanged", @render)
+      @item.bind("selectionChanged", @observeSelection)
+      @render()
+    
+    observeSelection: =>
+      @selection.properties.unbind("propertyChanged propertyRemoved") if @selection
+      @selection = @item.getSelection() if @item
+      @selection.properties.bind("propertyChanged propertyRemoved", @render) if @selection
       @render()
     
     render: =>
-      if @item
-        @html SelectionTemplate({ selection: @item.getSelection() })
+      @html SelectionTemplate({ selection: @selection }) if @item
   
     updatePropertyValue: (event) =>
       property = $(event.target).data('property')
