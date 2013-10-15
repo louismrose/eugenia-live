@@ -3,7 +3,9 @@ define [
 ], (Toolbox)  ->
 
   describe 'Toolbox', ->
-    beforeEach -> @t = new Toolbox(commander: {})
+    beforeEach -> 
+      canvas = jasmine.createSpyObj('canvas', ['clearSelection'])
+      @t = new Toolbox(commander: {}, canvas: canvas)
 
     it 'switches to SelectTool when initialised', ->
       expect(@t.currentTool).toBe(@t.tools.select)
