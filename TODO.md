@@ -13,6 +13,7 @@
     * delete node / delete link
     * move node
     * undo of each of the above
+* Work through codebase, migrating variables and functions to private (i.e., prefixed with an underscore) where appropriate
 
 
 # Yeoman (migration from Hem)
