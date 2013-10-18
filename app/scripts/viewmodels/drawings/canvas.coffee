@@ -48,10 +48,7 @@ define [
       canvasElement
   
     _id_for: (element) =>
-      if element instanceof Node
-        "node-#{element.id}"
-      else
-        "link-#{element.id}"
+      "#{element.className}-#{element.id}"
   
     addNode: (parameters) =>
       node = @commander.run(new CreateNode(@drawing, parameters))
