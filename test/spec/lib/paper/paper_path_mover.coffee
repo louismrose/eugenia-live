@@ -1,9 +1,9 @@
 define [
-  'lib/paper/path_reshaper'
+  'lib/paper/paper_path_mover'
   'paper'
-], (PathReshaper, paper) ->
+], (PaperPathMover, paper) ->
 
-  describe 'PathReshaper', ->
+  describe 'PaperPathMover', ->
     beforeEach ->
       paper = new paper.PaperScope()
       paper.project = new paper.Project()
@@ -18,7 +18,7 @@ define [
       @path.add(@end)
     
       @offset = new paper.Point(50, 100)
-      @mover = new PathReshaper(@path, @offset)
+      @mover = new PaperPathMover(@path, @offset)
 
       @addMatchers(
         toBeInTheSamePlaceAs: (expected) ->

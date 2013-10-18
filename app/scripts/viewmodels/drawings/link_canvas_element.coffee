@@ -1,12 +1,12 @@
 define [
   'spine'
   'paper'
-  'lib/paper/path_reshaper'
+  'lib/paper/paper_path_mover'
   'viewmodels/drawings/path'
   'viewmodels/drawings/label'
   'models/commands/delete_link'
   'models/commands/reshape_link'
-], (Spine, paper, PathReshaper, Path, Label, DeleteLink, ReshapeLink) ->
+], (Spine, paper, PaperPathMover, Path, Label, DeleteLink, ReshapeLink) ->
 
   class LinkCanvasElement extends Spine.Module
     @include(Spine.Events)
@@ -53,7 +53,7 @@ define [
       @canvas.commander.run(new DeleteLink(@canvas.drawing, @element))
     
     reconnectTo: (node, offset) =>
-      mover = new PathReshaper(@canvasElement.firstChild, offset)
+      mover = new PaperPathMover(@canvasElement.firstChild, offset)
       mover.moveStart() if @isSource(node)
       mover.moveEnd() if @isTarget(node)
       mover.finalise()
