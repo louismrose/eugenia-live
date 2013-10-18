@@ -1,11 +1,12 @@
 define [
+  'jquery'
   'spine'
   'paper'
   'viewmodels/drawings/tools/link_tool'
   'viewmodels/drawings/tools/node_tool'
   'viewmodels/drawings/tools/select_tool'
   'views/drawings/toolbox'
-], (Spine, Paper, LinkTool, NodeTool, SelectTool, ToolboxTemplate) ->
+], ($, Spine, Paper, LinkTool, NodeTool, SelectTool, ToolboxTemplate) ->
 
   class Toolbox extends Spine.Controller
     events:

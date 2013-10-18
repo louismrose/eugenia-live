@@ -1,12 +1,12 @@
 define [
   'lib/paper/path_reshaper'
   'paper'
-  'jquery'
-], (PathReshaper, paper, $) ->
+], (PathReshaper, paper) ->
 
   describe 'PathReshaper', ->
     beforeEach ->
-      paper.setup($('canvas')[0])
+      paper = new paper.PaperScope()
+      paper.project = new paper.Project()
 
       @start  = new paper.Point(10, 20)
       @middle = new paper.Point(20, 30)

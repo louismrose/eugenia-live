@@ -1,7 +1,8 @@
 define [
+  'jquery'
   'paper'
   'models/node_shape'
-], (Paper, NodeShape) ->
+], ($, Paper, NodeShape) ->
 
   class EugeniaNotation 
     reconstruct: (item) ->

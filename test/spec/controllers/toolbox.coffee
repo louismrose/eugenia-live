@@ -1,9 +1,10 @@
 define [
+  'paper'
   'controllers/toolbox'
-], (Toolbox)  ->
+], (paper, Toolbox)  ->
 
   describe 'Toolbox', ->
-    beforeEach -> 
+    beforeEach ->
       canvas = jasmine.createSpyObj('canvas', ['clearSelection'])
       @t = new Toolbox(commander: {}, canvas: canvas)
 
