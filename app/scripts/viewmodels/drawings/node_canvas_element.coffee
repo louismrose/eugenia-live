@@ -17,11 +17,13 @@ define [
       @element.bind("move", @updatePosition)
       @element.bind("destroy", @remove)
 
+    # TODO make "private"
     draw: =>
       elements = new Elements(@element.getShape().elements)
       label = new Label(@element.getShape().label)
       @canvasElement = label.draw(@element, elements.draw(@element))
 
+    # TODO make "private"
     linkToThis: (canvasElement) =>
       canvasElement.canvasElement = @
       @linkToThis(c) for c in canvasElement.children if canvasElement.children
@@ -50,6 +52,7 @@ define [
         @canvas.commander.run(new CompositeCommand(commands))
         @canvas.updateDrawingCache()
 
+    # TODO make "private"
     links: =>
       @canvas.elementFor(link) for link in @element.links()
 

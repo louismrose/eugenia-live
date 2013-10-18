@@ -18,6 +18,7 @@ define [
       @element.bind("reshape", @updateSegments)
       @element.bind("destroy", @remove)
 
+    # TODO make "private"
     draw: =>
       path = new Path(@element.getShape().color, @element.getShape().style)
       label = new Label(@element.getShape().label)
@@ -27,6 +28,7 @@ define [
       # than hiding the overlap behind the nodes here
       paper.project.activeLayer.insertChild(0, @canvasElement)
     
+    # TODO make "private"
     linkToThis: (canvasElement) =>
       canvasElement.canvasElement = @
       @linkToThis(c) for c in canvasElement.children if canvasElement.children
