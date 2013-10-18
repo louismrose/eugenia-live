@@ -13,6 +13,7 @@ define [
     # TODO duplication with Node
     constructor: (attributes) ->
       super
+      @type = @constructor.className
       @k = v for k,v of attributes
       @propertyValues or= {}
       @initialisePropertySet()

@@ -14,12 +14,12 @@ define [
       @_links = []
     
     addNode: ->
-      node = { className: 'node', id: @_nodes.length+1 }
+      node = { type: 'node', id: @_nodes.length+1 }
       @_nodes.push node
       node
     
     addLink: ->
-      link = { className: 'link', id: @_links.length+1 }
+      link = { type: 'link', id: @_links.length+1 }
       @_links.push link
       link
     

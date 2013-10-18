@@ -48,7 +48,7 @@ define [
       canvasElement
   
     _id_for: (element) =>
-      "#{element.className}-#{element.id}"
+      "#{element.type}-#{element.id}"
   
     addNode: (parameters) =>
       node = @commander.run(new CreateNode(@drawing, parameters))
