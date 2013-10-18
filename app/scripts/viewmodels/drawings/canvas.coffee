@@ -1,55 +1,65 @@
 define [
   'paper'
-  'viewmodels/drawings/node_canvas_element'
-  'viewmodels/drawings/link_canvas_element'
+  'viewmodels/drawings/canvas_element_factory'
   'viewmodels/drawings/null_canvas_element'
   'models/link'
   'models/node'
   'models/commands/create_node'
   'models/commands/create_link'
-], (paper, NodeCanvasElement, LinkCanvasElement, NullCanvasElement, Link, Node, CreateNode, CreateLink) ->
+], (paper, CanvasElementFactory, NullCanvasElement, Link, Node, CreateNode, CreateLink) ->
 
   class Canvas
     constructor: (options) ->
       @canvasElement = options.el
+      @canvasElementFactory = options.factory || new CanvasElementFactory(@)
       @drawing = options.drawing
       @commander = options.commander
       @elements = {}
     
       paper.setup(@canvasElement)
-      @drawAll(Node)
-      @drawAll(Link)
+      @_drawAll(Node)
+      @_drawAll(Link)
 
       paper.view.draw()
       @updateDrawingCache()
       
-      Node.bind("create", @draw)
-      Link.bind("create", @draw)
+      Node.bind("create", @_draw)
+      Link.bind("create", @_draw)
       
-    drawAll: (type) =>
+    destruct: ->
+      Node.unbind("create")
+      Link.unbind("create")
+      
+    _drawAll: (type) =>
       associationMethod = type.className.toLowerCase() + 's' #e.g. Node -> nodes
       elements = @drawing[associationMethod]().all()         #e.g. @drawing.nodes().all()
       console.log("adding all " + elements.length + " " + type.className + "s")
-      @draw(element, persist: false) for element in elements
+      @_draw(element, persist: false) for element in elements
   
-    draw: (element, options={persist: true}) =>
-      canvasElement = if element instanceof Node then new NodeCanvasElement(element, @) else new LinkCanvasElement(element, @)
+    _draw: (element, options={persist: true}) =>
+      canvasElement = @canvasElementFactory.createCanvasElementFor(element)
       
-      @elements[element.id] = canvasElement
+      @elements[@_id_for(element)] = canvasElement
       canvasElement.bind("destroy", => 
-        delete @elements[element.id]
+        delete @elements[@_id_for(element)]
         @updateDrawingCache()
       )
       @updateDrawingCache() if options.persist
       canvasElement
   
+    _id_for: (element) =>
+      if element instanceof Node
+        "node-#{element.id}"
+      else
+        "link-#{element.id}"
+  
     addNode: (parameters) =>
       node = @commander.run(new CreateNode(@drawing, parameters))
-      @draw(node)
+      @_draw(node)
       
     addLink: (parameters) =>
       link = @commander.run(new CreateLink(@drawing, parameters))
-      @draw(link)
+      @_draw(link)
         
     elementAt: (point) =>
       hitResult = paper.project.hitTest(point)
@@ -59,7 +69,7 @@ define [
         new NullCanvasElement(@)
   
     elementFor: (element) =>
-      @elements[element.id]
+      @elements[@_id_for(element)]
   
     updateDrawingCache: =>
       @drawing.cache = @canvasElement.toDataURL()
