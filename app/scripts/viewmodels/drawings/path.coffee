@@ -3,7 +3,9 @@ define [
 ], (paper) ->
   
   class Path
-    constructor: (@color, @style) ->
+    constructor: (shape) ->
+      @color = shape.color || "black"
+      @style = shape.style || "solid"
 
     draw: (element) =>
       path = new paper.Path(element.segments)

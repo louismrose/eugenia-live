@@ -20,7 +20,7 @@ define [
 
     # TODO make "private"
     draw: =>
-      path = new Path(@element.getShape().color, @element.getShape().style)
+      path = new Path(@element.getShape())
       label = new Label(@element.getShape().label)
       @canvasElement = label.draw(@element, path.draw(@element))
       # TODO add logic to Path that trims the line at the
