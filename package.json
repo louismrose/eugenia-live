@@ -32,6 +32,6 @@
     "grunt-template-jasmine-requirejs": "~0.1.4"
   },
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">=0.8.26"
   }
 }
