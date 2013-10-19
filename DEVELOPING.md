@@ -4,11 +4,10 @@ Setup
 Tools
 -----
 
-1. Update Homebrew: `brew update`
-2. Install Node 0.8 and NPM via Homebrew: `brew tap homebrew/versions && brew install node08`
-3. Install Yeoman, Grunt and Bower: `(sudo) npm install -g yo grunt-cli bower`. Ensure that `grunt`, `bower` and `yo` are on your path; you may have to add something like `export PATH="$HOME/.rvm/share/npm/bin:$PATH"` to your .zshrc or .bash_profile.
-4. Install Phantom.js (used for tests): `brew install phantomjs`
-5. Install Ruby via RVM (used for converting SCSS into CSS) and bundler `gem install bundler`
+1. Install Node 0.8.26 or later and NPM (by [installing Node.js](http://nodejs.org/)).
+2. Install Yeoman, Grunt and Bower: `(sudo) npm install -g yo grunt-cli bower`
+3. Install Phantom.js (used for tests): `brew update && brew install phantomjs`
+4. Install Ruby via RVM (used for converting SCSS into CSS) and bundler `gem install bundler`
 
 Dependencies
 ------------
