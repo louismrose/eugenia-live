@@ -5,7 +5,7 @@ define [
 
   class BoundedStencil extends PolygonStencil
     defaultStencilSpecification: =>
-      @_merge({ size: { width: 100, height: 100 } }, super())
+      super().merge({ size: { width: 100, height: 100 } })
     
     _width: (node) =>
       @resolve(node, 'size.width')

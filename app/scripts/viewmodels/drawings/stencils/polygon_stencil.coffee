@@ -1,16 +1,15 @@
 define [
   'paper'
-], (paper) ->
+  'viewmodels/drawings/stencils/stencil_specification'
+], (paper, StencilSpecification) ->
 
   class PolygonStencil  
-    constructor: (@stencilSpecification = {}) ->
-      @_merge(@stencilSpecification, @defaultStencilSpecification())
+    constructor: (stencilSpecification = {}) ->
+      @_stencilSpecification = new StencilSpecification(stencilSpecification)
+      @_stencilSpecification.merge(@defaultStencilSpecification())
     
     defaultStencilSpecification: =>
-      x: 0
-      y: 0
-      fillColor: "white"
-      borderColor: "black"
+      new StencilSpecification(x: 0, y: 0, fillColor: "white", borderColor: "black")
     
     draw: (node) =>
       path = @createPath(node)
@@ -22,30 +21,8 @@ define [
     resolve: (node, key) =>
       # When an option has a dynamic value, such as ${foo}
       # resolve it using the node's property set
-      node.properties.resolve(@_get(@stencilSpecification, key), @_get(@defaultStencilSpecification(), key))
-    
+      node.properties.resolve(@_stencilSpecification.get(key), @defaultStencilSpecification().get(key))
+          
     # Subclasses must implement this method
     createPath: (node) ->
       throw new Error("Instantiate a subclass rather than this class directly.")
-        
-    _merge: (target, mergee) =>
-      for key, value of mergee
-        if value instanceof Object
-          target[key] or= {}
-          target[key] = @_merge(target[key], value)
-        else
-          target[key] or= value
-      target
-      
-    _get: (object, keyString) =>
-      @_getKeys(object, keyString.split("."))
-      
-    _getKeys: (object, keys) =>
-      return undefined if object is undefined
-      return object unless keys.length
-      
-      [key, remainingKeys...] = keys
-      @_getKeys(object[key], remainingKeys)
-      
-      
-        

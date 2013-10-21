@@ -5,7 +5,7 @@ define [
 
   class RegularPolygonStencil extends PolygonStencil
     defaultStencilSpecification: =>
-      @_merge({ sides: 3, radius: 50 }, super())
+      super().merge({ sides: 3, radius: 50 })
     
     createPath: (node) ->
       centre = new paper.Point(0, 0)
