@@ -20,18 +20,18 @@ define [
       path
 
     createPath: (options, node) =>
-      width = @getOption(options.size.width, node, 100)
-      height = @getOption(options.size.height, node, 100)
+      width = @getOption(options.size.width, node, 100) if options.size
+      height = @getOption(options.size.height, node, 100) if options.size
       
       switch options.figure
         when "rounded"
           rect = new paper.Rectangle(0, 0, width, height)
           new paper.Path.RoundRectangle(rect, new paper.Size(10, 10))
         when "ellipse"
-          rect = new paper.Rectangle(0, 0, options.size.width*2, options.size.height*2)
+          rect = new paper.Rectangle(0, 0, width*2, height*2)
           new paper.Path.Oval(rect)
         when "rectangle"
-          new paper.Path.Rectangle(0, 0, options.size.width, options.size.height)
+          new paper.Path.Rectangle(0, 0, width, height)
         when "polygon"
           options.sides or= 3
           options.radius or= 50
