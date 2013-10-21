@@ -1,13 +1,11 @@
 # Rendering changes
+* Test and refactor label
+    * The label of a node is no longer updated when its property changes after that node is moved
+    * Ensure labels are display near the midpoint of a link
 * Test and refactor canvas
 * Test and refactor NodeCanvasElement and LinkCanvasElement
     * Extract common superclass?
     * move (reconnect) and updatePosition (updateSegments) methods both adjust the canvas element => seems redundant?
-* Test and refactor label
-    * The label of a node is no longer updated when its property changes after that node is moved
-    * Ensure labels are display near the midpoint of a link
-* Test and refactor Elements
-    * Promote #getOption to a class in its own right
 * Fix updateDrawingCache
     * create node / create link
     * delete node / delete link
