@@ -1,5 +1,5 @@
 define [
-  'models/literal_expression'
+  'models/expressions/literal_expression'
 ], (LiteralExpression) ->
 
   describe 'LiteralExpression', ->

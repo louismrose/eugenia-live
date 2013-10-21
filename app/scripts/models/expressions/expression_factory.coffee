@@ -1,6 +1,6 @@
 define [
-  'models/property_set_expression'
-  'models/literal_expression'
+  'models/expressions/property_set_expression'
+  'models/expressions/literal_expression'
 ], (PropertySetExpression, LiteralExpression) ->
 
   class ExpressionFactory

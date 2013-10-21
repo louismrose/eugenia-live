@@ -1,5 +1,5 @@
 define [
-  'models/property_set_expression'
+  'models/expressions/property_set_expression'
 ], (PropertySetExpression) ->
 
   describe 'PropertySetExpression', ->

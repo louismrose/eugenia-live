@@ -1,6 +1,6 @@
 define [
   'spine'
-  'models/expression_factory'
+  'models/expressions/expression_factory'
 ], (Spine, ExpressionFactory) ->
 
   class PropertySet extends Spine.Module

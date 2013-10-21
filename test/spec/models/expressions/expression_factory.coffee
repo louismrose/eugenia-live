@@ -1,7 +1,7 @@
 define [
-  'models/expression_factory'
-  'models/literal_expression'
-  'models/property_set_expression'
+  'models/expressions/expression_factory'
+  'models/expressions/literal_expression'
+  'models/expressions/property_set_expression'
 ], (ExpressionFactory, LiteralExpression, PropertySetExpression) ->
 
   describe 'ExpressionFactory', ->
