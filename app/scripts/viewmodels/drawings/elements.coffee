@@ -28,7 +28,7 @@ define [
           rect = new paper.Rectangle(0, 0, width, height)
           new paper.Path.RoundRectangle(rect, new paper.Size(10, 10))
         when "ellipse"
-          rect = new paper.Rectangle(0, 0, width*2, height*2)
+          rect = new paper.Rectangle(0, 0, width, height)
           new paper.Path.Oval(rect)
         when "rectangle"
           new paper.Path.Rectangle(0, 0, width, height)

@@ -35,7 +35,7 @@ define [
             "elements": [
               {
                 "figure": "ellipse",
-                "size": {"width": 10, "height": 10},
+                "size": {"width": 20, "height": 20},
                 "fillColor": "black",
                 "borderColor": "black"
               }
@@ -47,13 +47,13 @@ define [
             "elements": [
               {
                 "figure": "ellipse",
-                "size": {"width": 10, "height": 10},
+                "size": {"width": 20, "height": 20},
                 "fillColor": "white",
                 "borderColor": "black"
               },
               {
                 "figure": "ellipse",
-                "size": {"width": 7, "height": 7},
+                "size": {"width": 14, "height": 14},
                 "fillColor": "black",
                 "borderColor": "black"
               }
@@ -87,7 +87,7 @@ define [
             "elements": [
               {
                 "figure": "ellipse",
-                "size": {"width": 30, "height": 30},
+                "size": {"width": 60, "height": 60},
                 "fillColor": "white",
                 "borderColor": "black"
               }
