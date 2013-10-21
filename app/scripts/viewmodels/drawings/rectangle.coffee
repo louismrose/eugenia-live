@@ -1,15 +1,8 @@
 define [
   'paper'
-  'viewmodels/drawings/element'
-], (paper, Element) ->
+  'viewmodels/drawings/bounded'
+], (paper, Bounded) ->
 
-  class Rectangle extends Element
-    constructor: (@element) ->
-      super(@element) 
-    
-    defaults: =>
-      @_merge({ size: { width: 100, height: 100 } }, super())
-    
+  class Rectangle extends Bounded
     createPath: (node) ->
-      new paper.Path.Rectangle(0, 0, @resolve(node, 'size.width'), @resolve(node, 'size.height'))
-        
+      new paper.Path.Rectangle(0, 0, @_width(node), @_height(node))
