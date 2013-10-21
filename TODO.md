@@ -1,11 +1,14 @@
 # Rendering changes
 * Test and refactor label
+    * Consider reusing stencil specification 
     * The label of a node is no longer updated when its property changes after that node is moved
     * Ensure labels are display near the midpoint of a link
 * Test and refactor canvas
 * Test and refactor NodeCanvasElement and LinkCanvasElement
+    * Consider pulling stencil specification creation out of elements / label to here
     * Extract common superclass?
     * move (reconnect) and updatePosition (updateSegments) methods both adjust the canvas element => seems redundant?
+* Rename the Elements class
 * Fix updateDrawingCache
     * create node / create link
     * delete node / delete link
