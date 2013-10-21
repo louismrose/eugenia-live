@@ -4,9 +4,6 @@ define [
 ], (paper, Element) ->
 
   class Bounded extends Element
-    constructor: (@element) ->
-      super(@element) 
-    
     defaults: =>
       @_merge({ size: { width: 100, height: 100 } }, super())
     
