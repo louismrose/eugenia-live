@@ -31,7 +31,7 @@ define [
         expect(result.segments.length).toBe(12)
     
       it 'sets radius according to radius option', ->
-        polygon = new Polygon({ radius: 75 })
+        polygon = new Polygon(radius: 75)
         expect(polygon._radius(new FakeNode(@alwaysResolvesPropertySet))).toBe(75)
             
     createElement = (propertySet, options = {}) ->
