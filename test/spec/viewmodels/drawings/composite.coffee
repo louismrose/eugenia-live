@@ -8,39 +8,32 @@ define [
       result = createComposite()
       expect(result instanceof paper.Group).toBeTruthy()
     
-    it 'creates a child for every element of array', ->
-      result = createComposite([{ figure: "rectangle" }, { figure: "ellipse" }])
-      expect(result.children.length).toBe(2)
-
-    it 'passes options to children via factory', ->
-      factory = new FakeFactory()
-      elements = [
-        { figure: "rectangle", borderColor: "blue" }, 
-        { figure: "ellipse", size : { width: 10, height: 50} }
-      ]
-      createComposite(elements, factory)
+    it 'calls draw on for every element of array', ->
+      rectangle = new FakeRectangle()
+      ellipse = new FakeEllipse()
+      result = createComposite([rectangle, ellipse])
       
-      expect(factory.rectangle).toEqual({ figure: "rectangle", borderColor: "blue" })
-      expect(factory.ellipse).toEqual({ figure: "ellipse", size : { width: 10, height: 50} })
+      expect(rectangle.drawn).toBeTruthy()
+      expect(ellipse.drawn).toBeTruthy()
     
-    createComposite = (elements, factory = new FakeFactory()) ->  
+    it 'creates a child for every element of array', ->
+      result = createComposite([new FakeRectangle(), new FakeEllipse()])
+      expect(result.children.length).toBe(2)
+    
+    createComposite = (elements) ->  
       paper = new paper.PaperScope()
       paper.project = new paper.Project()
-      element = new Composite(elements, factory)
+      element = new Composite(elements)
       result = element.draw({})
 
-    class FakeFactory
-      rectangle: {}
-      ellipse: {}
-      
-      elementFor: (element) =>
-        switch element.figure
-          when "rectangle"
-            @rectangle = element
-            draw: (node) =>
-              new paper.Path.Rectangle(0, 0, 10, 20)
+    class FakeRectangle
+      drawn: false
+      draw: (node) =>
+        @drawn = true
+        new paper.Path.Rectangle(0, 0, 10, 20)
 
-          when "ellipse"
-            @ellipse = element
-            draw: (node) =>
-              new paper.Path.Oval(new paper.Rectangle(0, 0, 30, 40))
+    class FakeEllipse
+      drawn: false
+      draw: (node) =>
+        @drawn = true
+        new paper.Path.Rectangle(0, 0, 10, 20)

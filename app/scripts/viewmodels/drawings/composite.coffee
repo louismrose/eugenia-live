@@ -1,11 +1,9 @@
 define [
   'paper'
-  'viewmodels/drawings/element_factory'
-], (paper, ElementFactory) ->
+], (paper) ->
 
   class Composite
-    constructor: (elements = [], factory = new ElementFactory()) ->
-      @elements = (factory.elementFor(element) for element in elements)
+    constructor: (@elements = []) ->
     
     draw: (node) =>
       new paper.Group(@_children(node))
