@@ -1,10 +1,10 @@
 define [
   'paper'
-  'viewmodels/drawings/element'
-], (paper, Element) ->
+  'viewmodels/drawings/stencils/polygon_stencil'
+], (paper, PolygonStencil) ->
 
-  class Bounded extends Element
-    defaults: =>
+  class BoundedStencil extends PolygonStencil
+    defaultStencilSpecification: =>
       @_merge({ size: { width: 100, height: 100 } }, super())
     
     _width: (node) =>

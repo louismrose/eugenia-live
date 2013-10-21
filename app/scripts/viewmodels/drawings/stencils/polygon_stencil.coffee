@@ -2,11 +2,11 @@ define [
   'paper'
 ], (paper) ->
 
-  class Element  
-    constructor: (@element = {}) ->
-      @_merge(@element, @defaults())
+  class PolygonStencil  
+    constructor: (@stencilSpecification = {}) ->
+      @_merge(@stencilSpecification, @defaultStencilSpecification())
     
-    defaults: =>
+    defaultStencilSpecification: =>
       x: 0
       y: 0
       fillColor: "white"
@@ -22,11 +22,11 @@ define [
     resolve: (node, key) =>
       # When an option has a dynamic value, such as ${foo}
       # resolve it using the node's property set
-      node.properties.resolve(@_get(@element, key), @_get(@defaults(), key))
+      node.properties.resolve(@_get(@stencilSpecification, key), @_get(@defaultStencilSpecification(), key))
     
     # Subclasses must implement this method
     createPath: (node) ->
-      throw new Error("Instantiate a subclass of Element, rather than Element directly.")
+      throw new Error("Instantiate a subclass rather than this class directly.")
         
     _merge: (target, mergee) =>
       for key, value of mergee

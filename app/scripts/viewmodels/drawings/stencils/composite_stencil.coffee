@@ -2,11 +2,11 @@ define [
   'paper'
 ], (paper) ->
 
-  class Composite
-    constructor: (@elements = []) ->
+  class CompositeStencil
+    constructor: (@stencils = []) ->
     
     draw: (node) =>
       new paper.Group(@_children(node))
     
     _children: (node) =>
-      element.draw(node) for element in @elements
+      stencil.draw(node) for stencil in @stencils

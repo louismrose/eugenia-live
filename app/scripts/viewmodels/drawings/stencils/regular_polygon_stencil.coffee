@@ -1,13 +1,10 @@
 define [
   'paper'
-  'viewmodels/drawings/element'
-], (paper, Element) ->
+  'viewmodels/drawings/stencils/polygon_stencil'
+], (paper, PolygonStencil) ->
 
-  class Polygon extends Element
-    constructor: (@element) ->
-      super(@element) 
-    
-    defaults: =>
+  class RegularPolygonStencil extends PolygonStencil
+    defaultStencilSpecification: =>
       @_merge({ sides: 3, radius: 50 }, super())
     
     createPath: (node) ->
