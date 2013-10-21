@@ -36,11 +36,6 @@ define [
           options.sides or= 3
           options.radius or= 50
           new paper.Path.RegularPolygon(new paper.Point(0, 0), options.sides, options.radius)
-        when "path"
-          path = new paper.Path()
-          for point in options.points
-            path.add(new paper.Point(point.x, point.y))
-          path
           
     getOption: (content, node, defaultValue) =>
       if (typeof content is 'string' or content instanceof String) and content.length and content[0] is "$"
