@@ -30,4 +30,3 @@ define [
       paper.project = new paper.Project()
       path = new Path(options)
       path.draw({segments: segments})
-      paper.project.activeLayer.firstChild
