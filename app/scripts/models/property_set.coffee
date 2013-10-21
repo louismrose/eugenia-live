@@ -40,3 +40,26 @@ define [
     
     defaults: ->
       if @shape then @shape.defaultPropertyValues() else {}
+      
+    resolve: (expression, defaultValue) ->
+      if (typeof expression is 'string' or expression instanceof String) and expression.length and expression[0] is "$"
+        # What happens if there is a problem with the expression
+        # for example ${unknown} where unknown is not a property
+        # that is defined for this shape
+    
+        # strip off opening the ${ and the closing }
+        evalable = expression.substring(2, expression.length - 1)
+        expression = @get(evalable)
+  
+        # What happens if this fails?
+        if expression is ""
+          defaultValue
+        else
+          # Eventually, we probably want to store type information
+          # for parameter values so that we can perform a more
+          # knowledgable conversion, rather than trial-and-error
+          value = parseInt(expression,10)
+          value = expression if isNaN(value)
+          value
+      else
+        expression
