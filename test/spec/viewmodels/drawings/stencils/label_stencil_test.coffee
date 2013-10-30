@@ -1,13 +1,13 @@
 define [
   'paper'
-  'viewmodels/drawings/label'
+  'viewmodels/drawings/stencils/label_stencil'
   'models/property_set'
-], (paper, Label, PropertySet) ->
+], (paper, LabelStencil, PropertySet) ->
 
   # TODO
   # -- might want to make use of paper.Item's style property that allows multiple style elements to be set in one go
 
-  describe 'Label', ->
+  describe 'LabelStencil', ->
     describe 'it has sensible defaults', ->      
       it 'draws no label by default', ->
         shape = createShape()
@@ -76,8 +76,8 @@ define [
     createLabel = (shape, options, properties = {}) ->  
       paper = new paper.PaperScope()
       paper.project = new paper.Project()
-      label = new Label(options)
-      label.draw(new FakeNode(properties), shape)
+      stencil = new LabelStencil(options)
+      stencil.draw(new FakeNode(properties), shape)
       
     class FakeNode
       constructor: (properties) ->
