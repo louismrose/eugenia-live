@@ -3,51 +3,44 @@ define [
 ], (paper) ->
 
   class Label
-    constructor: (definition) ->
-      @definition = definition
+    constructor: (@_definition = {}) ->
+      @_definition.placement or= "none"
     
-      if @definition and @definition.placement isnt "none"
-        @definition.for = [@definition.for] unless @definition.for instanceof Array
-        @definition.pattern = @default_pattern() unless @definition.pattern
-      else
-        @definition = { placement: "none" }
-  
-    default_pattern: ->
-      numbers = [0..@definition.for.length-1]
-      formattedNumbers = ("{#{n}}" for n in numbers)
-      formattedNumbers.join(",")
-  
     draw: (node, shape) ->
       result = new paper.Group(shape)
     
-      unless @definition.placement is "none"
-        result.addChild(@createText(node, @positionFor(shape)))
+      unless @_definition.placement is "none"
+        result.addChild(@_createText(node, @_positionFor(shape)))
 
       result
   
-    positionFor: (shape) ->
-      if @definition.placement is "external"
-        shape.bounds.bottomCenter.add([0, 20]) # nudge outside shape
-      else
-        shape.position.add([0, 5]) # nudge down to middle of shape
+    _positionFor: (shape) ->
+      switch @_definition.placement
+        when "external"
+          shape.bounds.bottomCenter.add([0, 20]) # nudge outside shape
+        when "internal"
+          shape.position # align with centre and middle of shape
 
-    createText: (node, position) ->
-      text = new paper.PointText(position)
-      text.justification = 'center'
-      text.fillColor = @definition.color
-      text.content = @contentFor(node)
+    _createText: (node, position) ->
+      text = new paper.PointText
+        justification: 'center'
+        fillColor: @_definition.color
+        content: @_contentFor(node)
+        position: position
+
       node.properties.bind("propertyChanged propertyRemoved", => 
-        text.content = @contentFor(node)
+        text.content = @_contentFor(node)
         # FIXME this should call canvas.updateDrawingCache()
         paper.view.draw()
       )
+
       text
   
-    contentFor: (node) ->
-      content = node.properties.resolve(@definition.text, @definition.pattern)
-      @trimText(content)
+    _contentFor: (node) ->
+      content = node.properties.resolve(@_definition.text, @_definition.text)
+      @_trimText(content)
   
-    trimText: (text) ->
+    _trimText: (text) ->
       return "" unless text
-      return text unless text.length > @definition.length
-      return text.substring(0, @definition.length-3).trim() + "..."
+      return text unless text.length > @_definition.length
+      return text.substring(0, @_definition.length-3).trim() + "..."
