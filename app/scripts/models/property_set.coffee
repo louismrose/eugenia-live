@@ -46,3 +46,4 @@ define [
       expression = @expressionFactory.expressionFor(expression, @)
       value = expression.evaluate()
       value = defaultValue if value is undefined
+      value

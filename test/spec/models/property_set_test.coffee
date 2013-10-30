@@ -68,16 +68,17 @@ define [
         expect(@subscriber.removed.callCount).toBe(1)
         
         
-    describe 'resolve', ->
-      it 'instantiates an expression via the factory', ->
+    describe 'calling resolve()', ->
+      it 'returns the value from evaluating the expression', ->
         expression = jasmine.createSpyObj('shape', ['evaluate'])
+        expression.evaluate.andReturn('John Doe')
         
         factory = jasmine.createSpyObj('shape', ['expressionFor'])
         factory.expressionFor.andReturn(expression)
         
         propertySet = new PropertySet(@shape, {}, factory)
-        propertySet.resolve('name')
-        expect(expression.evaluate).toHaveBeenCalled()
+        result = propertySet.resolve('name')
+        expect(result).toEqual('John Doe')
         
       it 'returns the default value when the expression evaluates to undefined', ->
         expression = jasmine.createSpyObj('shape', ['evaluate'])
