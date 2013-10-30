@@ -15,7 +15,7 @@ define [
             "name": "State",
             "properties": ["name", "recurrent"],
             "label" : {
-              "for" : "name",
+              "text" : "${name}",
               "color" : "green",
               "placement" : "internal",
               "length" : 15

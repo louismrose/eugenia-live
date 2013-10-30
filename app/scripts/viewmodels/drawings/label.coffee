@@ -1,5 +1,5 @@
 define [
-  'paper'
+  'paper',
 ], (paper) ->
 
   class Label
@@ -44,17 +44,7 @@ define [
       text
   
     contentFor: (node) ->
-      # TODO: can't this be done by name? e.g. a key-value binding?
-      content = @definition.pattern    
-      for number in [0..@definition.for.length-1]
-        pattern = ///
-          \{
-          #{number}
-          \}
-        ///g
-        value = node.properties.get(@definition.for[number])
-        content = content.replace(pattern, value)
-    
+      content = node.properties.resolve(@definition.text, @definition.pattern)
       @trimText(content)
   
     trimText: (text) ->
