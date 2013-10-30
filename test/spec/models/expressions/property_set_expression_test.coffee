@@ -22,22 +22,22 @@ define [
 
     
     describe "evaluate", ->
-      it '${foo} evaluates to properties.get("foo")', ->
-        properties = new FakePropertySet("red")
-        expression = new PropertySetExpression("${color}", properties)
-        expect(expression.evaluate()).toBe("red")
+      it 'replaces all property references with property values', ->
+        properties = new FakePropertySet(forename: "John", surname: "Doe", title: "Mr.")
+        expression = new PropertySetExpression("${surname}: ${title} ${forename} ${surname}", properties)
+        expect(expression.evaluate()).toBe("Doe: Mr. John Doe")
       
       it 'coerces numbers', ->
-        properties = new FakePropertySet("50")
+        properties = new FakePropertySet(width: "50")
         expression = new PropertySetExpression("${width}", properties)
         expect(expression.evaluate()).toBe(50)
         
-      it 'evalutes to undefined when property does not exist ', ->
-        properties = new FakePropertySet(undefined)
+      it 'evaluates to "undefined" when property does not exist ', ->
+        properties = new FakePropertySet(color: undefined)
         expression = new PropertySetExpression("${color}", properties)
         expect(expression.evaluate()).toBe(undefined)
     
     class FakePropertySet
-      constructor: (@value) ->
+      constructor: (@properties) ->
       get: (property) ->
-        @value
+        @properties[property]
