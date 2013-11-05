@@ -12,8 +12,7 @@ define [
     
     constructor: (@element, @canvas) ->
       @draw()
-      @linkToThis(@canvasElement)
-      
+      @linkToThis(@canvasElement)      
       @element.bind("reshape", @updateSegments)
       @element.bind("destroy", @remove)
 
@@ -39,13 +38,8 @@ define [
     # TODO make "private"
     updateSegments: =>
       @canvasElement.remove()
-      @canvasElement = @element.toPath()
-      @linkToThis(@canvasElement)
-      @linkToModel(@canvasElement)
-      
-      # TODO trim the line in the tool
-      # rather than hiding the overlap behind the nodes here
-      paper.project.activeLayer.insertChild(0, @canvasElement)
+      @draw()
+      @linkToThis(@canvasElement)      
 
     destroy: =>
       @canvas.commander.run(new DeleteLink(@canvas.drawing, @element))
