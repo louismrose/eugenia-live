@@ -62,6 +62,6 @@ define [
       
     select: =>
       @canvas.clearSelection()
-      @canvasElement.selected = true
+      @canvasElement.firstChild.selected = true
       @element.select()
 
