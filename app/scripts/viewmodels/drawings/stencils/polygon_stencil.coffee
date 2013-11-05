@@ -5,7 +5,7 @@ define [
 ], (paper, Stencil, StencilSpecification) ->
 
   class PolygonStencil extends Stencil
-    defaultStencilSpecification: =>
+    defaultSpecification: =>
       new StencilSpecification(x: 0, y: 0, fillColor: "white", borderColor: "black")
     
     draw: (node) =>

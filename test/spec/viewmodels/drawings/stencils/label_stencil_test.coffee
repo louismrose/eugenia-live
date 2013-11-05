@@ -4,9 +4,6 @@ define [
   'models/property_set'
 ], (paper, LabelStencil, PropertySet) ->
 
-  # TODO
-  # -- might want to make use of paper.Item's style property that allows multiple style elements to be set in one go
-
   describe 'LabelStencil', ->
     describe 'it has sensible defaults', ->      
       it 'draws no label by default', ->
@@ -69,16 +66,20 @@ define [
           result = createLabel(createShape(), {placement: 'internal', color: 'red' })
           expect(result.lastChild.fillColor.toCSS()).toEqual("rgb(255,0,0)")
 
-      
     createShape = ->
       new paper.Path.Rectangle(new paper.Point(0,0), new paper.Size(10, 20))
       
     createLabel = (shape, options, properties = {}) ->  
       paper = new paper.PaperScope()
       paper.project = new paper.Project()
-      stencil = new LabelStencil(options)
-      stencil.draw(new FakeNode(properties), shape)
+      stencil = new LabelStencil(options, new FakeStencil(shape))
+      stencil.draw(new FakeNode(properties))
       
+    class FakeStencil
+      constructor: (@shape) ->
+      draw: (node) ->
+        @shape
+    
     class FakeNode
       constructor: (properties) ->
         @properties = new PropertySet(new FakeShape(properties), properties)

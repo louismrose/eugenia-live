@@ -1,11 +1,10 @@
 define [
   'spine'
-  'viewmodels/drawings/elements'
-  'viewmodels/drawings/stencils/label_stencil'
+  'viewmodels/drawings/stencils/stencil_factory'
   'models/commands/delete_node'
   'models/commands/composite_command'
   'models/commands/move_node'
-], (Spine, Elements, LabelStencil, DeleteNode, CompositeCommand, MoveNode) ->
+], (Spine, StencilFactory, DeleteNode, CompositeCommand, MoveNode) ->
 
   class NodeCanvasElement extends Spine.Module
     @include(Spine.Events)
@@ -19,9 +18,8 @@ define [
 
     # TODO make "private"
     draw: =>
-      elements = new Elements(@element.getShape().elements)
-      label = new LabelStencil(@element.getShape().label)
-      @canvasElement = label.draw(@element, elements.draw(@element))
+      stencil = new StencilFactory().convert(@element.getShape())
+      @canvasElement = stencil.draw(@element)
 
     # TODO make "private"
     linkToThis: (canvasElement) =>

@@ -4,7 +4,7 @@ define [
 ], (paper, PolygonStencil) ->
 
   class RegularPolygonStencil extends PolygonStencil
-    defaultStencilSpecification: =>
+    defaultSpecification: =>
       super().merge({ sides: 3, radius: 50 })
     
     createPath: (node) ->

@@ -5,10 +5,14 @@ define [
 ], (paper, Stencil, StencilSpecification) ->
 
   class LabelStencil extends Stencil
-    defaultStencilSpecification: =>
+    constructor: (stencilSpecification = {}, @_labelled) ->
+      super(stencilSpecification)
+
+    defaultSpecification: =>
       new StencilSpecification(placement: 'none')
     
-    draw: (node, shape) ->
+    draw: (node) ->
+      shape = @_labelled.draw(node)
       result = new paper.Group(shape)
       unless @resolve(node, 'placement') is "none"
         result.addChild(@_createText(node, @_positionFor(node, shape)))

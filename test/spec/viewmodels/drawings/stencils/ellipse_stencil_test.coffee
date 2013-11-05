@@ -19,7 +19,7 @@ define [
         expect(result.bounds.height).toBe(100)
       
       it 'inherits default fillColor from polygon', ->
-        expect(new EllipseStencil().defaultStencilSpecification().get("fillColor")).toBe("white")
+        expect(new EllipseStencil().defaultSpecification().get("fillColor")).toBe("white")
         
     describe 'can use stencil specification', ->
       beforeEach ->

@@ -3,10 +3,10 @@ define [
 ], (paper) ->
 
   class CompositeStencil
-    constructor: (@stencils = []) ->
+    constructor: (@_stencils = []) ->
     
     draw: (node) =>
       new paper.Group(@_children(node))
     
     _children: (node) =>
-      stencil.draw(node) for stencil in @stencils
+      stencil.draw(node) for stencil in @_stencils

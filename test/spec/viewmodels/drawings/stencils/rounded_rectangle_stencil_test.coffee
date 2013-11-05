@@ -19,7 +19,7 @@ define [
         expect(result.bounds.height).toBe(100)
       
       it 'inherits default fillColor from polygon', ->
-        expect(new RoundedRectangleStencil().defaultStencilSpecification().get("fillColor")).toBe("white")
+        expect(new RoundedRectangleStencil().defaultSpecification().get("fillColor")).toBe("white")
         
     describe 'can use stencil specification', ->
       beforeEach ->

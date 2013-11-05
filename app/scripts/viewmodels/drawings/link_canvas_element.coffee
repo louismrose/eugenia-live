@@ -21,8 +21,8 @@ define [
     # TODO make "private"
     draw: =>
       path = new Path(@element.getShape())
-      label = new LabelStencil(@element.getShape().label)
-      @canvasElement = label.draw(@element, path.draw(@element))
+      label = new LabelStencil(@element.getShape().label, path)
+      @canvasElement = label.draw(@element)
       # TODO add logic to Path that trims the line at the
       # intersection with its start and end node, rather
       # than hiding the overlap behind the nodes here

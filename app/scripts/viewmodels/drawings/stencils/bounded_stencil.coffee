@@ -4,7 +4,7 @@ define [
 ], (paper, PolygonStencil) ->
 
   class BoundedStencil extends PolygonStencil
-    defaultStencilSpecification: =>
+    defaultSpecification: =>
       super().merge({ size: { width: 100, height: 100 } })
     
     _width: (node) =>

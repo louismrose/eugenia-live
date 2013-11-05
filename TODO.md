@@ -1,16 +1,16 @@
 # Rendering changes
-* Test and refactor label
+* Test and refactor LabelStencil
     * Move logic that creates groups out of Label and reuse CompositeStencil.
         * Probably need to change StencilFactory / CompositeStencil to make this work.
         * Can then also simplify Label#draw to accept (node, bounds) rather than (node, shape)
     * The label of a node is no longer updated when its property changes after that node is moved
     * Ensure labels are display near the midpoint of a link
+    * Rename to LabelledStencil
 * Test and refactor canvas
 * Test and refactor NodeCanvasElement and LinkCanvasElement
     * Consider pulling stencil specification creation out of elements / label to here
     * Extract common superclass?
     * move (reconnect) and updatePosition (updateSegments) methods both adjust the canvas element => seems redundant?
-* Rename the Elements class
 * Fix updateDrawingCache
     * create node / create link
     * delete node / delete link

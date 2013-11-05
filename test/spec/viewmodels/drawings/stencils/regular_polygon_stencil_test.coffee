@@ -15,10 +15,10 @@ define [
         expect(result.segments.length).toBe(3)   
       
       it 'defaults radius to 50', ->
-        expect(new RegularPolygonStencil().defaultStencilSpecification().get("radius")).toBe(50)
+        expect(new RegularPolygonStencil().defaultSpecification().get("radius")).toBe(50)
       
       it 'inherits default fillColor from polygon', ->
-        expect(new RegularPolygonStencil().defaultStencilSpecification().get("fillColor")).toBe("white")
+        expect(new RegularPolygonStencil().defaultSpecification().get("fillColor")).toBe("white")
         
     describe 'can use stencil specification', ->
       beforeEach ->
