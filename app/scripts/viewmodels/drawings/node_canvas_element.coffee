@@ -18,7 +18,7 @@ define [
 
     # TODO make "private"
     draw: =>
-      stencil = new StencilFactory().convert(@element.getShape())
+      stencil = new StencilFactory().convertNodeShape(@element.getShape())
       @canvasElement = stencil.draw(@element)
 
     # TODO make "private"

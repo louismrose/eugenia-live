@@ -5,19 +5,31 @@ constructed from Shapes, which are defined by users. Shapes specify both
 the abstract and concrete syntax of drawing elements.
 
     define [
+      'viewmodels/drawings/stencils/path_stencil'
       'viewmodels/drawings/stencils/composite_stencil'
       'viewmodels/drawings/stencils/rectangle_stencil'
       'viewmodels/drawings/stencils/rounded_rectangle_stencil'
       'viewmodels/drawings/stencils/ellipse_stencil'
       'viewmodels/drawings/stencils/regular_polygon_stencil'
       'viewmodels/drawings/stencils/label_stencil'
-    ], (CompositeStencil, RectangleStencil, RoundedRectangleStencil, EllipseStencil, RegularPolygonStencil, LabelStencil) ->
+    ], (PathStencil, CompositeStencil, RectangleStencil, RoundedRectangleStencil, EllipseStencil, RegularPolygonStencil, LabelStencil) ->
 
-A shape will contain an array of elements and possibly a label. We add the 
-label stencil last, as it acts as a sort of "overlay" for the other stencil(s).
+StencilFactory exposes methods for converting a LinkShape and for converting a 
+NodeShape to a Stencil.
 
       class StencilFactory
-        convert: (shape) =>
+
+A link shape may contain attributes relating to the path (e.g., `color` or `style`) 
+and possibly a label. We add the label stencil last, as it acts as a sort of 
+"overlay" for the other stencil(s).
+
+        convertLinkShape: (shape) =>
+          @_addLabel(shape, new PathStencil(shape))
+
+A node shape will contain an array of elements and possibly a label. Again, we add the 
+label stencil last.
+
+        convertNodeShape: (shape) =>
           @_addLabel(shape, @_convertElements(shape))
 
 When a shape contains a label, we pass along the label's parameters and the stencil
@@ -30,12 +42,12 @@ unlabelled stencil.
           else
             stencil
             
-The shape will comprise one or more elements, and we convert each element into a
+A node shape will comprise one or more elements, and we convert each element into a
 stencil in turn. We keep track of the number of stencils that were created, returning
 a composite stencil only when necessary.
             
-        _convertElements: (shape) =>
-          stencils = (@_elementToStencil(element) for element in shape.elements)
+        _convertElements: (nodeShape) =>
+          stencils = (@_elementToStencil(element) for element in nodeShape.elements)
       
           if stencils.length == 1
             stencils[0]

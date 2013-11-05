@@ -1,8 +1,5 @@
 # Rendering changes
 * Test and refactor LabelStencil
-    * Move logic that creates groups out of Label and reuse CompositeStencil.
-        * Probably need to change StencilFactory / CompositeStencil to make this work.
-        * Can then also simplify Label#draw to accept (node, bounds) rather than (node, shape)
     * The label of a node is no longer updated when its property changes after that node is moved
     * Ensure labels are display near the midpoint of a link
     * Rename to LabelledStencil

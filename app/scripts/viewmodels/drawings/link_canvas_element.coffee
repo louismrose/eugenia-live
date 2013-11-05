@@ -2,11 +2,10 @@ define [
   'spine'
   'paper'
   'lib/paper/paper_path_mover'
-  'viewmodels/drawings/stencils/path_stencil'
-  'viewmodels/drawings/stencils/label_stencil'
+  'viewmodels/drawings/stencils/stencil_factory'
   'models/commands/delete_link'
   'models/commands/reshape_link'
-], (Spine, paper, PaperPathMover, Path, LabelStencil, DeleteLink, ReshapeLink) ->
+], (Spine, paper, PaperPathMover, StencilFactory, DeleteLink, ReshapeLink) ->
 
   class LinkCanvasElement extends Spine.Module
     @include(Spine.Events)
@@ -20,9 +19,8 @@ define [
 
     # TODO make "private"
     draw: =>
-      path = new Path(@element.getShape())
-      label = new LabelStencil(@element.getShape().label, path)
-      @canvasElement = label.draw(@element)
+      stencil = new StencilFactory().convertLinkShape(@element.getShape())
+      @canvasElement = stencil.draw(@element)
       # TODO add logic to Path that trims the line at the
       # intersection with its start and end node, rather
       # than hiding the overlap behind the nodes here
