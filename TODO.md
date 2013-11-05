@@ -1,6 +1,5 @@
 # Rendering changes
 * Test and refactor LabelledStencil
-    * The label of a node is no longer updated when its property changes after that node is moved
     * Ensure labels are display near the midpoint of a link
 * Test and refactor canvas
 * Test and refactor NodeCanvasElement and LinkCanvasElement

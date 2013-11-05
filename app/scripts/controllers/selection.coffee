@@ -14,7 +14,7 @@ define [
       @render()
     
     observeSelection: =>
-      @selection.properties.unbind("propertyChanged propertyRemoved") if @selection
+      @selection.properties.unbind("propertyChanged propertyRemoved", @render) if @selection
       @selection = @item.getSelection() if @item
       @selection.properties.bind("propertyChanged propertyRemoved", @render) if @selection
       @render()
