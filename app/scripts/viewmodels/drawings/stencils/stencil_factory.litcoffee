@@ -1,8 +1,5 @@
-## StencilFactory
+### StencilFactory
 The following class is responsible for instantiating Stencils from Shapes.
-Stencils are used to render the elements of a drawing. Stencils are 
-constructed from Shapes, which are defined by users. Shapes specify both 
-the abstract and concrete syntax of drawing elements.
 
     define [
       'viewmodels/drawings/stencils/path_stencil'
