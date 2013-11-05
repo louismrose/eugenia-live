@@ -13,7 +13,6 @@ define [
       @draw()
       @linkToThis(@canvasElement)
             
-      @element.bind("move", @updatePosition)
       @element.bind("destroy", @remove)
 
     # TODO make "private"
@@ -29,11 +28,7 @@ define [
     # TODO make "private"
     remove: =>
       @canvasElement.remove()
-      @trigger("destroy")
-
-    # TODO make "private"
-    updatePosition: =>
-      @canvasElement.position = @element.position
+      @trigger("destroy") # can we just reuse the event on @element?
 
     destroy: =>
       @canvas.commander.run(new DeleteNode(@canvas.drawing, @element))

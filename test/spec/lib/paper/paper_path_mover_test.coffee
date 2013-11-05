@@ -34,12 +34,3 @@ define [
     it 'can move the end of a path', ->
       @mover.moveEnd()
       expect(@path.lastSegment.point).toBeInTheSamePlaceAs(@end.add(@offset))
-    
-    it 'can move the start and end of a path without affecting the middle', ->
-      @mover.moveStart()
-      @mover.moveEnd()
-      expect(@path.segments[1].point).toBeInTheSamePlaceAs(@middle)
-    
-    it 'can remove the middle when finalising', ->
-      expect(@mover.finalise().length).toEqual(2)
-    

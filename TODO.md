@@ -1,11 +1,13 @@
 # Rendering changes
-* Test and refactor LabelledStencil
-    * Ensure labels are display near the midpoint of a link
-* Test and refactor canvas
 * Test and refactor NodeCanvasElement and LinkCanvasElement
-    * Consider pulling stencil specification creation out of elements / label to here
+    * Bug: Labels no longer move when their LinkCanvasElement moves
     * Extract common superclass?
     * move (reconnect) and updatePosition (updateSegments) methods both adjust the canvas element => seems redundant?
+    * LinkCanvasElement should trim intersection of link with nodes rather than just hiding the path underneath the nodes
+    * Can we reuse stencils between NodeCanvasElements and LinkCanvasElements?
+* Test and refactor canvas
+* Test and refactor LabelledStencil
+    * Ensure external labels are displayed near the midpoint of a link's path
 * Fix updateDrawingCache
     * create node / create link
     * delete node / delete link
