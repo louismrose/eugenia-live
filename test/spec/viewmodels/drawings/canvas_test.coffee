@@ -1,8 +1,9 @@
 define [
+  'jquery'
   'viewmodels/drawings/canvas'
   'viewmodels/drawings/node_canvas_element'
   'viewmodels/drawings/link_canvas_element'
-], (Canvas, NodeCanvasElement, LinkCanvasElement) ->
+], ($, Canvas, NodeCanvasElement, LinkCanvasElement) ->
 
   class MockCanvasElement
     constructor: (@_element) ->
@@ -35,8 +36,9 @@ define [
 
   describe 'Canvas', ->
     beforeEach ->
+      $('body').append($('<canvas/>'))
       @canvasElementFactory = { createCanvasElementFor: (e) => new MockCanvasElement(e) }
-      @canvasElement = jasmine.createSpyObj('canvasElement', ['toDataURL'])
+      @canvasElement = $('canvas')[0]
       @drawing = new MockDrawing
       
     afterEach ->
