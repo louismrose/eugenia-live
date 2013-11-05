@@ -7,12 +7,13 @@ Paper.js Path.
       'viewmodels/drawings/stencils/stencil'
       'viewmodels/drawings/stencils/stencil_specification'
     ], (paper, Stencil, StencilSpecification) ->
-
+  
+      class PathStencil extends Stencil
+      
 The `color` and `style` properties are used when rendering a Path.
 We first set some sensible defaults in case the LinkShape omits values
 for any of these properties.
-  
-      class PathStencil extends Stencil
+
         defaultSpecification: =>
           new StencilSpecification(color: 'black', style: 'solid')
       
