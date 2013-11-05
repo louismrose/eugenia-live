@@ -4,7 +4,7 @@ define [
   'viewmodels/drawings/stencils/stencil_specification'
 ], (paper, Stencil, StencilSpecification) ->
 
-  class LabelStencil extends Stencil
+  class LabelledStencil extends Stencil
     constructor: (stencilSpecification = {}, @_labelled) ->
       super(stencilSpecification)
 

@@ -11,8 +11,8 @@ the abstract and concrete syntax of drawing elements.
       'viewmodels/drawings/stencils/rounded_rectangle_stencil'
       'viewmodels/drawings/stencils/ellipse_stencil'
       'viewmodels/drawings/stencils/regular_polygon_stencil'
-      'viewmodels/drawings/stencils/label_stencil'
-    ], (PathStencil, CompositeStencil, RectangleStencil, RoundedRectangleStencil, EllipseStencil, RegularPolygonStencil, LabelStencil) ->
+      'viewmodels/drawings/stencils/labelled_stencil'
+    ], (PathStencil, CompositeStencil, RectangleStencil, RoundedRectangleStencil, EllipseStencil, RegularPolygonStencil, LabelledStencil) ->
 
 StencilFactory exposes methods for converting a LinkShape and for converting a 
 NodeShape to a Stencil.
@@ -33,12 +33,12 @@ label stencil last.
           @_addLabel(shape, @_convertElements(shape))
 
 When a shape contains a label, we pass along the label's parameters and the stencil
-to be wrapped by the label stencil. Otherwise, we simply return the original,
+to be wrapped by the LabelledStencil. Otherwise, we simply return the original,
 unlabelled stencil.
 
         _addLabel: (shape, stencil) =>
           if shape.label
-            new LabelStencil(shape.label, stencil)
+            new LabelledStencil(shape.label, stencil)
           else
             stencil
             

@@ -42,7 +42,7 @@ define [
  
           stencil = createStencilFromLinkShape(shape)
 
-          expect(stencil.constructor.name).toEqual("LabelStencil")
+          expect(stencil.constructor.name).toEqual("LabelledStencil")
           expect(stencil._labelled.constructor.name).toEqual("PathStencil")
       
       createStencilFromLinkShape = (shape) ->  
@@ -136,7 +136,7 @@ define [
  
           stencil = createStencilFromNodeShape(shape)
 
-          expect(stencil.constructor.name).toEqual("LabelStencil")
+          expect(stencil.constructor.name).toEqual("LabelledStencil")
           expect(stencil._labelled.constructor.name).toEqual("RoundedRectangleStencil")
 
       createStencilFromNodeShape = (shape) ->  

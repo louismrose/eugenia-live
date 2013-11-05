@@ -1,10 +1,10 @@
 define [
   'paper'
-  'viewmodels/drawings/stencils/label_stencil'
+  'viewmodels/drawings/stencils/labelled_stencil'
   'models/property_set'
-], (paper, LabelStencil, PropertySet) ->
+], (paper, LabelledStencil, PropertySet) ->
 
-  describe 'LabelStencil', ->
+  describe 'LabelledStencil', ->
     describe 'it has sensible defaults', ->      
       it 'draws no label by default', ->
         shape = createShape()
@@ -72,7 +72,7 @@ define [
     createLabel = (shape, options, properties = {}) ->  
       paper = new paper.PaperScope()
       paper.project = new paper.Project()
-      stencil = new LabelStencil(options, new FakeStencil(shape))
+      stencil = new LabelledStencil(options, new FakeStencil(shape))
       stencil.draw(new FakeNode(properties))
       
     class FakeStencil
