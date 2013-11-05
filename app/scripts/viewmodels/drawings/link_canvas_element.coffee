@@ -2,7 +2,7 @@ define [
   'spine'
   'paper'
   'lib/paper/paper_path_mover'
-  'viewmodels/drawings/path'
+  'viewmodels/drawings/stencils/path_stencil'
   'viewmodels/drawings/stencils/label_stencil'
   'models/commands/delete_link'
   'models/commands/reshape_link'

@@ -11,7 +11,7 @@ define [
     defaultSpecification: =>
       throw new Error("Instantiate a subclass rather than this class directly.")
     
-    resolve: (node, key) =>
+    resolve: (element, key) =>
       # When an option has a dynamic value, such as ${foo}
-      # resolve it using the node's property set
-      node.properties.resolve(@_specification.get(key), @defaultSpecification().get(key))
+      # resolve it using the element's property set
+      element.properties.resolve(@_specification.get(key), @defaultSpecification().get(key))
