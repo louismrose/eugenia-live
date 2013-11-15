@@ -31,7 +31,14 @@
         </form>
       </div>
     </li>
-  
+  </ul>
+</div>
+<h2>Stored Requirements</h2>
+<% if not @drawings[0]? : %>
+<h3><i>There are no stored requirements yet.</i></h1>
+<% end %>
+<div class="row-fluid">
+  <ul class="thumbnails">
     <% for drawing, index in @drawings: %>
     <li class="span4 well">
       <div style="margin-bottom: 10px;">
