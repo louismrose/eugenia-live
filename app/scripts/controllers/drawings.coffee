@@ -73,7 +73,8 @@ define [
       @html ShowTemplate
       if @item
         new CanvasRenderer(drawing: @item, canvas: @$('#drawing')[0])
-        @toolbox = new Toolbox(commander: @commander, item: @item, el: @$('#toolbox'))  
+        @toolbox = new Toolbox(commander: @commander, item: @item, el: @$('#toolbox'))
+        `myToolbox = this.toolbox;`
         @selection = new Selection(commander: @commander, item: @item, el: @$('#selection'))
   
     deactivate: ->
