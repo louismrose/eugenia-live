@@ -4,9 +4,8 @@
   </div>
   <div class="span10">
     <div id="canvas" style="height:400px">
-      <canvas id="drawing" width="1000" height="400"></canvas>
+      <canvas id="drawing" width="3000" height="400"></canvas>
     </div>
-
     <div id="selection" class="well">
     </div>
   </div>
