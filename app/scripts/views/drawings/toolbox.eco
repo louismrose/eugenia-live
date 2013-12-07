@@ -1,5 +1,15 @@
-<div id="toolbox" class="well">
+<% `myPalette = new Array();` %>
+<% `myPaletteIds = new Array();` %>
+<% `myLinks = new Array();` %>
+<% `myLinksIds = new Array();` %>
+<% `drawingId = this.id; ` %>
 
+<div id="searchbar" class="well">
+  Search:
+  <input type="text" name="term" SIZE="20" id="searchfield" style='width:auto' onkeyup="myFunction()">
+</div>
+
+<div id="theTools" class="well">
   <ul class="nav nav-list">
     <li class="nav-header">Built-in</li>
     <li class="active" id="sel"><a href="#" data-tool-name="select">Select</i></a></li>
@@ -7,12 +17,16 @@
     <li class="nav-header">Nodes</li>
     <% for ns in @palette().nodeShapes().all(): %>
       <li><a href="#" data-tool-name="node" data-tool-shape="<%=ns.id%>"><%=ns.displayName()%></a></li>
+      <% `myPalette.push(ns.displayName());` %>
+      <% `myPaletteIds.push(ns.id);` %>
     <% end %>
     <li><a href="#/drawings/<%=@id%>/nodes/new">New...</a></li>
   
     <li class="nav-header">Links</li>
     <% for ls in @palette().linkShapes().all(): %>
       <li><a href="#" data-tool-name="link" data-tool-shape="<%=ls.id%>"><%=ls.displayName()%></a></li>
+      <% `myLinks.push(ls.displayName());` %>
+      <% `myLinksIds.push(ls.id);` %>
     <% end %>
       <li><a href="#/drawings/<%=@id%>/links/new">New...</a></li>
   </ul>
@@ -21,3 +35,30 @@
     <i class="icon-download icon-white"></i> Export palette
   </a>
 </div>
+
+<script>
+//[THANOS]: When a key is pressed (on key up) this function is called. The search field and the toolbox elements are stored into 2 variables
+function myFunction(){
+  myTerm = document.getElementById("searchfield").value;
+  theDiv = document.getElementById("theTools");
+  //[THANOS]: The div container of the toolbox is created based on the results generated based on the search term. A string is built to be used as the innerHTML of the div.
+  results = "<ul class=\"nav nav-list\"><li class=\"nav-header\">Built-in</li><li class=\"active\" id=\"sel\"><a href=\"#\" data-tool-name=\"select\">Select</i></a></li><li class=\"nav-header\">Nodes</li>";
+
+  //[THANOS]: For each node check if there is a match with the search term. If yes, add this tool to a new <li>.
+  for (counter in myPalette) {
+    if (myPalette[counter].toLowerCase().indexOf(myTerm) != -1) {
+      results = results + "<li><a href=\"#\" data-tool-name=\"node\" data-tool-shape=\"" + myPaletteIds[counter] + "\">" + myPalette[counter] + "</a></li>";
+    }
+  }
+  //[THANOS]: Add the New... node tool at the end of the Nodes container and the Links heading.
+  results = results + "<li><a href=\"#/drawings/" + drawingId + "/nodes/new\">New...</a></li><li class=\"nav-header\">Links</li>";
+  //[THANOS]: For each link check if there is a match with the search term. If yes, add this tool to a new <li>.
+  for (counter3 in myLinks) {
+    if (myLinks[counter3].toLowerCase().indexOf(myTerm) != -1) {
+      results = results + "<li><a href=\"#\" data-tool-name=\"link\" data-tool-shape=\"" + myLinksIds[counter3] + "\">" + myLinks[counter3] + "</a></li>";
+    }
+  }
+  //[THANOS]: Add the results string to the innerHTML property of the div and append the New... link at the end.
+  theDiv.innerHTML = results + "<li><a href=\"#/drawings/" + drawingId + "/links/new\">New...</a></li></ul>";
+}
+</script>
