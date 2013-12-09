@@ -70,15 +70,19 @@ define [
       @render()
   
     render: ->
+      #[THANOS]: In order to have access to the name of the drawings and other information related to them we have to pass the context argument
+      #to the Template of the Show.eco file. This is done with the following lines.
       context2 =
-        drawings: Drawing.all()
-        palette_specs: PaletteSpecification.all()
+        drawings: @item
+      #[THANOS]: It was @html ShowTemplate
       @html ShowTemplate(context2)
+
       if @item
         new CanvasRenderer(drawing: @item, canvas: @$('#drawing')[0])
         @toolbox = new Toolbox(commander: @commander, item: @item, el: @$('#toolbox'))
         `myToolbox = this.toolbox;`
         @selection = new Selection(commander: @commander, item: @item, el: @$('#selection'))
+
   
     deactivate: ->
       super
