@@ -70,7 +70,10 @@ define [
       @render()
   
     render: ->
-      @html ShowTemplate
+      context2 =
+        drawings: Drawing.all()
+        palette_specs: PaletteSpecification.all()
+      @html ShowTemplate(context2)
       if @item
         new CanvasRenderer(drawing: @item, canvas: @$('#drawing')[0])
         @toolbox = new Toolbox(commander: @commander, item: @item, el: @$('#toolbox'))
