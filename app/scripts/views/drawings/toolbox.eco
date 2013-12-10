@@ -39,7 +39,7 @@
 <script>
 //[THANOS]: When a key is pressed (on key up) this function is called. The search field and the toolbox elements are stored into 2 variables
 function myFunction(){
-  myTerm = document.getElementById("searchfield").value;
+  myTerm = document.getElementById("searchfield").value.toLowerCase();
   theDiv = document.getElementById("theTools");
   //[THANOS]: The div container of the toolbox is created based on the results generated based on the search term. A string is built to be used as the innerHTML of the div.
   results = "<ul class=\"nav nav-list\"><li class=\"nav-header\">Built-in</li><li class=\"active\" id=\"sel\"><a href=\"#\" data-tool-name=\"select\">Select</i></a></li><li class=\"nav-header\">Nodes</li>";
