@@ -4,6 +4,7 @@
   </div>
   <div class="span10">
     <!-- [THANOS]: Groups of buttons are created to increase the width and height of the canvas and another to set it to the width of the screen (width of the Div element. The default height is set to 400px). Each button calls a method (either changeWidth or changeHeight) with a parameter. When the parameter is 100 or -100 that increases (or decreases) the width/height by 100px. When the parameter is 0 then it defaults to the values described above (Div width and 400px height). -->
+    <div class="btn-group">
       <button type="button" id="fit" class="btn btn-primary" onclick="changeWidth(0)"><i class="icon-resize-small icon-white"></i> Default</button>
     </div>
     <div class="btn-group">
@@ -19,7 +20,6 @@
       <button type="button" id="zoomout" class="btn btn-primary" onclick="zoom(2)"><i class="icon-minus icon-white"></i></button>
     <!-- [THANOS]: A new Div is created above the canvas to include the name of the drawing. We got this from the @drawings object which
     is passed to the Show.eco via the context of the ShowTemplate (see comment in drawings.coffee - class Show) -->
-    <div class="btn-group">
     <div id="theName">
       <h2 align="center"><%=@drawings.name%></h2>
   	</div>
