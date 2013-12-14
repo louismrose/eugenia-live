@@ -17,7 +17,12 @@
       <button type="button" class="btn btn-primary">Height</button>
       <button type="button" id="decheight" class="btn btn-primary" onclick="changeHeight(-100)"><i class="icon-minus icon-white"></i></button>
     </div>
-      <button type="button" id="zoomout" class="btn btn-primary" onclick="zoom(2)"><i class="icon-minus icon-white"></i></button>
+    <div class="btn-group">
+      <button type="button" id="zoomout" class="btn btn-primary" onclick="zoom(0.9)"><i class="icon-zoom-out icon-white"></i></button>
+      <button type="button" id="current" class="btn btn-primary" onclick="zoom(1)">100%</button>
+      <button type="button" id="zoomin" class="btn btn-primary" onclick="zoom(1.1)"><i class="icon-zoom-in icon-white"></i></button>
+    </div>
+
     <!-- [THANOS]: A new Div is created above the canvas to include the name of the drawing. We got this from the @drawings object which
     is passed to the Show.eco via the context of the ShowTemplate (see comment in drawings.coffee - class Show) -->
     <div id="theName">
@@ -33,11 +38,14 @@
 </div>
 
 <script>
+theZoom = 1;
 // [THANOS]: Two functions to increase/decrease the width and height. In changeWidth if the parameter is 0 then it defaults the sizes.
 // Both the CSS and the DOM width/height should be set to avoid stretching. The calculated values of the Div can only be taken with the
 // $('#') notation only. document.getElementById('').width() is not working.  
 function changeWidth(value){
   theDrawing = document.getElementById("drawing");
+  var theCtx = theDrawing.getContext("2d");
+  var currentZoom = document.getElementById("current");
   theDiv = document.getElementById("canvas");
   if(value==0){
     defaultHeight = 400;
@@ -49,23 +57,62 @@ function changeWidth(value){
     theDrawing.style.height = defaultHeight+"px";
     theDiv.height = defaultHeight;
     theDiv.style.height = defaultHeight+"px";
-  } else { 
-  
+    // [THANOS]: Check the zoom(zoomValue) function for more details. When the default is called, then theZoom value is set to 1 and the label is updated
+    theZoom = 1;
+    currentZoom.innerHTML = "100%";
+    // [THANOS]: Change the width only if the user increases it or if the width is larger than the minimum width (101px) 
+  } else if (value>0 || theDrawing.width > 101) { 
     theDrawing.width = theDrawing.width + value;
     theDrawing.style.width = theDrawing.width + "px";
-
+    // [THANOS]: Check the zoom(zoomValue) function for more details. The scale is set to 1 when the width changes so we re-scale it to theZoom value. 
+    theCtx.scale(theZoom, theZoom);
+  } else {
+    alert("This is the minimum width");
   }
   paper.view.draw();
 }
 
 function changeHeight(valueHeight) {
   theDrawing = document.getElementById("drawing");
+  var theCtx = theDrawing.getContext("2d");
   theDiv = document.getElementById("canvas");
   theDiv.height = $('#canvas').height();
-  theDrawing.height = theDrawing.height + valueHeight;
-  theDrawing.style.height = theDrawing.height + "px";
-  theDiv.height = theDiv.height + valueHeight;
-  theDiv.style.height = theDiv.height + "px";
+  // [THANOS]: Change the height only if the user increases it or if the height is larger than the minimum height (101px) 
+  if ((theDiv.height > 101) || (valueHeight > 0)) {
+    theDrawing.height = theDrawing.height + valueHeight;
+    theDrawing.style.height = theDrawing.height + "px";
+    theDiv.height = theDiv.height + valueHeight;
+    theDiv.style.height = theDiv.height + "px";
+    // [THANOS]: Check the zoom(zoomValue) function for more details. The scale is set to 1 when the height changes so we re-scale it to theZoom value. 
+    theCtx.scale(theZoom, theZoom);
+    paper.view.draw();
+  } else {
+    alert("This is the minimum height allowed");
+  }
+  
+}
+
+// [THANOS]: Scales the canvas based on the parameter. If the zoom value is less than 1 (zoom out) then the percentage label is reduced by 10%.
+// If is is more than 1 (zoom in) then it is increased by 10%. If the value is 1 (default) the changeWidth function is called which 
+// functionality is to default the canvas. A crucial value is theZoom variable. We need to know each time which is the current scale.
+// This is needed because when the changeWidth and changeHeight function are called by the appropriate buttons, they redraw the canvas
+// changing it's scale to 1. So, we need to immediately rescale that back to theZoom value.  
+function zoom(zoomValue) {
+  var currentZoom = document.getElementById("current");
+  var theDrawing = document.getElementById("drawing");
+  var ctx = theDrawing.getContext("2d");
+  ctx.scale(zoomValue, zoomValue);
+  if(zoomValue < 1) {
+    theZoom = theZoom - 0.1;
+    currentZoom.innerHTML = parseInt(currentZoom.innerHTML) - 10 + "%";
+  } else if (zoomValue == 1) {
+    changeWidth(0);
+    theZoom = 1;
+    currentZoom.innerHTML = "100%";
+  } else {
+    theZoom = theZoom + 0.1;
+    currentZoom.innerHTML = parseInt(currentZoom.innerHTML) + 10 + "%";
+  }
   paper.view.draw();
 }
 </script>
