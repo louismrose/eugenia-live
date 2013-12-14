@@ -76,13 +76,27 @@ define [
         drawings: @item
       #[THANOS]: It was @html ShowTemplate
       @html ShowTemplate(context2)
-
       if @item
         new CanvasRenderer(drawing: @item, canvas: @$('#drawing')[0])
         @toolbox = new Toolbox(commander: @commander, item: @item, el: @$('#toolbox'))
         `myToolbox = this.toolbox;`
         @selection = new Selection(commander: @commander, item: @item, el: @$('#selection'))
-
+      # [THANOS]: Set the width of the 'drawing' canvas to the width of the Div that contains it.
+      # Louis suggested to use this timeout because it takes some time to load the DOM. So we set a small amount of time to
+      # let it load the DOM and calculate the Div width. We set the 'drawing' width to the calculated width of the Div and the height to the
+      # default value of 400px.  
+      `setTimeout(function(){theDrawing = document.getElementById("drawing");
+      theDiv = document.getElementById("canvas");
+      defaultHeight = 400;
+      theDivInitHeight = $('#canvas').height();
+      theDivInitWidth = $('#canvas').width();
+      theDrawing.width = theDivInitWidth;
+      theDrawing.height = defaultHeight;
+      theDrawing.style.width = theDivInitWidth+"px";
+      theDrawing.style.height = defaultHeight+"px";
+      theDiv.height = defaultHeight;
+      theDiv.style.height = defaultHeight+"px";
+      paper.view.draw();},10);`
   
     deactivate: ->
       super
