@@ -115,12 +115,53 @@ define [
       }'
 
 
+  class RequirementsPaletteSpecification
+    @create: ->  
+      PaletteSpecification.create(name: "Requirements", json: @json()).save()
+    
+    @json: ->
+      '{
+        "name": "Requirements",
+        "nodeShapes": [
+          {
+            "name": "WebPage",
+            "elements": [
+              {
+                "figure": "rectangle",
+                "size": {"width": 400, "height": 300},
+                "fillColor": "white",
+                "borderColor": "black"
+              }
+            ]
+          },
+          {
+            "name": "Image Holder",
+            "elements": [
+              {
+                "figure": "rectangle",
+                "size": {"width": 80, "height": 80},
+                "fillColor": "grey",
+                "borderColor": "black"
+              }
+            ]
+          }
+        ],
+        "linkShapes": [
+          {
+            "name": "Link",
+            "color": "black",
+            "style": "solid"
+          }
+        ]
+      }'
+
   class PaletteSpecification extends Spine.Model
     @configure 'PaletteSpecification', 'name', 'json'
   
     @fetch: ->
       StateMachinePaletteSpecification.create()
       PetriNetPaletteSpecification.create()
+      RequirementsPaletteSpecification.create()
   
     instantiate: =>
       data = JSON.parse(@json)

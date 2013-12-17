@@ -19,7 +19,7 @@ define [
       @render()
       @createTools()
       @switchTo("select")
-    
+
     createTools: ->
       # Remove any existing tools. This is a workaround
       # for when the user performs a refresh (F5) when on
@@ -41,7 +41,7 @@ define [
       event.preventDefault()
       link = $(event.currentTarget)
       toolName = link.data('toolName')
-    
+      
       unless toolName is 'select'
         @navigate("/drawings/#{@item.id}/#{toolName}s/#{link.data('toolShape')}")
   

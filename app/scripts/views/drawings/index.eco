@@ -1,36 +1,14 @@
 <div class="hero-unit">
   <div class="row-fluid">
-    <div class="span6">
-      <h2>Rapidly design graphical DSLs</h2>
-      <p>
-         EuGENia Live allows you to quickly build a
-         graphical editor for a domain-specific language.
-         You can use your DSL in the browser, or export and
-         generate more powerful DSL tools that integrate with the
-         Eclipse development environment.
+      <h2>Design your Tendered Contracts</h2>
+      <p align="center">
+         Define the business processes of your web applications using this tool. Save the desired functionality to the cloud and share it with developers. Refine and discuss the requirements till you reach the final decision. Have the cost and time calculated on the fly so you can decide which functionality to include and which not.
       </p>
-      <p>
-        <a class="btn btn-medium" target="_blank" href="http://www.di.univaq.it/diruscio/sites/XM2012/xm2012_submission_6.pdf">Workshop Paper &raquo;</a>
-      	<a class="btn btn-medium" target="_blank" href="https://speakerdeck.com/louismrose/eugenia-live-a-flexible-graphical-modelling-tool">Presentation &raquo;</a>
+      <p align="center">
+        <a class="btn btn-medium" target="_blank" href="http://www.di.univaq.it/diruscio/sites/XM2012/xm2012_submission_6.pdf">Tutorial &raquo;</a>
+      	<a class="btn btn-medium" target="_blank" href="https://speakerdeck.com/louismrose/eugenia-live-a-flexible-graphical-modelling-tool">About &raquo;</a>
       	<a class="btn btn-medium" target="_blank" href="https://github.com/louismrose/eugenia-live/"  >Source &raquo;</a>
       </p>
-    </div>
-    <div class="span5 offset1" style="padding-top: 1em;">
-      <div id="showcase" class="carousel slide">
-        <div class="carousel-inner">
-          <div class="active item">
-            <img src="./images/example_dsl.png" style="" />
-            <!-- <div class="carousel-caption">
-                          <h4>Build a DSL for seating plans...</h4>
-                        </div> -->
-          </div>
-          <div class="item"><img src="http://placekitten.com/g/400/250" /></div>
-          <div class="item"><img src="http://placekitten.com/g/400/250" /></div>
-        </div>
-        <!-- <a class="carousel-control left" href="#showcase" data-slide="prev">&lsaquo;</a>
-                <a class="carousel-control right" href="#showcase" data-slide="next">&rsaquo;</a> -->
-      </div>
-    </div>
   </div>
 </div>
 
@@ -53,7 +31,14 @@
         </form>
       </div>
     </li>
-  
+  </ul>
+</div>
+<h2>Stored Requirements</h2>
+<% if not @drawings[0]? : %>
+<h3><i>There are no stored requirements yet.</i></h1>
+<% end %>
+<div class="row-fluid">
+  <ul class="thumbnails">
     <% for drawing, index in @drawings: %>
     <li class="span4 well">
       <div style="margin-bottom: 10px;">
