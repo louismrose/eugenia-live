@@ -1,34 +1,24 @@
 define [
-  'spine'
   'paper'
   'lib/paper/paper_path_mover'
+  'viewmodels/drawings/canvas_element'
   'viewmodels/drawings/stencils/stencil_factory'
   'models/commands/delete_link'
   'models/commands/reshape_link'
-], (Spine, paper, PaperPathMover, StencilFactory, DeleteLink, ReshapeLink) ->
+], (paper, PaperPathMover, CanvasElement, StencilFactory, DeleteLink, ReshapeLink) ->
 
-  class LinkCanvasElement extends Spine.Module
-    @include(Spine.Events)
-    
-    constructor: (@_element, @_canvas, stencilFactory = new StencilFactory()) ->
-      stencil = stencilFactory.convertLinkShape(@_element.getShape())
-      @_canvasElement = stencil.draw(@_element)
+  class LinkCanvasElement extends CanvasElement
+    constructor: (element, @_canvas, stencilFactory = new StencilFactory()) ->
+      super(element, stencilFactory)
 
       # TODO add logic to Path that trims the line at the
       # intersection with its start and end node, rather
       # than hiding the overlap behind the nodes here
       paper.project.activeLayer.insertChild(0, @_canvasElement) if paper.project
-      
-      @_linkToThis(@_canvasElement)      
-      @_element.bind("destroy", @_remove)
-
-    _linkToThis: (paperItem) =>
-      paperItem.viewModel = @
-      @_linkToThis(c) for c in paperItem.children if paperItem.children
     
-    _remove: =>
-      @_canvasElement.remove()
-
+    _stencil: (stencilFactory, shape) =>
+      stencilFactory.convertLinkShape(shape)
+    
     destroy: =>
       @_canvas.commander.run(new DeleteLink(@_canvas.drawing, @_element))
     

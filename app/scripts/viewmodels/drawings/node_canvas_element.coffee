@@ -1,55 +1,42 @@
 define [
-  'spine'
+  'viewmodels/drawings/canvas_element'
   'viewmodels/drawings/stencils/stencil_factory'
   'models/commands/delete_node'
   'models/commands/composite_command'
   'models/commands/move_node'
-], (Spine, StencilFactory, DeleteNode, CompositeCommand, MoveNode) ->
+], (CanvasElement, StencilFactory, DeleteNode, CompositeCommand, MoveNode) ->
 
-  class NodeCanvasElement extends Spine.Module
-    @include(Spine.Events)
+  class NodeCanvasElement extends CanvasElement
     
-    constructor: (@element, @canvas, stencilFactory = new StencilFactory()) ->
-      stencil = stencilFactory.convertNodeShape(@element.getShape())
-      @canvasElement = stencil.draw(@element)
-      
-      @linkToThis(@canvasElement)
-      
-      @element.bind("destroy", @remove)
+    constructor: (element, @_canvas, stencilFactory = new StencilFactory()) ->
+      super(element, stencilFactory)
 
-    # TODO make "private"
-    linkToThis: (paperItem) =>
-      paperItem.viewModel = @
-      @linkToThis(c) for c in paperItem.children if paperItem.children
-    
-    # TODO make "private"
-    remove: =>
-      @canvasElement.remove()
+    _stencil: (stencilFactory, shape) =>
+      stencilFactory.convertNodeShape(shape)
 
     destroy: =>
-      @canvas.commander.run(new DeleteNode(@canvas.drawing, @element))
+      @_canvas.commander.run(new DeleteNode(@_canvas.drawing, @_element))
     
     moveBy: (point, options={persist: true}) =>
       commands = []
-      @canvasElement.position = point.add(@canvasElement.position)
-      commands.push new MoveNode(@element, @element.position, @canvasElement.position)
+      @_canvasElement.position = point.add(@_canvasElement.position)
+      commands.push new MoveNode(@_element, @_element.position, @_canvasElement.position)
 
-      for link in @links()
-        commands.push(link.reconnectTo(@element, point))
+      for link in @_links()
+        commands.push(link.reconnectTo(@_element, point))
       
       if options.persist
-        @canvas.commander.run(new CompositeCommand(commands))
-        @canvas.updateDrawingCache()
+        @_canvas.commander.run(new CompositeCommand(commands))
+        @_canvas.updateDrawingCache()
 
-    # TODO make "private"
-    links: =>
-      @canvas.elementFor(link) for link in @element.links()
+    _links: =>
+      @_canvas.elementFor(link) for link in @_element.links()
 
     isNode: =>
       true
       
     select: =>
-      @canvas.clearSelection()
-      @canvasElement.firstChild.selected = true
-      @element.select()
+      @_canvas.clearSelection()
+      @_canvasElement.firstChild.selected = true
+      @_element.select()
 
