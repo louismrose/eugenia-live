@@ -37,6 +37,11 @@ define [
       mover = new PaperPathMover(@_canvasElement.firstChild, offset)
       mover.moveStart() if @isSource(node)
       mover.moveEnd() if @isTarget(node)
+      
+      # Move label too -- should this logic be on the label class?
+      @_canvasElement.lastChild.position.x += offset.x
+      @_canvasElement.lastChild.position.y += offset.y
+      
       new ReshapeLink(@_element, @_element.segments, @_canvasElement.firstChild.segments)
 
     isSource: (node) =>

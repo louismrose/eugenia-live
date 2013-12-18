@@ -1,6 +1,6 @@
 # Rendering changes
 * Test and refactor NodeCanvasElement and LinkCanvasElement
-    * Bug: Labels no longer move when their LinkCanvasElement moves
+    * Bug: creating a link and then moving it causes more than one render of the link
     * Extract common superclass?
     * move (reconnect) and updatePosition (updateSegments) methods both adjust the canvas element => seems redundant?
     * LinkCanvasElement should trim intersection of link with nodes rather than just hiding the path underneath the nodes
