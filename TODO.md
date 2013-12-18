@@ -1,9 +1,16 @@
 # Rendering changes
-* Test and refactor NodeCanvasElement and LinkCanvasElement
-    * Try to hide paper.js internals? (e.g., .firstChild.selected = true in CanvasElement#select)
-    * move (reconnect) and updatePosition (updateSegments) methods both adjust the canvas element => seems redundant?
-    * LinkCanvasElement should trim intersection of link with nodes rather than just hiding the path underneath the nodes
-    * Can we reuse stencils between NodeCanvasElements and LinkCanvasElements?
+* LinkCanvasElement
+    * Can the PaperLink and PaperLabel classes be returned by stencils? If so, refactor into drawings/paper directory
+    * Convert to .litcoffee
+    * Trim intersection of link with nodes rather than just hiding the path underneath the nodes
+* CanvasElement
+    * Try to hide paper.js internals? (e.g., .firstChild.selected = true in select method)
+    * Convert to .litcoffee
+    * Can we reuse (share) stencils between instances?
+* Test and refactor NodeCanvasElement
+    * Bring under test
+    * Follow same pattern in LinkCavasElement for manipulating paper.js items
+    * Convert to .litcoffee
 * Test and refactor canvas
 * Test and refactor LabelledStencil
     * Ensure external labels are displayed near the midpoint of a link's path
