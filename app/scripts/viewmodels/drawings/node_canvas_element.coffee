@@ -9,13 +9,16 @@ define [
   class NodeCanvasElement extends CanvasElement
     
     constructor: (element, @_canvas, stencilFactory = new StencilFactory()) ->
-      super(element, stencilFactory)
+      super(element, @_canvas, stencilFactory)
 
     _stencil: (stencilFactory, shape) =>
       stencilFactory.convertNodeShape(shape)
 
-    destroy: =>
-      @_canvas.commander.run(new DeleteNode(@_canvas.drawing, @_element))
+    _destroyCommand: (drawing) =>
+      new DeleteNode(drawing, @_element)
+    
+    isNode: =>
+      true
     
     moveBy: (point, options={persist: true}) =>
       commands = []
@@ -26,17 +29,9 @@ define [
         commands.push(link.reconnectTo(@_element, point))
       
       if options.persist
-        @_canvas.commander.run(new CompositeCommand(commands))
+        @_canvas.run(new CompositeCommand(commands))
         @_canvas.updateDrawingCache()
 
     _links: =>
       @_canvas.elementFor(link) for link in @_element.links()
-
-    isNode: =>
-      true
-      
-    select: =>
-      @_canvas.clearSelection()
-      @_canvasElement.firstChild.selected = true
-      @_element.select()
 

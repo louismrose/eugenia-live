@@ -1,6 +1,6 @@
 # Rendering changes
 * Test and refactor NodeCanvasElement and LinkCanvasElement
-    * Extract common superclass?
+    * Try to hide paper.js internals? (e.g., .firstChild.selected = true in CanvasElement#select)
     * move (reconnect) and updatePosition (updateSegments) methods both adjust the canvas element => seems redundant?
     * LinkCanvasElement should trim intersection of link with nodes rather than just hiding the path underneath the nodes
     * Can we reuse stencils between NodeCanvasElements and LinkCanvasElements?

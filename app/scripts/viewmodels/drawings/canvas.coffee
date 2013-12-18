@@ -51,11 +51,14 @@ define [
       "#{element.type}-#{element.id}"
   
     addNode: (parameters) =>
-      node = @commander.run(new CreateNode(@drawing, parameters))
+      node = @run(new CreateNode(@drawing, parameters))
       
     addLink: (parameters) =>
-      link = @commander.run(new CreateLink(@drawing, parameters))
-        
+      link = @run(new CreateLink(@drawing, parameters))
+    
+    run: (command) ->
+      @commander.run(command)
+    
     elementAt: (point) =>
       hitResult = paper.project.hitTest(point)
       if hitResult and hitResult.item.viewModel
@@ -79,6 +82,6 @@ define [
         [@elementFor(@drawing.getSelection())]
       else
         []
-      
+
     undo: =>
       @commander.undo()

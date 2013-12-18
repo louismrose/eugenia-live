@@ -6,7 +6,7 @@ define [
   class CanvasElement extends Spine.Module
     @include(Spine.Events)
     
-    constructor: (@_element, stencilFactory = new StencilFactory()) ->
+    constructor: (@_element, @_canvas = undefined, stencilFactory = new StencilFactory()) ->
       stencil = @_stencil(stencilFactory, @_element.getShape())
       @_canvasElement = stencil.draw(@_element)
 
@@ -19,3 +19,12 @@ define [
     
     _remove: =>
       @_canvasElement.remove()
+      
+    
+    select: =>
+      @_canvas.clearSelection()
+      @_canvasElement.firstChild.selected = true
+      @_element.select()
+    
+    destroy: =>
+      @_canvas.run(@_destroyCommand(@_canvas.drawing))

@@ -9,18 +9,21 @@ define [
 
   class LinkCanvasElement extends CanvasElement
     constructor: (element, @_canvas, stencilFactory = new StencilFactory()) ->
-      super(element, stencilFactory)
+      super(element, @_canvas, stencilFactory)
 
       # TODO add logic to Path that trims the line at the
       # intersection with its start and end node, rather
       # than hiding the overlap behind the nodes here
       paper.project.activeLayer.insertChild(0, @_canvasElement) if paper.project
     
-    _stencil: (stencilFactory, shape) =>
-      stencilFactory.convertLinkShape(shape)
-    
-    destroy: =>
-      @_canvas.commander.run(new DeleteLink(@_canvas.drawing, @_element))
+    isNode: =>
+      false
+      
+    isSource: (node) =>
+      node.id is @_element.sourceId
+      
+    isTarget: (node) =>
+      node.id is @_element.targetId
     
     reconnectTo: (node, offset) =>
       mover = new PaperPathMover(@_canvasElement.firstChild, offset)
@@ -33,17 +36,9 @@ define [
       
       new ReshapeLink(@_element, @_element.segments, @_canvasElement.firstChild.segments)
 
-    isSource: (node) =>
-      node.id is @_element.sourceId
-      
-    isTarget: (node) =>
-      node.id is @_element.targetId
 
-    isNode: =>
-      false
-      
-    select: =>
-      @_canvas.clearSelection()
-      @_canvasElement.firstChild.selected = true
-      @_element.select()
-
+    _stencil: (stencilFactory, shape) =>
+      stencilFactory.convertLinkShape(shape)
+    
+    _destroyCommand: (drawing) =>
+      new DeleteLink(drawing, @_element)
