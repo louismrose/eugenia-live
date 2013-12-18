@@ -7,9 +7,32 @@ define [
   'models/commands/reshape_link'
 ], (paper, PaperPathMover, CanvasElement, StencilFactory, DeleteLink, ReshapeLink) ->
 
+  class PaperLink
+    constructor: (@_path) ->
+    
+    reconnectTo: (offset, isSource, isTarget) ->
+      mover = new PaperPathMover(@_path, offset)
+      mover.moveStart() if isSource
+      mover.moveEnd() if isTarget
+    
+    segments: ->
+      @_path.segments
+  
+  class PaperLabel
+    constructor: (@_pointText) ->
+    
+    # should this logic be on the label class?
+    move: (offset) ->
+      @_pointText.position.x += offset.x
+      @_pointText.position.y += offset.y
+      
+
   class LinkCanvasElement extends CanvasElement
     constructor: (element, @_canvas, stencilFactory = new StencilFactory()) ->
       super(element, @_canvas, stencilFactory)
+      
+      @_link = new PaperLink(@_canvasElement.firstChild)
+      @_label = new PaperLabel(@_canvasElement.lastChild) if @_canvasElement.children.length > 1
 
       # TODO add logic to Path that trims the line at the
       # intersection with its start and end node, rather
@@ -26,16 +49,9 @@ define [
       node.id is @_element.targetId
     
     reconnectTo: (node, offset) =>
-      mover = new PaperPathMover(@_canvasElement.firstChild, offset)
-      mover.moveStart() if @isSource(node)
-      mover.moveEnd() if @isTarget(node)
-      
-      # Move label too -- should this logic be on the label class?
-      @_canvasElement.lastChild.position.x += offset.x
-      @_canvasElement.lastChild.position.y += offset.y
-      
-      new ReshapeLink(@_element, @_element.segments, @_canvasElement.firstChild.segments)
-
+      @_link.reconnectTo(offset, @isSource(node), @isTarget(node))
+      @_label.move(offset) if @_label
+      new ReshapeLink(@_element, @_element.segments, @_link.segments())
 
     _stencil: (stencilFactory, shape) =>
       stencilFactory.convertLinkShape(shape)
