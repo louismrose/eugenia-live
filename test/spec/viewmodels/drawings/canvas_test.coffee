@@ -1,9 +1,10 @@
 define [
   'jquery'
+  'spine'
   'viewmodels/drawings/canvas'
   'viewmodels/drawings/node_canvas_element'
   'viewmodels/drawings/link_canvas_element'
-], ($, Canvas, NodeCanvasElement, LinkCanvasElement) ->
+], ($, Spine, Canvas, NodeCanvasElement, LinkCanvasElement) ->
 
   class MockCanvasElement
     constructor: (@_element) ->
@@ -15,12 +16,12 @@ define [
       @_links = []
     
     addNode: ->
-      node = { type: 'node', id: @_nodes.length+1 }
+      node = new FakeElement(@_nodes.length+1, 'node')
       @_nodes.push node
       node
     
     addLink: ->
-      link = { type: 'link', id: @_links.length+1 }
+      link = new FakeElement(@_links.length+1, 'link')
       @_links.push link
       link
     
@@ -33,6 +34,12 @@ define [
         @_links
         
     save: ->
+      
+  class FakeElement extends Spine.Module
+    @include(Spine.Events)
+    
+    constructor: (@id, @type) ->
+    
 
   describe 'Canvas', ->
     beforeEach ->

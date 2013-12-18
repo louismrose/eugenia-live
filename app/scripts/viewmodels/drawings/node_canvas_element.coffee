@@ -9,26 +9,22 @@ define [
   class NodeCanvasElement extends Spine.Module
     @include(Spine.Events)
     
-    constructor: (@element, @canvas) ->
-      @draw()
+    constructor: (@element, @canvas, stencilFactory = new StencilFactory()) ->
+      stencil = stencilFactory.convertNodeShape(@element.getShape())
+      @canvasElement = stencil.draw(@element)
+      
       @linkToThis(@canvasElement)
-            
+      
       @element.bind("destroy", @remove)
 
     # TODO make "private"
-    draw: =>
-      stencil = new StencilFactory().convertNodeShape(@element.getShape())
-      @canvasElement = stencil.draw(@element)
-
-    # TODO make "private"
-    linkToThis: (canvasElement) =>
-      canvasElement.canvasElement = @
-      @linkToThis(c) for c in canvasElement.children if canvasElement.children
+    linkToThis: (paperItem) =>
+      paperItem.viewModel = @
+      @linkToThis(c) for c in paperItem.children if paperItem.children
     
     # TODO make "private"
     remove: =>
       @canvasElement.remove()
-      @trigger("destroy") # can we just reuse the event on @element?
 
     destroy: =>
       @canvas.commander.run(new DeleteNode(@canvas.drawing, @element))

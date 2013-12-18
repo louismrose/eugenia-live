@@ -1,15 +1,15 @@
 define [
   'spine'
-  'viewmodels/drawings/link_canvas_element'
-], (Spine, LinkCanvasElement) ->
+  'viewmodels/drawings/node_canvas_element'
+], (Spine, NodeCanvasElement) ->
 
-  describe 'LinkCanvasElement', ->
+  describe 'NodeCanvasElement', ->
     describe 'on construction', ->    
       it 'draws the node', ->
         element = new FakeElement
         stencil = new FakeStencil
       
-        new LinkCanvasElement(element, undefined, new FakeStencilFactory(stencil))
+        new NodeCanvasElement(element, undefined, new FakeStencilFactory(stencil))
         expect(stencil.drawn).toBeTruthy()
         
       it 'establishes a link to itself from the underlying Paper.js object and all of its descendants', ->
@@ -21,7 +21,7 @@ define [
         paperItem = { children : [child] } 
         stencil = new FakeStencil(paperItem)
       
-        canvasElement = new LinkCanvasElement(element, undefined, new FakeStencilFactory(stencil))
+        canvasElement = new NodeCanvasElement(element, undefined, new FakeStencilFactory(stencil))
         expect(paperItem.viewModel).toBe(canvasElement)
         expect(child.viewModel).toBe(canvasElement)
         expect(firstGrandchild.viewModel).toBe(canvasElement)
@@ -34,7 +34,7 @@ define [
           paperItem = new FakePaperItem
           stencil = new FakeStencil(paperItem)
           
-          canvasElement = new LinkCanvasElement(element, undefined, new FakeStencilFactory(stencil))
+          canvasElement = new NodeCanvasElement(element, undefined, new FakeStencilFactory(stencil))
           
           element.trigger("destroy")
           expect(paperItem.removed).toBeTruthy()
@@ -64,7 +64,6 @@ define [
   class FakeStencilFactory
     constructor: (@_stencil) ->
     
-    convertLinkShape: ->
+    convertNodeShape: ->
       @_stencil
-      
       

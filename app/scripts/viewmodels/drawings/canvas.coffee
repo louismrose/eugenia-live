@@ -40,7 +40,7 @@ define [
       canvasElement = @canvasElementFactory.createCanvasElementFor(element)
       
       @elements[@_id_for(element)] = canvasElement
-      canvasElement.bind("destroy", => 
+      element.bind("destroy", =>
         delete @elements[@_id_for(element)]
         @updateDrawingCache()
       )
@@ -58,8 +58,8 @@ define [
         
     elementAt: (point) =>
       hitResult = paper.project.hitTest(point)
-      if hitResult and hitResult.item.canvasElement
-        hitResult.item.canvasElement 
+      if hitResult and hitResult.item.viewModel
+        hitResult.item.viewModel
       else 
         new NullCanvasElement(@)
   

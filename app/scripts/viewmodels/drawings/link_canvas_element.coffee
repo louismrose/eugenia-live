@@ -22,13 +22,12 @@ define [
       @_linkToThis(@_canvasElement)      
       @_element.bind("destroy", @_remove)
 
-    _linkToThis: (canvasElement) =>
-      canvasElement.canvasElement = @
-      @_linkToThis(c) for c in canvasElement.children if canvasElement.children
+    _linkToThis: (paperItem) =>
+      paperItem.viewModel = @
+      @_linkToThis(c) for c in paperItem.children if paperItem.children
     
     _remove: =>
       @_canvasElement.remove()
-      @trigger("destroy") # can we just reuse the event on @_element?
 
     destroy: =>
       @_canvas.commander.run(new DeleteLink(@_canvas.drawing, @_element))
