@@ -3,60 +3,33 @@ define [
   'viewmodels/drawings/link_canvas_element'
 ], (Spine, LinkCanvasElement) ->
 
-  describe 'LinkCanvasElement', ->
-    describe 'isSource and isTarget', ->
-      beforeEach ->
-        @id = 5
-        @element = new FakeElement()
-        @viewModel = new TestLinkCanvasElement(@element)
-      
-      it 'isSource returns true for node with same id as sourceId', ->
-        @element.sourceId = @id
-        node = { id: @id }
-        expect(@viewModel.isSource(node)).toBeTruthy()
-        
-      it 'isSource returns false for node with different id as sourceId', ->
-        @element.sourceId = @id
-        node = { id: @id + 1 }
-        expect(@viewModel.isSource(node)).toBeFalsy()
-  
-      it 'isTarget returns true for node with same id as sourceId', ->
-        @element.targetId = @id
-        node = { id: @id }
-        expect(@viewModel.isTarget(node)).toBeTruthy()
-      
-      it 'isTarget returns false for node with different id as sourceId', ->
-        @element.targetId = @id
-        node = { id: @id + 1 }
-        expect(@viewModel.isTarget(node)).toBeFalsy() 
-    
+  describe 'LinkCanvasElement', ->    
     describe 'reconnectTo', ->
       beforeEach ->
-        @id = 1
         @element = new FakeElement()
-        @node = { id: @id }
         @offset = {x: 5, y: 10}
         @paperLink = jasmine.createSpyObj('link', ['reconnectTo', 'segments'])
         
         @reconnect = (paperLink, paperLabel) ->
+          node = {}
           viewModel = new TestLinkCanvasElement(@element, paperLink, paperLabel)
-          viewModel.reconnectTo(@node, @offset)
+          viewModel.reconnectTo(node, @offset)
       
       it 'delegates to link object to reconnect both source and target', ->
-        @element.sourceId = @id
-        @element.targetId = @id
+        @element.isSource = -> true
+        @element.isTarget = -> true
         @reconnect(@paperLink)
         
         expect(@paperLink.reconnectTo).toHaveBeenCalledWith(@offset, true, true)
         
       it 'delegates to link object to reconnect source only', ->
-        @element.sourceId = @id
+        @element.isSource = -> true
         @reconnect(@paperLink)
         
         expect(@paperLink.reconnectTo).toHaveBeenCalledWith(@offset, true, false)
       
       it 'delegates to link object to reconnect target only', ->
-        @element.targetId = @id
+        @element.isTarget = -> true
         @reconnect(@paperLink)
         
         expect(@paperLink.reconnectTo).toHaveBeenCalledWith(@offset, false, true)
@@ -122,3 +95,5 @@ define [
     @include(Spine.Events)
     
     getShape: ->
+    isSource: (node) -> false
+    isTarget: (node) -> false

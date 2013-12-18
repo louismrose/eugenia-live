@@ -51,5 +51,11 @@ define [
       Node = require('models/node')
       Node.find(@targetId)
       
+    isSource: (node) =>
+      node.id is @sourceId
+  
+    isTarget: (node) =>
+      node.id is @targetId
+      
     select: =>
       @drawing().select(@)

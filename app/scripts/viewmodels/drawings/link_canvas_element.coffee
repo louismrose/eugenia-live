@@ -41,15 +41,9 @@ define [
     
     isNode: =>
       false
-      
-    isSource: (node) =>
-      node.id is @_element.sourceId
-      
-    isTarget: (node) =>
-      node.id is @_element.targetId
     
     reconnectTo: (node, offset) =>
-      @_link.reconnectTo(offset, @isSource(node), @isTarget(node))
+      @_link.reconnectTo(offset, @_element.isSource(node), @_element.isTarget(node))
       @_label.move(offset) if @_label
       new ReshapeLink(@_element, @_element.segments, @_link.segments())
 
