@@ -52,11 +52,9 @@ define [
   
     addNode: (parameters) =>
       node = @commander.run(new CreateNode(@drawing, parameters))
-      @_draw(node)
       
     addLink: (parameters) =>
       link = @commander.run(new CreateLink(@drawing, parameters))
-      @_draw(link)
         
     elementAt: (point) =>
       hitResult = paper.project.hitTest(point)
