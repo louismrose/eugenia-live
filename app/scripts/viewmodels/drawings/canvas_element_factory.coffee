@@ -12,7 +12,22 @@ define [
     createCanvasElementFor: (drawingElement) ->
       if drawingElement instanceof Node 
         stencil = @_stencilFactory.convertNodeShape(drawingElement.getShape())
-        new NodeCanvasElement(drawingElement, stencil.draw(drawingElement), @_canvas)
+        path = @_createPath(stencil, drawingElement)
+        new NodeCanvasElement(drawingElement, path, @_canvas)
       else
         stencil = @_stencilFactory.convertLinkShape(drawingElement.getShape())
-        new LinkCanvasElement(drawingElement, stencil.draw(drawingElement), @_canvas)
+        path = @_createPath(stencil, drawingElement)
+        new LinkCanvasElement(drawingElement, path, @_canvas)
+        
+    _createPath: (stencil, drawingElement) ->
+      path = stencil.draw(drawingElement)
+      @_updatePathOnPropertyChanges(path, stencil, drawingElement)
+      path
+    
+    _updatePathOnPropertyChanges: (path, stencil, drawingElement) =>
+      drawingElement.properties.bind("propertyChanged propertyRemoved", =>
+        newText = stencil.resolve(drawingElement, 'text')
+        path.setText(newText)
+        paper.view.draw()
+        @_canvas.updateDrawingCache()
+      )

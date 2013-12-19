@@ -10,8 +10,8 @@ define [
       false
     
     reconnectTo: (node, offset) =>
-      @_path.move(offset, @_element.isSource(node), @_element.isTarget(node))
-      new ReshapeLink(@_element, @_element.segments, @_path.segments())
+      newSegments = @_path.reshape(offset, @_element.isSource(node), @_element.isTarget(node))
+      new ReshapeLink(@_element, @_element.segments, newSegments)
 
     _destroyCommand: (drawing) =>
       new DeleteLink(drawing, @_element)

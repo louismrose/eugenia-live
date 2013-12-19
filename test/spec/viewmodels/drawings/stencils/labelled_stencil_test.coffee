@@ -6,70 +6,42 @@ define [
 ], (paper, LabelledStencil, Rectangle, PropertySet) ->
 
   describe 'LabelledStencil', ->
+    beforeEach ->
+      @shape = new Rectangle(10, 20)
+      
+      @createLabelledPath = (options, properties = {}) ->  
+        paper = new paper.PaperScope()
+        paper.project = new paper.Project()
+        stencil = new LabelledStencil(options, new FakeStencil(@shape))
+        stencil.draw(new FakeNode(properties))
+    
     describe 'it has sensible defaults', ->      
       it 'draws no label by default', ->
-        shape = createShape()
-        result = createLabel(shape)
-        expect(result).toEqual(shape)
+        expect(@createLabelledPath()).toEqual(@shape)
     
     describe 'can use stencil specification', ->  
-      describe 'when placement is none', ->
-        it 'draws no label', ->
-          shape = createShape()
-          result = createLabel(shape, {placement: 'none'})
-          expect(result).toEqual(shape)
+      describe 'placement', ->
+        it 'when none, it draws no label', ->
+          expect(@createLabelledPath(placement: 'none')).toEqual(@shape)
 
-      describe 'when placement is internal', ->
-        beforeEach ->
-          @shape = createShape()
-          @label = createLabel(@shape, {placement: 'internal', text: 'foo'})
-          
-        it 'creates a LabelledPath', ->
-          expect(@label.constructor.name).toBe('LabelledPath')
-        
-        it 'displays the correct content for the label', ->
-          expect(@label.content()).toEqual('foo')
-        
-        it 'positions the label at the centre of the shape', ->
-          expect(@label.position().x).toEqual(@shape.position().x)
-          expect(@label.position().y).toEqual(@shape.position().y)
+        it 'when internal, it draws a LabelledPath with the right properties', ->
+          path = @createLabelledPath(placement: 'internal')
+          expect(path.constructor.name).toBe('LabelledPath')
 
-      describe 'when placement is external', ->
-        beforeEach ->
-          @shape = createShape()
-          @label = createLabel(@shape, {placement: 'external'})
-        
-        it 'positions the label below the bottom centre of the shape', ->
-          expect(@label.position().x).toEqual(@shape.bottomCenter().x)
-          expect(@label.position().y).toEqual(@shape.bottomCenter().y + 20)         
-          
+        it 'when external, it draws a LabelledPath with the right properties', ->
+          path = @createLabelledPath(placement: 'external')
+          expect(path.constructor.name).toBe('LabelledPath')
+                  
       describe 'when text contains property references', ->
-        it 'has content containing property values', ->
-          result = createLabel(createShape(), {placement: 'internal', text: '${surname}, ${forename}' }, { forename: 'John', surname: 'Doe' })
-          expect(result.content()).toEqual('Doe, John')
-
-      describe 'when length is defined', ->
-        it 'trims content longer than the length', ->
-          result = createLabel(createShape(), {placement: 'internal', length: 7, text: '1234567890' })
-          expect(result.content()).toEqual('1234...')
-
-        it 'does not trims content of precisely the right length', ->
-          result = createLabel(createShape(), {placement: 'internal', length: 7, text: '1234567' })
-          expect(result.content()).toEqual('1234567')
-        
-      describe 'when color is defined', ->
-        it 'displays the label in the specified colour', ->
-          result = createLabel(createShape(), {placement: 'internal', color: 'red' })
-          expect(result.fillColor().toCSS()).toEqual("rgb(255,0,0)")
-
-    createShape = ->
-      new Rectangle(10, 20)
+        it 'has a label with content containing property values', ->
+          path = @createLabelledPath({placement: 'internal', text: '${surname}, ${forename}' }, { forename: 'John', surname: 'Doe' })
+          expect(path.label.text()).toEqual('Doe, John')
       
-    createLabel = (shape, options, properties = {}) ->  
-      paper = new paper.PaperScope()
-      paper.project = new paper.Project()
-      stencil = new LabelledStencil(options, new FakeStencil(shape))
-      stencil.draw(new FakeNode(properties))
+      it 'passes options to labelled path', ->
+        properties = { placement: 'external', color: 'green', text: 'foo', length: 255 }
+        path = @createLabelledPath(properties)
+        expect(path._properties).toEqual(properties)
+      
       
     class FakeStencil
       constructor: (@shape) ->

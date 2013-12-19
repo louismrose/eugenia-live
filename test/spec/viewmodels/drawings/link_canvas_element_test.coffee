@@ -8,7 +8,7 @@ define [
       beforeEach ->
         @element = fakeElement()
         @offset = {x: 5, y: 10}
-        @path = jasmine.createSpyObj('link', ['move', 'segments', 'linkToViewModel'])
+        @path = jasmine.createSpyObj('link', ['reshape', 'segments', 'linkToViewModel'])
         
         @reconnect = ->
           node = {}
@@ -20,21 +20,21 @@ define [
         @element.isTarget.andReturn(true)
         
         @reconnect()
-        expect(@path.move).toHaveBeenCalledWith(@offset, true, true)
+        expect(@path.reshape).toHaveBeenCalledWith(@offset, true, true)
         
       it 'delegates to path to move source only', ->
         @element.isSource.andReturn(true)
         @element.isTarget.andReturn(false)
         
         @reconnect()
-        expect(@path.move).toHaveBeenCalledWith(@offset, true, false)
+        expect(@path.reshape).toHaveBeenCalledWith(@offset, true, false)
       
       it 'delegates to path to move target only', ->
         @element.isSource.andReturn(false)
         @element.isTarget.andReturn(true)
         
         @reconnect()
-        expect(@path.move).toHaveBeenCalledWith(@offset, false, true)
+        expect(@path.reshape).toHaveBeenCalledWith(@offset, false, true)
       
       describe 'returns a command', ->
         it 'of type ReshapeLink', ->
@@ -54,7 +54,7 @@ define [
       
         it 'with the correct newSegments property', ->
           newSegments = [ { x: 10, y: 20 } ]
-          @path.segments.andReturn(newSegments)
+          @path.reshape.andReturn(newSegments)
 
           command = @reconnect()
           expect(command.newSegments).toBe(newSegments) 

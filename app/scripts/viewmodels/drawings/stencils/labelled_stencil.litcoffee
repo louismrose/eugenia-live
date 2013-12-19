@@ -24,28 +24,21 @@ omits values for any of these properties.
         defaultSpecification: =>
           new StencilSpecification(placement: 'none', color: 'black', text: '', length: 30)
 
-To draw an element, we first delegate to the child stencil to obtain the 
-Paper.js Item to which we will add a label. We then use the private Label class
-to attach a Paper.js PointText to the Item.
+To draw an element, we first delegate to the child stencil to obtain the Path
+to which we will add a label. We then return the Path if the `placement` property
+is set to none, or return a LabelledPath to attach a Label to the Path.
             
         draw: (element) ->
-          placement = @resolve(element, 'placement')
-          labelledItem = @_labelled.draw(element)
+          labelledPath = @_labelled.draw(element)
+          path = labelledPath
+          path = @_createLabelledPath(element, labelledPath) unless @resolve(element, 'placement') is 'none'
+          path
           
-          if placement is 'none'
-            labelledItem
-          else
-            @_createLabelledPath(element, labelledItem)
-        
         _createLabelledPath: (element, labelledItem) ->
-          color = @resolve(element, 'color')
-          content = @resolve(element, 'text')
-          length = @resolve(element, 'length')
-          placement = @resolve(element, 'placement')
+          properties =
+            color: @resolve(element, 'color')
+            text: @resolve(element, 'text')
+            length: @resolve(element, 'length')
+            placement: @resolve(element, 'placement')
           
-          labelledPath = new LabelledPath(color, content, length, placement, labelledItem)
-          element.properties.bind("propertyChanged propertyRemoved", =>
-            content = @resolve(element, 'text')
-            labelledPath.refresh(content)
-          )
-          labelledPath
+          new LabelledPath(labelledItem, properties)

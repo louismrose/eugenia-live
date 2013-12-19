@@ -1,91 +1,55 @@
 ### LabelledPath
+This class encapsulates the logic necessary to draw a path with a label attached. The
+path to which a label is to be attached is termed the `labelledPath`. 
 
     define [
       'paper'
-    ], (paper) ->
+      'viewmodels/drawings/paper/composite_path'
+      'viewmodels/drawings/paper/label'
+    ], (paper, CompositePath, Label) ->
 
-      
-A label encapsulates that state necessary to render a label for a particular
-drawing element and add it to a Paper.js Item.
+A LabelledPath is a CompositePath that contains a Label and the `labelledPath`.
 
-      class LabelledPath
-        
-We wrap the Paper.js Item in a Group. We add a PointText element to the Group if
-the `placement` property has a value other than `none`.
-        
-        constructor: (color, content, @_length, placement, @_labelledItem) ->
-          @_label = @_createPointText(color, content, placement)
-          @_path = new paper.Group([@_labelledItem._path, @_label])
-        
-        # FIXME hack; needs redesign (could viewmodel be passed in via constructor?)
-        linkToViewModel: (viewModel) =>
-          @_path.viewModel = viewModel 
-          @_label.viewModel = viewModel
-          @_labelledItem.linkToViewModel(viewModel)
-        
-        # FIXME hack; needs redesign  
-        segments: ->
-          @_labelledItem.segments()
-        
-        move: (offset, isSource, isTarget) ->
-          @_moveLabel(offset)
-          @_labelledItem.move(offset, isSource, isTarget)
-        
-        _moveLabel: (offset) ->
-          @_label.position.x += offset.x
-          @_label.position.y += offset.y
-          
-        remove: =>
-          @_path.remove()
-    
-        select: ->
-          @_labelledItem.select()
-  
-        position: ->
-          @_label.position
-        
-        content: ->
-          @_label.content
-        
-        fillColor: ->
-          @_label.fillColor
-        
-We create the Paper.js PointText, after calculating the fill colour, content, and 
-position of the label.
+      class LabelledPath extends CompositePath
+        constructor: (@labelledPath, @_properties) ->
+          @label = @_createLabel()
+          super([@labelledPath, @label])
 
-        _createPointText: (color, content, placement) ->
-          new paper.PointText
-            justification: 'center'
-            fillColor: color
-            content: @_trim(content)
-            position: @_position(placement)
-      
-When a property value changes, the content of the label might need to be updated.
-Therefore, we bind to change events on the element's PropertySet.
-      
-        refresh: (content) =>
-          @_path.content = @_trim(content)
-          # FIXME this should call canvas.updateDrawingCache()
-          paper.view.draw()
+The Label is created using the properties passed to the LabelledPath, and positioned
+relative to the `labelledPath`.
 
-We calculate the content of a label as the value of its `text` property, trimmed
-to a maximum size dictated by its `length` property.
+        _createLabel: ->
+          label = new Label(@_properties)
+          label.setPosition(@_labelPosition())
+          label
 
-        _trim: (text) ->
-          return "" unless text
-          return text unless text.length > @_length
-          return text.substring(0, @_length-3).trim() + "..."
-
-We calculate the position of a label differently depending on the value of its
+We calculate the position of the label differently depending on the value of the
 `placement` property. An `external` label is positioned below the bottom centre
-point of the bounds of the item to which the label is attached. An `internal` 
-label is positioned at the centre of the bounds of the item to which the label 
-is attached.
+point of the bounds of `labelledItem`. An `internal` label is positioned at the 
+position of `labelledItem`.
 
-        _position: (placement) ->
-          switch placement
+        _labelPosition: ->
+          switch @_properties.placement
             when "external"
-              @_labelledItem.bottomCenter().add([0, 20]) # nudge outside shape
+              @labelledPath.bottomCenter().add([0, 20]) # nudge outside shape
             when "internal"
-              @_labelledItem.position() # align with centre and middle of shape  
-  
+              @labelledPath.position() # align with centre and middle of shape  
+
+Selecting a LabelledPath selects only the underlying `labelledPath` because Paper.js
+puts a bounding box (e.g., with drag points) around highlighted objects, and we don't
+want to see these bounding boxes on labels.
+
+        select: ->
+          @labelledPath.select()
+          
+Setting the text of a LabelledPath updates the text of the label.
+
+        setText: (text) ->
+          @label.setText(text)
+
+A LabelledPath can be reshaped by reshaping its underlying path which we presume
+is a Line, and by moving its Label.
+        
+        reshape: (offset, moveStart, moveEnd) ->
+          @labelledPath.reshape(offset, moveStart, moveEnd)
+          @label.move(offset)

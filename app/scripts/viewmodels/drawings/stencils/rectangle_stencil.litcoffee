@@ -10,4 +10,4 @@ value for its `figure` property.
 
       class RectangleStencil extends BoundedStencil
         createPath: (node) ->
-          new Rectangle(@_width(node), @_height(node))
+          new Rectangle(width: @_width(node), height: @_height(node))

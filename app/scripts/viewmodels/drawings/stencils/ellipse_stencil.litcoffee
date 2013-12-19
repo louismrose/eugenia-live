@@ -10,4 +10,7 @@ value for its `figure` property.
 
       class EllipseStencil extends BoundedStencil
         createPath: (node) ->
-          new Ellipse(@_width(node), @_height(node))
+          new Ellipse(
+            width: @_width(node),
+            height: @_height(node)
+          )

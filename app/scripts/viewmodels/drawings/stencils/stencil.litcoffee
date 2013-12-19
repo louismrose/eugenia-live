@@ -6,9 +6,7 @@ Much like their real-life counterparts, Stencils can be used repeatedly to
 draw Nodes (Links) with the same NodeShape (LinkShape).
 
 A Stencil provides a method, normally called `draw(element)` that renders the
-given Node or Link. We currently use the Paper.js library to perform rendering 
-on an HTML Canvas, so our current implementations of Stencil all delegate to
-the Paper.js library.
+given Node or Link.
 
     define [
       'viewmodels/drawings/stencils/stencil_specification'

@@ -1,41 +1,37 @@
 define [
-  'paper'
   'viewmodels/drawings/stencils/composite_stencil'
   'viewmodels/drawings/paper/rectangle'
   'viewmodels/drawings/paper/ellipse'
-], (paper, CompositeStencil, Rectangle, Ellipse) ->
+], (CompositeStencil, Rectangle, Ellipse) ->
 
-  describe 'CompositeStencil', ->  
+  describe 'CompositeStencil', ->
+    beforeEach ->
+      @rectangle = createRectangleStencilSpy()
+      @ellipse = createEllipseStencilSpy()
+      @path = createCompositeStencil([@rectangle, @ellipse])
+    
     it 'draws a CompositePath', ->
-      result = createCompositeStencil()
-      expect(result.constructor.name).toBe('CompositePath')
+      expect(@path.constructor.name).toBe('CompositePath')
     
     it 'calls draw for every stencil in array', ->
-      rectangle = new FakeRectangleStencil()
-      ellipse = new FakeEllipseStencil()
-      result = createCompositeStencil([rectangle, ellipse])
-      
-      expect(rectangle.drawn).toBeTruthy()
-      expect(ellipse.drawn).toBeTruthy()
+      expect(@rectangle.draw).toHaveBeenCalled()
+      expect(@ellipse.draw).toHaveBeenCalled()
     
     it 'resulting CompositePath contains a child for every stencil in array', ->
-      result = createCompositeStencil([new FakeRectangleStencil(), new FakeEllipseStencil()])
-      expect(result.members.length).toBe(2)
+      expect(@path.members.length).toBe(2)
+    
     
     createCompositeStencil = (stencils) ->  
-      paper = new paper.PaperScope()
-      paper.project = new paper.Project()
       composite = new CompositeStencil(stencils)
       result = composite.draw({})
 
-    class FakeRectangleStencil
-      drawn: false
-      draw: (node) =>
-        @drawn = true
-        new Rectangle(10, 20)
+    createRectangleStencilSpy = ->
+      createStencilSpy(new Rectangle(10, 20))
+    
+    createEllipseStencilSpy = ->
+      createStencilSpy(new Ellipse(10, 20))
 
-    class FakeEllipseStencil
-      drawn: false
-      draw: (node) =>
-        @drawn = true
-        new Ellipse(10, 20)
+    createStencilSpy = (path) ->
+      stencil = jasmine.createSpyObj('stencil', ['draw'])
+      stencil.draw.andReturn(path)
+      stencil

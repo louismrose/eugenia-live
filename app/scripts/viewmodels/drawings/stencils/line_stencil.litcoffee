@@ -23,11 +23,8 @@ will be an array of Paper.js segments. We set the appearance of the Line,
 according to the `color` and `style` properties.
       
         draw: (link) =>
-          new Line(link.segments, @_strokeColor(link), @_isDashed(link))
-        
-        _strokeColor: (link) =>
-          @resolve(link, 'color')
+          properties =
+            color: @resolve(link, 'color')
+            dashed: @resolve(link, 'style') is 'dash'
 
-        _isDashed: (link) =>
-          @resolve(link, 'style') is 'dash'
-          
+          new Line(link.segments, properties)          
