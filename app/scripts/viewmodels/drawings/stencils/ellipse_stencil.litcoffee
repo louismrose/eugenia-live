@@ -5,7 +5,7 @@ value for its `figure` property.
     define [
       'paper'
       'viewmodels/drawings/stencils/bounded_stencil'
-      'viewmodels/drawings/paper/ellipse'
+      'viewmodels/drawings/paths/ellipse'
     ], (paper, BoundedStencil, Ellipse) ->
 
       class EllipseStencil extends BoundedStencil

@@ -5,7 +5,7 @@ This class is responsible for rendering lines.
       'paper'
       'viewmodels/drawings/stencils/stencil'
       'viewmodels/drawings/stencils/stencil_specification'
-      'viewmodels/drawings/paper/line'
+      'viewmodels/drawings/paths/line'
     ], (paper, Stencil, StencilSpecification, Line) ->
   
       class LineStencil extends Stencil

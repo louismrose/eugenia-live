@@ -1,7 +1,7 @@
 define [
   'paper'
   'viewmodels/drawings/stencils/labelled_stencil'
-  'viewmodels/drawings/paper/rectangle'
+  'viewmodels/drawings/paths/rectangle'
   'models/property_set'
 ], (paper, LabelledStencil, Rectangle, PropertySet) ->
 

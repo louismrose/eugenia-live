@@ -1,6 +1,6 @@
 define [
   'paper'
-  'viewmodels/drawings/paper/labelled_path'
+  'viewmodels/drawings/paths/labelled_path'
 ], (paper, LabelledPath) ->
 
   describe 'LabelledPath', ->

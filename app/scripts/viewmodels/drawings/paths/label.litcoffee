@@ -3,7 +3,7 @@ This class is responsible for drawing labels, by using a Paper.js PointText.
 
     define [
       'paper'
-      'viewmodels/drawings/paper/path'
+      'viewmodels/drawings/paths/path'
     ], (paper, Path) ->
 
       class Label extends Path

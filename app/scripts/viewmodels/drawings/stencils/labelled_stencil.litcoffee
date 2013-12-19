@@ -6,7 +6,7 @@ by drawing a Paper.js PointText.
       'paper',
       'viewmodels/drawings/stencils/stencil'
       'viewmodels/drawings/stencils/stencil_specification'
-      'viewmodels/drawings/paper/labelled_path'
+      'viewmodels/drawings/paths/labelled_path'
     ], (paper, Stencil, StencilSpecification, LabelledPath) ->
 
 Like CompositeStencil, LabelledStencil is a decorator for other Stencils. When 

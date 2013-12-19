@@ -5,7 +5,7 @@ value for its `figure` property.
     define [
       'paper'
       'viewmodels/drawings/stencils/polygon_stencil'
-      'viewmodels/drawings/paper/regular_polygon'
+      'viewmodels/drawings/paths/regular_polygon'
     ], (paper, PolygonStencil, RegularPolygon) ->
 
       class RegularPolygonStencil extends PolygonStencil

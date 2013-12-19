@@ -3,7 +3,7 @@ This class is responsible for drawing ellipitcal Paths, by using a Paper.js Oval
 
     define [
       'paper'
-      'viewmodels/drawings/paper/path'
+      'viewmodels/drawings/paths/path'
     ], (paper, Path) ->
 
       class Ellipse extends Path

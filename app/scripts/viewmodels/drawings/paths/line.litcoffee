@@ -4,7 +4,7 @@ This class is responsible for drawing Lines, by using a Paper.js Path.
     define [
       'paper'
       'lib/paper/paper_path_mover'
-      'viewmodels/drawings/paper/path'
+      'viewmodels/drawings/paths/path'
     ], (paper, PaperPathMover, Path) ->
 
       class Line extends Path

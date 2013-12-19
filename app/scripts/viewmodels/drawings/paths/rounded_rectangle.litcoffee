@@ -3,7 +3,7 @@ This class is responsible for drawing rounded rectangular Paths, by using a Pape
 
     define [
       'paper'
-      'viewmodels/drawings/paper/path'
+      'viewmodels/drawings/paths/path'
     ], (paper, Path) ->
 
       class RoundedRectangle extends Path

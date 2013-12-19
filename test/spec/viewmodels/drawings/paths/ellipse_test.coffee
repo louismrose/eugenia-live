@@ -1,6 +1,6 @@
 define [
   'paper'
-  'viewmodels/drawings/paper/ellipse'
+  'viewmodels/drawings/paths/ellipse'
 ], (paper, Ellipse) ->
 
   describe 'Ellipse', ->

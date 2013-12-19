@@ -5,7 +5,7 @@ value for its `figure` property.
     define [
       'paper'
       'viewmodels/drawings/stencils/bounded_stencil'
-      'viewmodels/drawings/paper/rounded_rectangle'
+      'viewmodels/drawings/paths/rounded_rectangle'
     ], (paper, BoundedStencil, RoundedRectangle) ->
 
       class RoundedRectangleStencil extends BoundedStencil

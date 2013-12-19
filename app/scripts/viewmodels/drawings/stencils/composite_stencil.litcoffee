@@ -3,7 +3,7 @@ This class provides a mechanism for constructing a Stencil by combining
 together one or more other Stencils.
 
     define [
-      'viewmodels/drawings/paper/composite_path'
+      'viewmodels/drawings/paths/composite_path'
     ], (CompositePath) ->
 
 A composite stencil comprises an array of Stencils.

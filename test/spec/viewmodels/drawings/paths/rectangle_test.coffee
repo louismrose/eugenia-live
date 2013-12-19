@@ -1,13 +1,13 @@
 define [
   'paper'
-  'viewmodels/drawings/paper/rounded_rectangle'
-], (paper, RoundedRectangle) ->
+  'viewmodels/drawings/paths/rectangle'
+], (paper, Rectangle) ->
 
-  describe 'RoundedRectangle', ->
+  describe 'Rectangle', ->
     beforeEach ->
       @width = 10
       @height = 20
-      @path = new RoundedRectangle(width: @width, height: @height)
+      @path = new Rectangle(width: @width, height: @height)
     
     it 'creates a Paper.js Path', ->
       expect(@path._paperItem instanceof paper.Path).toBeTruthy()

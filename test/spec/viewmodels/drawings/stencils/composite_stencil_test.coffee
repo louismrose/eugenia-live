@@ -1,7 +1,7 @@
 define [
   'viewmodels/drawings/stencils/composite_stencil'
-  'viewmodels/drawings/paper/rectangle'
-  'viewmodels/drawings/paper/ellipse'
+  'viewmodels/drawings/paths/rectangle'
+  'viewmodels/drawings/paths/ellipse'
 ], (CompositeStencil, Rectangle, Ellipse) ->
 
   describe 'CompositeStencil', ->

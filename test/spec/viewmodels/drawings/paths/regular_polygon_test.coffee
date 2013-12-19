@@ -1,6 +1,6 @@
 define [
   'paper'
-  'viewmodels/drawings/paper/regular_polygon'
+  'viewmodels/drawings/paths/regular_polygon'
 ], (paper, RegularPolygon) ->
 
   describe 'RegularPolygon', ->

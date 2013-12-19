@@ -3,7 +3,7 @@ This class is responsible for drawing rectangular Paths, by using a Paper.js Rec
 
     define [
       'paper'
-      'viewmodels/drawings/paper/path'
+      'viewmodels/drawings/paths/path'
     ], (paper, Path) ->
 
       class Rectangle extends Path

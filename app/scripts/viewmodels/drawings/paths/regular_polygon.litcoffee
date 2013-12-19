@@ -3,7 +3,7 @@ This class is responsible for drawing regular polygon Paths, by using a Paper.js
 
     define [
       'paper'
-      'viewmodels/drawings/paper/path'
+      'viewmodels/drawings/paths/path'
     ], (paper, Path) ->
 
       class RegularPolygon extends Path

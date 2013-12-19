@@ -1,6 +1,6 @@
 define [
   'paper'
-  'viewmodels/drawings/paper/label'
+  'viewmodels/drawings/paths/label'
 ], (paper, Label) ->
 
   describe 'Label', ->

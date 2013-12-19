@@ -4,8 +4,8 @@ path to which a label is to be attached is termed the `labelledPath`.
 
     define [
       'paper'
-      'viewmodels/drawings/paper/composite_path'
-      'viewmodels/drawings/paper/label'
+      'viewmodels/drawings/paths/composite_path'
+      'viewmodels/drawings/paths/label'
     ], (paper, CompositePath, Label) ->
 
 A LabelledPath is a CompositePath that contains a Label and the `labelledPath`.

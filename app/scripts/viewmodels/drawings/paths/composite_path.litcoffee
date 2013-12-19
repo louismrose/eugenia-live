@@ -4,7 +4,7 @@ other Paths.
 
     define [
       'paper'
-      'viewmodels/drawings/paper/path'
+      'viewmodels/drawings/paths/path'
     ], (paper, Path) ->
 
       class CompositePath extends Path

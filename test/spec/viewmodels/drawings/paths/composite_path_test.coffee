@@ -1,6 +1,6 @@
 define [
   'paper'
-  'viewmodels/drawings/paper/composite_path'
+  'viewmodels/drawings/paths/composite_path'
 ], (paper, CompositePath) ->
 
   describe 'CompositePath', ->
