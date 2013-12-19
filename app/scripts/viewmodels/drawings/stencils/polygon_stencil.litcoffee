@@ -24,9 +24,9 @@ Path.
 
         draw: (node) =>
           path = @createPath(node)
-          path.position = new paper.Point(node.position).add(@resolve(node, 'x'), @resolve(node, 'y'))
-          path.fillColor = @resolve(node, 'fillColor')
-          path.strokeColor = @resolve(node, 'borderColor')
+          path.setPosition(new paper.Point(node.position).add(@resolve(node, 'x'), @resolve(node, 'y')))
+          path.setFillColor(@resolve(node, 'fillColor'))
+          path.setStrokeColor(@resolve(node, 'borderColor'))
           path
       
         # Subclasses must implement this method

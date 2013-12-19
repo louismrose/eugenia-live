@@ -1,14 +1,18 @@
 define [
+  'viewmodels/drawings/stencils/stencil_factory'
   'viewmodels/drawings/node_canvas_element'
   'viewmodels/drawings/link_canvas_element'
   'models/node'
-], (NodeCanvasElement, LinkCanvasElement, Node) ->
+], (StencilFactory, NodeCanvasElement, LinkCanvasElement, Node) ->
 
   class CanvasElementFactory
     constructor: (@_canvas) ->
+      @_stencilFactory = new StencilFactory()
     
     createCanvasElementFor: (drawingElement) ->
       if drawingElement instanceof Node 
-        new NodeCanvasElement(drawingElement, @_canvas)
+        stencil = @_stencilFactory.convertNodeShape(drawingElement.getShape())
+        new NodeCanvasElement(drawingElement, stencil.draw(drawingElement), @_canvas)
       else
-        new LinkCanvasElement(drawingElement, @_canvas)
+        stencil = @_stencilFactory.convertLinkShape(drawingElement.getShape())
+        new LinkCanvasElement(drawingElement, stencil.draw(drawingElement), @_canvas)

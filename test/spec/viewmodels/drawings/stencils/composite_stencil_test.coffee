@@ -1,14 +1,16 @@
 define [
   'paper'
   'viewmodels/drawings/stencils/composite_stencil'
-], (paper, CompositeStencil) ->
+  'viewmodels/drawings/paper/rectangle'
+  'viewmodels/drawings/paper/ellipse'
+], (paper, CompositeStencil, Rectangle, Ellipse) ->
 
   describe 'CompositeStencil', ->  
-    it 'draws a group', ->
+    it 'draws a CompositePath', ->
       result = createCompositeStencil()
-      expect(result instanceof paper.Group).toBeTruthy()
+      expect(result.constructor.name).toBe('CompositePath')
     
-    it 'calls draw on for every stencil in array', ->
+    it 'calls draw for every stencil in array', ->
       rectangle = new FakeRectangleStencil()
       ellipse = new FakeEllipseStencil()
       result = createCompositeStencil([rectangle, ellipse])
@@ -16,9 +18,9 @@ define [
       expect(rectangle.drawn).toBeTruthy()
       expect(ellipse.drawn).toBeTruthy()
     
-    it 'creates a child for every stencil in array', ->
+    it 'resulting CompositePath contains a child for every stencil in array', ->
       result = createCompositeStencil([new FakeRectangleStencil(), new FakeEllipseStencil()])
-      expect(result.children.length).toBe(2)
+      expect(result.members.length).toBe(2)
     
     createCompositeStencil = (stencils) ->  
       paper = new paper.PaperScope()
@@ -30,10 +32,10 @@ define [
       drawn: false
       draw: (node) =>
         @drawn = true
-        new paper.Path.Rectangle(0, 0, 10, 20)
+        new Rectangle(10, 20)
 
     class FakeEllipseStencil
       drawn: false
       draw: (node) =>
         @drawn = true
-        new paper.Path.Rectangle(0, 0, 10, 20)
+        new Ellipse(10, 20)

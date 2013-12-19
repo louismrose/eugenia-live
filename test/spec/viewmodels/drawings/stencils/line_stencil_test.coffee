@@ -1,9 +1,9 @@
 define [
   'paper'
-  'viewmodels/drawings/stencils/path_stencil'
-], (paper, PathStencil) ->
+  'viewmodels/drawings/stencils/line_stencil'
+], (paper, LineStencil) ->
 
-  describe 'PathStencil', ->      
+  describe 'LineStencil', ->      
     describe 'has sensible defaults', ->
       it 'defaults color to black', ->
         expect(createStencil().defaultSpecification().get("color")).toBe("black")
@@ -19,21 +19,21 @@ define [
         expect(createStencil({ style: "dash" })._specification.get("style")).toBe("dash")
       
     describe 'draw', ->
-      it 'creates a paper path of the specified colour', ->
-        expect(createPath(color: "blue").strokeColor.toCSS()).toEqual("rgb(0,0,255)")
+      it 'creates a Line of the specified colour', ->
+        expect(createPath(color: "blue").strokeColor().toCSS()).toEqual("rgb(0,0,255)")
 
       it 'creates a paper path with a simple dash array when the style is dash', ->
-        expect(createPath(style: "dash").dashArray).toEqual([4,4])
+        expect(createPath(style: "dash").dashArray()).toEqual([4,4])
 
       it 'creates a paper path with no dash array when the style is solid', ->
-        expect(createPath(style: "solid").dashArray).toEqual([])
+        expect(createPath(style: "solid").dashArray()).toEqual([])
 
       it 'creates a paper path of the specified shape', ->
         segments = [
           new paper.Segment(new paper.Point(0,0)),
           new paper.Segment(new paper.Point(10,20))
         ]
-        expect(createPath({}, segments).segments).toEqual(segments)
+        expect(createPath({}, segments).segments()).toEqual(segments)
     
   
     createPath = (specification, segments=[]) ->  
@@ -44,7 +44,7 @@ define [
       stencil.draw(element)
 
     createStencil = (specification = {}) ->
-      new PathStencil(specification)
+      new LineStencil(specification)
       
     class FakeLink
       constructor: (@segments) ->

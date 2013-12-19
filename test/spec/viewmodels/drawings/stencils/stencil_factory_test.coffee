@@ -7,7 +7,7 @@ define [
       describe 'plain link shapes', ->
         it 'creates a path stencil', ->    
           stencil = createStencilFromLinkShape({})
-          expect(stencil.constructor.name).toEqual("PathStencil")
+          expect(stencil.constructor.name).toEqual("LineStencil")
       
         it 'propagates properties of shape to path stencil', ->
           shape =
@@ -43,7 +43,7 @@ define [
           stencil = createStencilFromLinkShape(shape)
 
           expect(stencil.constructor.name).toEqual("LabelledStencil")
-          expect(stencil._labelled.constructor.name).toEqual("PathStencil")
+          expect(stencil._labelled.constructor.name).toEqual("LineStencil")
       
       createStencilFromLinkShape = (shape) ->  
         new StencilFactory().convertLinkShape(shape)

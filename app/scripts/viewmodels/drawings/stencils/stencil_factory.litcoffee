@@ -2,14 +2,14 @@
 The following class is responsible for instantiating Stencils from Shapes.
 
     define [
-      'viewmodels/drawings/stencils/path_stencil'
+      'viewmodels/drawings/stencils/line_stencil'
       'viewmodels/drawings/stencils/composite_stencil'
       'viewmodels/drawings/stencils/rectangle_stencil'
       'viewmodels/drawings/stencils/rounded_rectangle_stencil'
       'viewmodels/drawings/stencils/ellipse_stencil'
       'viewmodels/drawings/stencils/regular_polygon_stencil'
       'viewmodels/drawings/stencils/labelled_stencil'
-    ], (PathStencil, CompositeStencil, RectangleStencil, RoundedRectangleStencil, EllipseStencil, RegularPolygonStencil, LabelledStencil) ->
+    ], (LineStencil, CompositeStencil, RectangleStencil, RoundedRectangleStencil, EllipseStencil, RegularPolygonStencil, LabelledStencil) ->
 
 StencilFactory exposes methods for converting a LinkShape and for converting a 
 NodeShape to a Stencil.
@@ -21,7 +21,7 @@ and possibly a label. We add the label stencil last, as it acts as a sort of
 "overlay" for the other stencil(s).
 
         convertLinkShape: (shape) =>
-          @_addLabel(shape, new PathStencil(shape))
+          @_addLabel(shape, new LineStencil(shape))
 
 A node shape will contain an array of elements and possibly a label. Again, we add the 
 label stencil last.

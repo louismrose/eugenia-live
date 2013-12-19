@@ -3,8 +3,8 @@ This class provides a mechanism for constructing a Stencil by combining
 together one or more other Stencils.
 
     define [
-      'paper'
-    ], (paper) ->
+      'viewmodels/drawings/paper/composite_path'
+    ], (CompositePath) ->
 
 A composite stencil comprises an array of Stencils.
 
@@ -12,10 +12,10 @@ A composite stencil comprises an array of Stencils.
         constructor: (@_stencils = []) ->
 
 We draw a CompositeStencil by calling draw() on each of the child Stencils
-and storing the resulting Paper.js Items in a Paper.js Group.
+and storing the resulting Paths in a CompositePath.
     
         draw: (element) =>
-          new paper.Group(@_items(element))
+          new CompositePath(@_paths(element))
     
-        _items: (element) =>
+        _paths: (element) =>
           stencil.draw(element) for stencil in @_stencils

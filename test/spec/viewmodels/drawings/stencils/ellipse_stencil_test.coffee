@@ -12,11 +12,11 @@ define [
       
       it 'defaults width to 100', ->
         result = createStencil(@alwaysDefaultsPropertySet)
-        expect(result.bounds.width).toBe(100)   
+        expect(result.width()).toBe(100)   
       
       it 'defaults height to 100', ->
         result = createStencil(@alwaysDefaultsPropertySet)
-        expect(result.bounds.height).toBe(100)
+        expect(result.height()).toBe(100)
       
       it 'inherits default fillColor from polygon', ->
         expect(new EllipseStencil().defaultSpecification().get("fillColor")).toBe("white")
@@ -29,11 +29,11 @@ define [
       
       it 'sets width according to size.width option', ->
         result = createStencil(@alwaysResolvesPropertySet, { size: { width: 50 } } )
-        expect(result.bounds.width).toBe(50)
+        expect(result.width()).toBe(50)
     
       it 'sets height according to size.height option', ->
         result = createStencil(@alwaysResolvesPropertySet, { size: { height: 75 } } )
-        expect(result.bounds.height).toBe(75)
+        expect(result.height()).toBe(75)
         
     
     createStencil = (propertySet, stencilSpec = {}) ->  

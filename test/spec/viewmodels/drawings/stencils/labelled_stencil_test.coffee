@@ -1,73 +1,69 @@
 define [
   'paper'
   'viewmodels/drawings/stencils/labelled_stencil'
+  'viewmodels/drawings/paper/rectangle'
   'models/property_set'
-], (paper, LabelledStencil, PropertySet) ->
+], (paper, LabelledStencil, Rectangle, PropertySet) ->
 
   describe 'LabelledStencil', ->
     describe 'it has sensible defaults', ->      
       it 'draws no label by default', ->
         shape = createShape()
         result = createLabel(shape)
-        expect(result.children).toEqual([shape])
+        expect(result).toEqual(shape)
     
     describe 'can use stencil specification', ->  
       describe 'when placement is none', ->
         it 'draws no label', ->
           shape = createShape()
           result = createLabel(shape, {placement: 'none'})
-          expect(result.children).toEqual([shape])      
+          expect(result).toEqual(shape)
 
       describe 'when placement is internal', ->
         beforeEach ->
           @shape = createShape()
-          @result = createLabel(@shape, {placement: 'internal', text: 'foo'})
-          @label = @result.lastChild
+          @label = createLabel(@shape, {placement: 'internal', text: 'foo'})
           
-        it 'adds a label to the group', ->
-          expect(@result.children).toEqual([@shape, @label])
-        
-        it 'uses PointText for the label', ->
-          expect(@label instanceof paper.PointText).toBeTruthy()
+        it 'creates a LabelledPath', ->
+          expect(@label.constructor.name).toBe('LabelledPath')
         
         it 'displays the correct content for the label', ->
-          expect(@label.content).toEqual('foo')
+          expect(@label.content()).toEqual('foo')
         
         it 'positions the label at the centre of the shape', ->
-          expect(@label.position.x).toEqual(@shape.position.x)
-          expect(@label.position.y).toEqual(@shape.position.y)
+          expect(@label.position().x).toEqual(@shape.position().x)
+          expect(@label.position().y).toEqual(@shape.position().y)
 
       describe 'when placement is external', ->
         beforeEach ->
           @shape = createShape()
-          @result = createLabel(@shape, {placement: 'external'})
-          @label = @result.lastChild
+          @label = createLabel(@shape, {placement: 'external'})
         
         it 'positions the label below the bottom centre of the shape', ->
-          expect(@label.position.x).toEqual(@shape.bounds.bottomCenter.x)
-          expect(@label.position.y).toEqual(@shape.bounds.bottomCenter.y + 20)         
+          expect(@label.position().x).toEqual(@shape.bottomCenter().x)
+          expect(@label.position().y).toEqual(@shape.bottomCenter().y + 20)         
           
       describe 'when text contains property references', ->
         it 'has content containing property values', ->
           result = createLabel(createShape(), {placement: 'internal', text: '${surname}, ${forename}' }, { forename: 'John', surname: 'Doe' })
-          expect(result.lastChild.content).toEqual('Doe, John')
+          expect(result.content()).toEqual('Doe, John')
 
       describe 'when length is defined', ->
         it 'trims content longer than the length', ->
           result = createLabel(createShape(), {placement: 'internal', length: 7, text: '1234567890' })
-          expect(result.lastChild.content).toEqual('1234...')
+          expect(result.content()).toEqual('1234...')
 
         it 'does not trims content of precisely the right length', ->
           result = createLabel(createShape(), {placement: 'internal', length: 7, text: '1234567' })
-          expect(result.lastChild.content).toEqual('1234567')
+          expect(result.content()).toEqual('1234567')
         
       describe 'when color is defined', ->
         it 'displays the label in the specified colour', ->
           result = createLabel(createShape(), {placement: 'internal', color: 'red' })
-          expect(result.lastChild.fillColor.toCSS()).toEqual("rgb(255,0,0)")
+          expect(result.fillColor().toCSS()).toEqual("rgb(255,0,0)")
 
     createShape = ->
-      new paper.Path.Rectangle(new paper.Point(0,0), new paper.Size(10, 20))
+      new Rectangle(10, 20)
       
     createLabel = (shape, options, properties = {}) ->  
       paper = new paper.PaperScope()

@@ -5,20 +5,14 @@ define [
 
   describe 'RegularPolygonStencil', ->  
     describe 'has sensible defaults', ->
-      beforeEach ->
-        @alwaysDefaultsPropertySet =
-          resolve: (expression, defaultValue) =>
-            defaultValue
-      
       it 'defaults sides to 3', ->
-        result = createStencil(@alwaysDefaultsPropertySet)
-        expect(result.segments.length).toBe(3)   
+        expect(createStencil().defaultSpecification().get("sides")).toBe(3)  
       
       it 'defaults radius to 50', ->
-        expect(new RegularPolygonStencil().defaultSpecification().get("radius")).toBe(50)
+        expect(createStencil().defaultSpecification().get("radius")).toBe(50)
       
       it 'inherits default fillColor from polygon', ->
-        expect(new RegularPolygonStencil().defaultSpecification().get("fillColor")).toBe("white")
+        expect(createStencil().defaultSpecification().get("fillColor")).toBe("white")
         
     describe 'can use stencil specification', ->
       beforeEach ->
@@ -27,19 +21,22 @@ define [
             expression
       
       it 'sets sides according to sides option', ->
-        result = createStencil(@alwaysResolvesPropertySet, { sides: 12 } )
-        expect(result.segments.length).toBe(12)
+        result = createRegularPolygon(@alwaysResolvesPropertySet, { sides: 12 } )
+        expect(result.sides).toBe(12)
     
       it 'sets radius according to radius option', ->
-        polygon = new RegularPolygonStencil(radius: 75)
-        expect(polygon._radius(new FakeNode(@alwaysResolvesPropertySet))).toBe(75)
+        result = createRegularPolygon(@alwaysResolvesPropertySet, { radius: 75 } )
+        expect(result.radius).toBe(75)
             
-    createStencil = (propertySet, stencilSpec = {}) ->
+    createRegularPolygon = (propertySet, stencilSpec = {}) ->
       paper = new paper.PaperScope()
       paper.project = new paper.Project()
-      stencil = new RegularPolygonStencil(stencilSpec)
+      stencil = createStencil(stencilSpec)
       node = new FakeNode(propertySet)
       result = stencil.draw(node)
+    
+    createStencil = (specification = {}) ->
+      new RegularPolygonStencil(specification)
 
     class FakeNode
       constructor: (@properties) ->

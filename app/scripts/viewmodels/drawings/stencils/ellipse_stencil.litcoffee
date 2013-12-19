@@ -1,12 +1,13 @@
 ### EllipseStencil
 This class is responsible for rendering Nodes whose NodeShape has the `ellipse`
-value for its `figure` property, currently by drawing a Paper.js Oval.
+value for its `figure` property.
 
     define [
       'paper'
       'viewmodels/drawings/stencils/bounded_stencil'
-    ], (paper, BoundedStencil) ->
+      'viewmodels/drawings/paper/ellipse'
+    ], (paper, BoundedStencil, Ellipse) ->
 
       class EllipseStencil extends BoundedStencil
         createPath: (node) ->
-          new paper.Path.Oval(new paper.Rectangle(0, 0, @_width(node), @_height(node)))
+          new Ellipse(@_width(node), @_height(node))

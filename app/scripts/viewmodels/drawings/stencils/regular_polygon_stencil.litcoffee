@@ -1,11 +1,12 @@
 ### EllipseStencil
 This class is responsible for rendering Nodes whose NodeShape has the `polygon`
-value for its `figure` property, currently by drawing a Paper.js RegularPolygon.
+value for its `figure` property.
 
     define [
       'paper'
       'viewmodels/drawings/stencils/polygon_stencil'
-    ], (paper, PolygonStencil) ->
+      'viewmodels/drawings/paper/regular_polygon'
+    ], (paper, PolygonStencil, RegularPolygon) ->
 
       class RegularPolygonStencil extends PolygonStencil
       
@@ -16,11 +17,11 @@ of these properties.
         defaultSpecification: =>
           super().merge({ sides: 3, radius: 50 })
     
-We draw a node by creating a Paper.js RegularPolygon with the specified number 
-of `sides` and with the specified `radius`.   
+We draw a node by creating a RegularPolygon with the specified number of `sides` 
+and with the specified `radius`.   
     
         createPath: (node) ->
-          new paper.Path.RegularPolygon(new paper.Point(0, 0), @_sides(node), @_radius(node))
+          new RegularPolygon(@_sides(node), @_radius(node))
     
         _sides: (node) ->
           @resolve(node, 'sides')

@@ -25,8 +25,8 @@ define [
       if @drafting 
         if @canvas.elementAt(event.point).isNode()
           path = @draftLink.finalise()
-          @parameters.sourceId = @canvas.elementAt(path.firstSegment.point).element.id
-          @parameters.targetId = @canvas.elementAt(path.lastSegment.point).element.id
+          @parameters.sourceId = @canvas.elementAt(path.firstSegment.point)._element.id
+          @parameters.targetId = @canvas.elementAt(path.lastSegment.point)._element.id
           @parameters.segments = path.segments
           @canvas.addLink(@parameters)
       
