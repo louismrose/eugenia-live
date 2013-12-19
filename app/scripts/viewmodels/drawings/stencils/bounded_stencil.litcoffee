@@ -17,10 +17,17 @@ omits values for any of these properties.
         defaultSpecification: =>
           super().merge({ size: { width: 100, height: 100 } })
 
-We provide convenience methods for accessing the width and height properties.
-
+We then update the properties method to return the existing properties plus
+the `width` and `height`
+        
+        _properties: (node) =>
+          properties = super(node)
+          properties.width = @_width(node)
+          properties.height = @_height(node)
+          properties
+          
         _width: (node) =>
           @resolve(node, 'size.width')
-    
+  
         _height: (node) =>
           @resolve(node, 'size.height')

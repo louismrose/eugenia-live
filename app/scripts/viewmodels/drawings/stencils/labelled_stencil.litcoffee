@@ -34,11 +34,11 @@ is set to none, or return a LabelledPath to attach a Label to the Path.
           path = @_createLabelledPath(element, labelledPath) unless @resolve(element, 'placement') is 'none'
           path
           
-        _createLabelledPath: (element, labelledItem) ->
-          properties =
-            color: @resolve(element, 'color')
-            text: @resolve(element, 'text')
-            length: @resolve(element, 'length')
-            placement: @resolve(element, 'placement')
+        _createLabelledPath: (element, labelledItem) ->      
+          new LabelledPath(labelledItem, @_properties(element))
           
-          new LabelledPath(labelledItem, properties)
+        _properties: (element) ->
+          color: @resolve(element, 'color')
+          text: @resolve(element, 'text')
+          length: @resolve(element, 'length')
+          placement: @resolve(element, 'placement')

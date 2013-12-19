@@ -20,8 +20,17 @@ of these properties.
 We draw a node by creating a RegularPolygon with the specified number of `sides` 
 and with the specified `radius`.   
     
-        createPath: (node) ->
-          new RegularPolygon(@_sides(node), @_radius(node))
+        draw: (node) ->
+          new RegularPolygon(@_properties)
+          
+We update the properties method to return the existing properties plus the
+`sides` and `radius` properties.
+
+        _properties: (node) =>
+          properties = super(node)
+          properties.sides = @_sides(node)
+          properties.radius = @_radius(node)
+          properties
     
         _sides: (node) ->
           @resolve(node, 'sides')

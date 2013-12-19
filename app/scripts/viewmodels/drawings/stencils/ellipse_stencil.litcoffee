@@ -9,8 +9,5 @@ value for its `figure` property.
     ], (paper, BoundedStencil, Ellipse) ->
 
       class EllipseStencil extends BoundedStencil
-        createPath: (node) ->
-          new Ellipse(
-            width: @_width(node),
-            height: @_height(node)
-          )
+        draw: (node) ->
+          new Ellipse(@_properties(node))

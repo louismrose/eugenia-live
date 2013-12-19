@@ -9,5 +9,5 @@ value for its `figure` property.
     ], (paper, BoundedStencil, Rectangle) ->
 
       class RectangleStencil extends BoundedStencil
-        createPath: (node) ->
-          new Rectangle(width: @_width(node), height: @_height(node))
+        draw: (node) ->
+          new Rectangle(@_properties(node))

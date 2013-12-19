@@ -1,7 +1,7 @@
 ### PolygonStencil
 This class is responsible for rendering Nodes whose NodeShape are polygons.
 This class should be subclassed, as it does not define a complete Stencil 
-on its own.
+on its own, as it does not implement the `draw` method.
 
     define [
       'paper'
@@ -19,16 +19,17 @@ values for any of these properties.
           new StencilSpecification(x: 0, y: 0, fillColor: "white", borderColor: "black")
     
 We draw a Node by delegating to a method defined in a subclass (`@createPath`)
-and then set the position, fill colour and stroke colour of the result Paper.js
-Path.
+and then set the position, fill colour and stroke colour of the Path.
+
+We then provide a properties method for subclasses to use when instantiating their
+chosen Path.
+        
+        _properties: (node) =>
+          {
+            position: new paper.Point(node.position).add(@resolve(node, 'x'), @resolve(node, 'y'))
+            fillColor: @resolve(node, 'fillColor')
+            strokeColor: @resolve(node, 'borderColor')
+          }
 
         draw: (node) =>
-          path = @createPath(node)
-          path.setPosition(new paper.Point(node.position).add(@resolve(node, 'x'), @resolve(node, 'y')))
-          path.setFillColor(@resolve(node, 'fillColor'))
-          path.setStrokeColor(@resolve(node, 'borderColor'))
-          path
-      
-        # Subclasses must implement this method
-        createPath: (node) ->
           throw new Error("Instantiate a subclass rather than this class directly.")

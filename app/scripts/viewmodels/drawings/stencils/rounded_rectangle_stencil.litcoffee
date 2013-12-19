@@ -9,5 +9,5 @@ value for its `figure` property.
     ], (paper, BoundedStencil, RoundedRectangle) ->
 
       class RoundedRectangleStencil extends BoundedStencil
-        createPath: (node) ->
-          new RoundedRectangle(width: @_width(node), height: @_height(node))
+        draw: (node) ->
+          new RoundedRectangle(@_properties(node))

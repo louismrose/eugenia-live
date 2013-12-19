@@ -9,7 +9,7 @@ This class is responsible for drawing Lines, by using a Paper.js Path.
 
       class Line extends Path
         constructor: (segments, @_properties) ->
-          super(@_createPath(segments, @_properties.color, @_properties.dashed))
+          super(@_createPath(segments, @_properties.color, @_properties.dashed), @_properties)
       
           # TODO add logic to Path that trims the line at the
           # intersection with its start and end node, rather

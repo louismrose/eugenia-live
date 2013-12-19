@@ -15,28 +15,27 @@ define [
         expect(createStencil().defaultSpecification().get("fillColor")).toBe("white")
         
     describe 'can use stencil specification', ->
-      beforeEach ->
-        @alwaysResolvesPropertySet =
-          resolve: (expression, defaultValue) =>
-            expression
-      
       it 'sets sides according to sides option', ->
-        result = createRegularPolygon(@alwaysResolvesPropertySet, { sides: 12 } )
+        result = getProperties(sides: 12)
         expect(result.sides).toBe(12)
     
       it 'sets radius according to radius option', ->
-        result = createRegularPolygon(@alwaysResolvesPropertySet, { radius: 75 } )
+        result = getProperties(radius: 75)
         expect(result.radius).toBe(75)
             
-    createRegularPolygon = (propertySet, stencilSpec = {}) ->
-      paper = new paper.PaperScope()
-      paper.project = new paper.Project()
-      stencil = createStencil(stencilSpec)
-      node = new FakeNode(propertySet)
-      result = stencil.draw(node)
-    
+            
     createStencil = (specification = {}) ->
       new RegularPolygonStencil(specification)
+      
+    getProperties = (stencilSpec = {}, position = {}) ->
+      node = new FakeNode(position)
+      createStencil(stencilSpec)._properties(node)    
 
     class FakeNode
-      constructor: (@properties) ->
+      constructor: (@position) ->
+        @position.x or= 0
+        @position.y or= 0
+      
+        @properties =
+          resolve: (expression, defaultValue) =>
+            expression

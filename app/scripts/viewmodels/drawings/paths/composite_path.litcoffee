@@ -13,8 +13,8 @@ A CompositePath comprises an array of other Paths, known as its `members`. To
 render a CompositePath, we construct a Paper.js Group that contains the Paper.js 
 items of `members`.
       
-        constructor: (@members) ->
-          super(new paper.Group(@_paperMembers()))
+        constructor: (@members, properties) ->
+          super(new paper.Group(@_paperMembers()), properties)
 
         _paperMembers: ->
           member._paperItem for member in @members

@@ -13,38 +13,33 @@ define [
       
     describe 'can use stencil specification', ->    
       it 'sets color according to color option', ->
-        expect(createStencil({ color: "blue" })._specification.get("color")).toBe("blue")
+        expect(getProperties(color: "blue").color).toBe("blue")
   
-      it 'sets style according to style option', ->
-        expect(createStencil({ style: "dash" })._specification.get("style")).toBe("dash")
+      it 'sets dashed to true if style is dash', ->
+        expect(getProperties(style: "dash").dashed).toBeTruthy()
+      
+      it 'sets dashed to false if style is solid', ->
+        expect(getProperties(style: "solid").dashed).toBeFalsy()
       
     describe 'draw', ->
-      it 'creates a Line of the specified colour', ->
-        expect(createPath(color: "blue")._properties.color).toEqual('blue')
-
-      it 'creates a dashed Line when the style is dash', ->
-        expect(createPath(style: "dash")._properties.dashed).toBeTruthy()
-
-      it 'creates a non-dashed Line when the style is solid', ->
-        expect(createPath(style: "solid")._properties.dashed).toBeFalsy()
-
       it 'creates a paper path of the specified shape', ->
         segments = [
           new paper.Segment(new paper.Point(0,0)),
           new paper.Segment(new paper.Point(10,20))
         ]
-        expect(createPath({}, segments)._paperItem.segments).toEqual(segments)
+        
+        stencil = createStencil()
+        path = stencil.draw(new FakeLink(segments))
+
+        expect(path._paperItem.segments).toEqual(segments)
     
   
-    createPath = (specification, segments=[]) ->  
-      paper = new paper.PaperScope()
-      paper.project = new paper.Project()
-      stencil = createStencil(specification)
-      element = new FakeLink(segments)
-      stencil.draw(element)
-
     createStencil = (specification = {}) ->
       new LineStencil(specification)
+      
+    getProperties = (stencilSpec = {}, segments = []) ->
+      link = new FakeLink(segments)
+      createStencil(stencilSpec)._properties(link)
       
     class FakeLink
       constructor: (@segments) ->

@@ -13,7 +13,7 @@ A LabelledPath is a CompositePath that contains a Label and the `labelledPath`.
       class LabelledPath extends CompositePath
         constructor: (@labelledPath, @_properties) ->
           @label = @_createLabel()
-          super([@labelledPath, @label])
+          super([@labelledPath, @label], @_properties)
 
 The Label is created using the properties passed to the LabelledPath, and positioned
 relative to the `labelledPath`.

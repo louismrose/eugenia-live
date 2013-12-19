@@ -15,29 +15,25 @@ define [
         expect(createStencil().defaultSpecification().get("fillColor")).toBe("white")
         
     describe 'can use stencil specification', ->
-      beforeEach ->
-        @alwaysResolvesPropertySet =
-          resolve: (expression, defaultValue) =>
-            expression
-      
       it 'sets width according to size.width option', ->
-        result = createRoundedRectangle(@alwaysResolvesPropertySet, { size: { width: 50 } } )
-        expect(result.width()).toBe(50)
+        expect(getProperties(size: { width: 50 }).width).toBe(50)
     
       it 'sets height according to size.height option', ->
-        result = createRoundedRectangle(@alwaysResolvesPropertySet, { size: { height: 75 } } )
-        expect(result.height()).toBe(75)
+        expect(getProperties(size: { height: 75 }).height).toBe(75)
         
     
-    createRoundedRectangle = (propertySet, stencilSpec = {}) ->  
-      paper = new paper.PaperScope()
-      paper.project = new paper.Project()
-      stencil = createStencil(stencilSpec)
-      node = new FakeNode(propertySet)
-      result = stencil.draw(node)      
-
-    createStencil = (specification = {}) ->
+    createStencil = (specification = {}) ->  
       new RoundedRectangleStencil(specification)
 
+    getProperties = (stencilSpec = {}, position = {}) ->
+      node = new FakeNode(position)
+      createStencil(stencilSpec)._properties(node)    
+
     class FakeNode
-      constructor: (@properties) ->
+      constructor: (@position) ->
+        @position.x or= 0
+        @position.y or= 0
+      
+        @properties =
+          resolve: (expression, defaultValue) =>
+            expression
