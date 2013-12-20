@@ -6,22 +6,22 @@ define [
 
   describe 'CompositeStencil', ->
     beforeEach ->
-      @rectangle = createRectangleStencilSpy()
-      @ellipse = createEllipseStencilSpy()
-      @path = createCompositeStencil([@rectangle, @ellipse])
+      @stencil1 = createRectangleStencilSpy()
+      @stencil2 = createEllipseStencilSpy()
+      @path = createCompositePath([@stencil1, @stencil2])
     
     it 'draws a CompositePath', ->
       expect(@path.constructor.name).toBe('CompositePath')
     
     it 'calls draw for every stencil in array', ->
-      expect(@rectangle.draw).toHaveBeenCalled()
-      expect(@ellipse.draw).toHaveBeenCalled()
+      expect(@stencil1.draw).toHaveBeenCalled()
+      expect(@stencil2.draw).toHaveBeenCalled()
     
     it 'resulting CompositePath contains a child for every stencil in array', ->
       expect(@path.members.length).toBe(2)
     
     
-    createCompositeStencil = (stencils) ->  
+    createCompositePath = (stencils) ->  
       composite = new CompositeStencil(stencils)
       result = composite.draw({})
 

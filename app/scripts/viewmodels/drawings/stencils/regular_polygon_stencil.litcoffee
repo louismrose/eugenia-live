@@ -21,7 +21,7 @@ We draw a node by creating a RegularPolygon with the specified number of `sides`
 and with the specified `radius`.   
     
         draw: (node) ->
-          new RegularPolygon(@_properties)
+          new RegularPolygon(@_properties(node))
           
 We update the properties method to return the existing properties plus the
 `sides` and `radius` properties.

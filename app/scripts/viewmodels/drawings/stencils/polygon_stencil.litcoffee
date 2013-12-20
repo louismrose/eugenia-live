@@ -25,11 +25,9 @@ We then provide a properties method for subclasses to use when instantiating the
 chosen Path.
         
         _properties: (node) =>
-          {
-            position: new paper.Point(node.position).add(@resolve(node, 'x'), @resolve(node, 'y'))
-            fillColor: @resolve(node, 'fillColor')
-            strokeColor: @resolve(node, 'borderColor')
-          }
+          position: new paper.Point(node.position).add(@resolve(node, 'x'), @resolve(node, 'y'))
+          fillColor: @resolve(node, 'fillColor')
+          strokeColor: @resolve(node, 'borderColor')
 
         draw: (node) =>
           throw new Error("Instantiate a subclass rather than this class directly.")

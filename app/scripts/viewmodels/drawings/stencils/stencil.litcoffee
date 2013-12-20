@@ -39,4 +39,13 @@ this, we delegate to the `resolve` method in PropertySet.
         resolve: (element, key) =>
           # When an option has a dynamic value, such as ${foo}
           # resolve it using the element's property set
-          element.properties.resolve(@_specification.get(key), @defaultSpecification().get(key))
+          element.properties.resolve(@value(key), @defaultValue(key))
+
+We also provide methods for obtaining the "raw" (unresolved) value of a 
+user-defined property, and the default value of a property.
+          
+        value: (key) =>
+          @_specification.get(key)
+          
+        defaultValue: (key) =>
+          @defaultSpecification().get(key)

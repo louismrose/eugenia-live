@@ -29,11 +29,11 @@ to which we will add a label. We then return the Path if the `placement` propert
 is set to none, or return a LabelledPath to attach a Label to the Path.
             
         draw: (element) ->
-          labelledPath = @_labelled.draw(element)
-          path = labelledPath
-          path = @_createLabelledPath(element, labelledPath) unless @resolve(element, 'placement') is 'none'
-          path
-          
+          if @resolve(element, 'placement') is 'none'
+            @_labelled.draw(element)
+          else
+            @_createLabelledPath(element, @_labelled.draw(element))
+        
         _createLabelledPath: (element, labelledItem) ->      
           new LabelledPath(labelledItem, @_properties(element))
           

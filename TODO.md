@@ -1,5 +1,4 @@
 # Rendering changes
-* Review tests for stencils (are they consistent? are they testing the right things)
 * Fix move bug: create node, move it, reload, position goes back to origin
 
 * LinkCanvasElement

@@ -31,6 +31,7 @@ define [
       it 'sets strokeColor according to borderColor option', ->
         expect(getProperties(borderColor: 'blue').strokeColor).toBe('blue')
 
+
     describe 'position respects both stencil specification and node position', ->    
       it 'positions according to x option and x position of node', ->
         properties = getProperties({ x: 5 }, { x : 1 })
@@ -53,6 +54,6 @@ define [
         @position.x or= 0
         @position.y or= 0
       
-        @properties =
-          resolve: (expression, defaultValue) =>
-            expression
+      properties:
+        resolve: (expression, defaultValue) =>
+          expression

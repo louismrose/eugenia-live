@@ -6,53 +6,74 @@ define [
 ], (paper, LabelledStencil, Rectangle, PropertySet) ->
 
   describe 'LabelledStencil', ->
-    beforeEach ->
-      @shape = new Rectangle(10, 20)
+    describe 'it has sensible defaults', ->     
+      beforeEach ->
+        @defaults = createStencil().defaultSpecification()
       
-      @createLabelledPath = (options, properties = {}) ->  
-        paper = new paper.PaperScope()
-        paper.project = new paper.Project()
-        stencil = new LabelledStencil(options, new FakeStencil(@shape))
-        stencil.draw(new FakeNode(properties))
-    
-    describe 'it has sensible defaults', ->      
-      it 'draws no label by default', ->
-        expect(@createLabelledPath()).toEqual(@shape)
-    
-    describe 'can use stencil specification', ->  
-      describe 'placement', ->
-        it 'when none, it draws no label', ->
-          expect(@createLabelledPath(placement: 'none')).toEqual(@shape)
-
-        it 'when internal, it draws a LabelledPath with the right properties', ->
-          path = @createLabelledPath(placement: 'internal')
-          expect(path.constructor.name).toBe('LabelledPath')
-
-        it 'when external, it draws a LabelledPath with the right properties', ->
-          path = @createLabelledPath(placement: 'external')
-          expect(path.constructor.name).toBe('LabelledPath')
-                  
-      describe 'when text contains property references', ->
-        it 'has a label with content containing property values', ->
-          path = @createLabelledPath({placement: 'internal', text: '${surname}, ${forename}' }, { forename: 'John', surname: 'Doe' })
-          expect(path.label.text()).toEqual('Doe, John')
+      it 'defaults placement to none', ->
+        expect(@defaults.get("placement")).toBe("none")
       
-      it 'passes options to labelled path', ->
+      it 'defaults color to black', ->
+        expect(@defaults.get("color")).toBe("black")
+      
+      it 'defaults text to the empty string', ->
+        expect(@defaults.get("text")).toBe('')
+      
+      it 'defaults length to 30', ->
+        expect(@defaults.get("length")).toBe(30)
+
+
+    describe 'translates properties for LabelledPath', ->
+      it 'sets placement according to placement option', ->
+        expect(getPropertiesFor(placement: 'external').placement).toBe('external')
+    
+      it 'sets color according to color option', ->
+        expect(getPropertiesFor(color: 'red').color).toBe('red')
+
+      it 'sets text according to text option', ->
+        expect(getPropertiesFor(text: 'foo').text).toBe('foo')
+
+      it 'sets length according to length option', ->
+        expect(getPropertiesFor(length: 12).length).toBe(12)
+    
+        
+    describe 'draw', ->
+      beforeEach ->
+        # Create Stencil to be decorated by the LabelledStencil
+        @labelledPath = new Rectangle(10, 20)
+        decorated = jasmine.createSpyObj('stencil', ['draw'])
+        decorated.draw.andReturn(@labelledPath)
+        
+        @draw = (properties) =>
+          stencil = createStencil(properties, decorated)
+          stencil.draw(new FakeNode)
+      
+      it 'returns the path drawn by the decorated stencil when placement is none', ->
+        expect(@draw(placement: 'none')).toBe(@labelledPath)
+      
+      it 'returns a LabelledPath when placement is internal', ->
+        path = @draw(placement: 'internal')
+        expect(path.constructor.name).toBe('LabelledPath')
+        expect(path.labelledPath).toBe(@labelledPath)
+      
+      it 'returns a LabelledPath when placement is external', ->
+        path = @draw(placement: 'external')
+        expect(path.constructor.name).toBe('LabelledPath')
+        expect(path.labelledPath).toBe(@labelledPath)
+      
+      it 'passes properties to LabelledPath', ->
         properties = { placement: 'external', color: 'green', text: 'foo', length: 255 }
-        path = @createLabelledPath(properties)
+        path = @draw(properties)
         expect(path._properties).toEqual(properties)
-      
-      
-    class FakeStencil
-      constructor: (@shape) ->
-      draw: (node) ->
-        @shape
+
+    
+    createStencil = (specification = {}, labelledStencil) ->
+      new LabelledStencil(specification, labelledStencil)
+    
+    getPropertiesFor = (stencilSpec = {}) ->
+      createStencil(stencilSpec)._properties(new FakeNode)
     
     class FakeNode
-      constructor: (properties) ->
-        @properties = new PropertySet(new FakeShape(properties), properties)
-
-    class FakeShape
-      constructor: (@properties) ->
-      defaultPropertyValues: ->
-        @properties
+      properties:
+        resolve: (expression, defaultValue) =>
+          expression
