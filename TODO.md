@@ -1,6 +1,9 @@
 # Rendering changes
+* Review tests for stencils (are they consistent? are they testing the right things)
+* Fix move bug: create node, move it, reload, position goes back to origin
+
 * LinkCanvasElement
-    * Can the PaperLink and PaperLabel classes be returned by stencils? If so, refactor into drawings/paper directory
+    * Remove @canvas? Or at least move it to the end of the param list of constructor?
     * Convert to .litcoffee
     * Trim intersection of link with nodes rather than just hiding the path underneath the nodes
 * CanvasElement
@@ -11,6 +14,9 @@
     * Bring under test
     * Follow same pattern in LinkCavasElement for manipulating paper.js items
     * Convert to .litcoffee
+* Test and refactor CanvasElementFactory
+   * Bring under test
+   * Convert to .litcoffee 
 * Test and refactor canvas
 * Test and refactor LabelledStencil
     * Ensure external labels are displayed near the midpoint of a link's path
