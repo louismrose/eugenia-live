@@ -29,39 +29,39 @@ store a reference to the specified viewModel on the Paper.js object.
 
 The following methods delegate to the parts of the Paper.js API that we need.
 
-        bottomCenter: ->
+        bottomCenter: =>
           @_paperItem.bounds.bottomCenter
   
-        width: ->
+        width: =>
           @_paperItem.bounds.width
 
-        height: ->
+        height: =>
           @_paperItem.bounds.height
 
-        fillColor: ->
+        fillColor: =>
           @_paperItem.fillColor
 
         setFillColor: (fillColor) =>
           @_paperItem.fillColor = fillColor 
     
-        strokeColor : ->
+        strokeColor : =>
           @_paperItem.strokeColor
     
         setStrokeColor: (strokeColor) =>
           @_paperItem.strokeColor = strokeColor
 
-        position: ->
+        position: =>
           @_paperItem.position  
         
-        setPosition: (position) ->
+        setPosition: (position) =>
           @_paperItem.position = position            
 
-        move: (offset) ->
+        move: (offset) =>
           @_paperItem.position.x += offset.x
           @_paperItem.position.y += offset.y
 
-        select: ->
+        select: =>
           @_paperItem.selected = true
 
-        remove: ->
+        remove: =>
           @_paperItem.remove()

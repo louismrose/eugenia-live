@@ -1,5 +1,7 @@
 # Rendering changes
-* Fix move bug: create node, move it, reload, position goes back to origin
+* Fix move bug:
+  * create node, move it, reload, position goes back to original creation point
+  * seems to only affect states and not initial states?
 
 * LinkCanvasElement
     * Remove @canvas? Or at least move it to the end of the param list of constructor?
