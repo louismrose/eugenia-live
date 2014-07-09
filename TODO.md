@@ -1,32 +1,33 @@
 # Rendering changes
 * Fix move bug:
-  * create node, move it, reload, position goes back to original creation point
-  * seems to only affect states and not initial states?
+    * create node, move it, reload, position goes back to original creation point
+    * seems to only affect states and not initial states?
 
-* LinkCanvasElement
-    * Remove @canvas? Or at least move it to the end of the param list of constructor?
-    * Convert to .litcoffee
-    * Trim intersection of link with nodes rather than just hiding the path underneath the nodes
-* CanvasElement
-    * Try to hide paper.js internals? (e.g., .firstChild.selected = true in select method)
-    * Convert to .litcoffee
-    * Can we reuse (share) stencils between instances?
-* Test and refactor NodeCanvasElement
-    * Bring under test
-    * Follow same pattern in LinkCavasElement for manipulating paper.js items
-    * Convert to .litcoffee
-* Test and refactor CanvasElementFactory
-   * Bring under test
-   * Convert to .litcoffee 
-* Test and refactor canvas
-* Test and refactor LabelledStencil
-    * Ensure external labels are displayed near the midpoint of a link's path
 * Fix updateDrawingCache
     * create node / create link
     * delete node / delete link
     * move node
     * undo of each of the above
-* Work through codebase, migrating variables and functions to private (i.e., prefixed with an underscore) where appropriate
+
+* Refactoring
+    * LinkCanvasElement
+        * Convert to .litcoffee
+        * Trim intersection of link with nodes rather than just hiding the path underneath the nodes
+    * CanvasElement
+        * Convert to .litcoffee
+        * Can we reuse (share) stencils between instances?
+    * Test and refactor NodeCanvasElement
+        * Bring under test
+        * Convert to .litcoffee
+    * Test and refactor CanvasElementFactory
+       * Bring under test
+       * Convert to .litcoffee 
+    * Test and refactor Canvas
+       * Bring under test
+       * Convert to .litcoffee 
+    * LabelledStencil
+        * Ensure external labels are displayed near the midpoint of a link's path
+    * Work through codebase, migrating variables and functions to private (i.e., prefixed with an underscore) where appropriate
 
 
 # Yeoman (migration from Hem)
