@@ -53,12 +53,12 @@ define [
       "#{element.type}-#{element.id}"
   
     addNode: (parameters) =>
-      node = @run(new CreateNode(@drawing, parameters))
+      @run(new CreateNode(@drawing, parameters))
       
     addLink: (parameters) =>
-      link = @run(new CreateLink(@drawing, parameters))
+      @run(new CreateLink(@drawing, parameters))
     
-    run: (command) ->
+    run: (command) =>
       @commander.run(command)
     
     elementAt: (point) =>
