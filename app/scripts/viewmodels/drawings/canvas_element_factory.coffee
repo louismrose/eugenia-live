@@ -28,6 +28,5 @@ define [
       drawingElement.properties.bind("propertyChanged propertyRemoved", =>
         newText = stencil.resolve(drawingElement, 'text')
         path.setText(newText)
-        paper.view.draw()
         @_canvas.updateDrawingCache()
       )

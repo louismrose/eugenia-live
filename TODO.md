@@ -2,12 +2,7 @@
 * Fix move bug:
     * create node, move it, reload, position goes back to original creation point
     * seems to only affect states and not initial states?
-
-* Fix updateDrawingCache
-    * create node / create link
-    * delete node / delete link
-    * move node
-    * undo of each of the above
+    * something weird seems to be happening in the commander when moving a node too: move a node (run receives a MoveNode command, as expect) and then undo it (the history contains an undefined object instead of the MoveNode command)
 
 * Refactoring
     * LinkCanvasElement

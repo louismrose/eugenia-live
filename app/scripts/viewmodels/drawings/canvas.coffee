@@ -20,7 +20,6 @@ define [
       @_drawAll(Node)
       @_drawAll(Link)
 
-      paper.view.draw()
       @updateDrawingCache()
       
       Node.bind("create", @_draw)
@@ -34,18 +33,21 @@ define [
       associationMethod = type.className.toLowerCase() + 's' #e.g. Node -> nodes
       elements = @drawing[associationMethod]().all()         #e.g. @drawing.nodes().all()
       console.log("adding all " + elements.length + " " + type.className + "s")
-      @_draw(element, persist: false) for element in elements
+      @_drawExisting(element) for element in elements
   
-    _draw: (element, options={persist: true}) =>
+    _drawExisting: (element) =>
       canvasElement = @canvasElementFactory.createCanvasElementFor(element)
-      
       @elements[@_id_for(element)] = canvasElement
-      element.bind("destroy", =>
-        delete @elements[@_id_for(element)]
-        @updateDrawingCache()
-      )
-      @updateDrawingCache() if options.persist
+      element.bind("destroy", @_undraw)
       canvasElement
+  
+    _draw: (element) =>
+      @_drawExisting(element)
+      @updateDrawingCache()
+          
+    _undraw: (element) =>
+      delete @elements[@_id_for(element)]
+      @updateDrawingCache()
   
     _id_for: (element) =>
       "#{element.type}-#{element.id}"
@@ -70,6 +72,7 @@ define [
       @elements[@_id_for(element)]
   
     updateDrawingCache: =>
+      paper.view.draw()
       @drawing.cache = @canvasElement.toDataURL()
       @drawing.save()
       
