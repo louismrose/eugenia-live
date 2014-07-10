@@ -26,6 +26,3 @@ linked to the same view model.
         linkToViewModel: (viewModel) =>
           super(viewModel)
           member.linkToViewModel(viewModel) for member in @members
-        
-        move: (offset, isSource, isTarget) ->
-          member.move(offset, isSource, isTarget) for member in @members

@@ -43,26 +43,6 @@ define [
         path = @createLabelledPath()
         path.select()
         expect(@labelled.select).toHaveBeenCalled()
-
-    describe 'move', ->
-      beforeEach ->
-        @origin = new paper.Point(10, 10)
-        @offset = { x: 4, y: 5 }
-        @isSource = true
-        @isTarget = false
-        
-        @labelled = createPathSpy(@origin)
-        @path = new LabelledPath(@labelled, placement: 'internal')
-        @path.move(@offset, @isSource, @isTarget)
-      
-      it 'moves the underlying PointText', ->
-        expect(@path.label.position().x).toBe(@origin.x + @offset.x)
-        expect(@path.label.position().y).toBe(@origin.y + @offset.y)
-      
-      it 'delegates to linkToViewModel on labelled path', ->
-        expect(@labelled.move).toHaveBeenCalledWith(@offset, @isSource, @isTarget)
-      
-
     
     createPathSpy = (position = new paper.Point(50, 75) ) ->
       path = jasmine.createSpyObj('path', ['linkToViewModel', 'select', 'move', 'position', 'bottomCenter'])
