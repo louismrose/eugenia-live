@@ -11,10 +11,10 @@ define [
       @start = event.point
       
     onMouseDrag: (event) =>
-      for item in @canvas.selection() when item.isNode()
-        item.moveBy(event.point.subtract(@current), persist: false)
+      for element in @canvas.selection() when element.isNode()
+        element.moveBy(event.point.subtract(@current), persist: false)
         @current = event.point
   
     onMouseUp: (event) =>
-      for item in @canvas.selection() when item.isNode()
-        item.moveBy(event.point.subtract(@current), persist: true)
+      for element in @canvas.selection() when element.isNode()
+        element.moveBy(event.point.subtract(@current), persist: true)
