@@ -12,12 +12,12 @@ define [
       @reconnect = ->
         node = {}
         viewModel = new LinkCanvasElement(@element, @path)
-        viewModel.reconnectTo(node, @offset)
+        viewModel._reconnectTo(node, @offset)
       
       @getCommand = ->
         node = {}
         viewModel = new LinkCanvasElement(@element, @path)
-        viewModel.reconnectTo(node, @offset)
+        viewModel._reconnectTo(node, @offset)
         viewModel._reshapeCommand()
       
     describe 'reconnectTo', ->
