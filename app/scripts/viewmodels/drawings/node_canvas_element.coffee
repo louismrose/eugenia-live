@@ -7,6 +7,13 @@ define [
 ], (CanvasElement, StencilFactory, DeleteNode, CompositeCommand, MoveNode) ->
 
   class NodeCanvasElement extends CanvasElement
+    constructor: (@_element, @_path, @_canvas) ->
+      super(@_element, @_path, @_canvas)
+      @_element.bind("move", =>
+        @_path.setPosition(@_element.position)
+        @_canvas.updateDrawingCache()
+      )
+    
     isNode: =>
       true
  
@@ -18,9 +25,7 @@ define [
       for link in @_links()
         commands.push(link.reconnectTo(@_element, point))
    
-      if options.persist
-        @_canvas.run(new CompositeCommand(commands))
-        @_canvas.updateDrawingCache()
+      @_canvas.run(new CompositeCommand(commands)) if options.persist
 
     _links: =>
       @_canvas.elementFor(link) for link in @_element.links()   

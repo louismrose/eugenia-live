@@ -50,11 +50,21 @@ The following methods delegate to the parts of the Paper.js API that we need.
         setStrokeColor: (strokeColor) =>
           @_paperItem.strokeColor = strokeColor
 
+The position of a Path is defined by a point, which is pair of values (x and y).
+The representation returned by the `position` method (and accepted by the 
+`setPosition` method) is very close to the underlying Paper.js representation
+(but does not use Paper.js objects because they do not typically 
+serialise/deseralise cleanly).
+
         position: =>
-          @_paperItem.position  
+          x: @_paperItem.position.x
+          y: @_paperItem.position.y
         
         setPosition: (position) =>
           @_paperItem.position = position            
+
+A Path exposes several convenience methods for updating their appearance without
+forcing the view to manipulate the underlying Paper.js item directly.
 
         move: (offset) =>
           @_paperItem.position.x += offset.x

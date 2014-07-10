@@ -1,7 +1,4 @@
 # Rendering changes
-* Fix move bug:
-    * something weird seems to be happening in the commander when moving a node too: move a node (run receives a MoveNode command, as expect) and then undo it (the history contains an undefined object instead of the MoveNode command)
-
 * Refactoring
     * LinkCanvasElement
         * Convert to .litcoffee

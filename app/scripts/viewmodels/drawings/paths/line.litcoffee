@@ -32,4 +32,26 @@ specified offset.
           mover = new PaperPathMover(@_paperItem, offset)
           mover.moveStart() if moveStart
           mover.moveEnd() if moveEnd
-          @_paperItem.segments
+
+The shape of a Line is defined by its segments, an array of triples of points. The 
+representation returned by the `segments` method (and accepted by the `setSegments` 
+method) is very close to the underlying Paper.js representation (but does not use 
+Paper.js objects because they do not typically serialise/deseralise cleanly).
+       
+        segments: =>
+          for segment in @_paperItem.segments
+            point:
+              x: segment.point.x
+              y: segment.point.y
+              angle: segment.point.angle
+            handleIn:
+              x: segment.handleIn.x
+              y: segment.handleIn.y
+              angle: segment.point.angle
+            handleOut:
+              x: segment.handleOut.x
+              y: segment.handleOut.y
+              angle: segment.handleOut.angle
+        
+        setSegments: (segments) ->
+          @_paperItem.setSegments(segments)

@@ -6,12 +6,19 @@ define [
 ], (CanvasElement, StencilFactory, DeleteLink, ReshapeLink) ->
 
   class LinkCanvasElement extends CanvasElement
+    constructor: (@_element, @_path, @_canvas) ->
+      super(@_element, @_path, @_canvas)
+      @_element.bind("reshape", =>
+        @_path.setSegments(@_element.segments)
+        @_canvas.updateDrawingCache()
+      )
+      
     isNode: =>
       false
     
     reconnectTo: (node, offset) =>
-      newSegments = @_path.reshape(offset, @_element.isSource(node), @_element.isTarget(node))
-      new ReshapeLink(@_element, @_element.segments, newSegments)
+      @_path.reshape(offset, @_element.isSource(node), @_element.isTarget(node))
+      new ReshapeLink(@_element, @_element.segments, @_path.segments())
 
     _destroyCommand: (drawing) =>
       new DeleteLink(drawing, @_element)
