@@ -13,8 +13,8 @@ define [
     moveBy: (point, options={persist: true}) =>
       commands = []
       @_path.move(point)
-      commands.push new MoveNode(@_element, @_element.position, @_path.position())
-
+      commands.push(new MoveNode(@_element, @_element.position, @_path.position()))
+      
       for link in @_links()
         commands.push(link.reconnectTo(@_element, point))
    
