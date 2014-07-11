@@ -24,7 +24,7 @@ module.exports = function (grunt) {
                 tasks: ['coffee:dist']
             },
             coffeeTest: {
-                files: ['test/spec/**/*.coffee'],
+                files: ['test/**/*.coffee'],
                 tasks: ['coffee:test']
             },
             eco : {
@@ -109,13 +109,13 @@ module.exports = function (grunt) {
                 'Gruntfile.js',
                 '<%= yeoman.app %>/scripts/**/*.js',
                 '!<%= yeoman.app %>/scripts/vendor/*',
-                'test/spec/**/*.js'
+                'test/**/*.js'
             ]
         },
         jasmine: {
             all: {
                 options: {
-                    specs: '.tmp/spec/**/*.js',
+                    specs: '.tmp/test/**/*.js',
                     outfile: '.tmp/index.html',
                     keepRunner: true,
                     junit: {
@@ -147,9 +147,9 @@ module.exports = function (grunt) {
             test: {
                 files: [{
                     expand: true,
-                    cwd: 'test/spec',
+                    cwd: 'test',
                     src: '**/*.coffee',
-                    dest: '.tmp/spec',
+                    dest: '.tmp/test',
                     ext: '.js'
                 }]
             }
