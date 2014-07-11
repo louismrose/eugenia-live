@@ -53,3 +53,25 @@ define [
       
       expect(path.fillColor().toCSS()).toBe("rgb(128,128,128)")
 
+    it 'changing a property value can cause a label to be made visible', ->
+      shape = new NodeShape(
+        name: "Cell"
+        properties: [ "p" ]
+        label: { placement: "${p}" }
+        elements: [
+          figure: "ellipse"
+        ]
+      )
+      shape.save()
+      
+      node = new Node({ shape: shape.id })
+      
+      canvas = jasmine.createSpyObj('canvas', ['updateDrawingCache'])
+      factory = new CanvasElementFactory(canvas)
+      canvasElement = factory.createCanvasElementFor(node)
+      path = canvasElement._path
+
+      expect(path.label.visible()).toBe(false)
+      
+      node.properties.set("p", "internal")
+      expect(path.label.visible()).toBe(true)

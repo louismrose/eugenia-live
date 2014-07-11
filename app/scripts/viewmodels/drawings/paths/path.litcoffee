@@ -48,11 +48,14 @@ The following methods delegate to the parts of the Paper.js API that we need.
         setFillColor: (fillColor) =>
           @_paperItem.fillColor = fillColor 
     
-        strokeColor : =>
+        strokeColor: =>
           @_paperItem.strokeColor
     
         setStrokeColor: (strokeColor) =>
           @_paperItem.strokeColor = strokeColor
+        
+        visible: =>
+          @_paperItem.visible
 
 The position of a Path is defined by a point, which is pair of values (x and y).
 The representation returned by the `position` method (and accepted by the 

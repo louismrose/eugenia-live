@@ -48,8 +48,10 @@ define [
           stencil = createStencil(properties, decorated)
           stencil.draw(new FakeNode)
       
-      it 'returns the path drawn by the decorated stencil when placement is none', ->
-        expect(@draw(placement: 'none')).toBe(@labelledPath)
+      it 'returns a LabelledPath when placement is none', ->
+        labelledPath = @draw(placement: 'none')
+        expect(labelledPath.constructor.name).toBe('LabelledPath')
+        expect(labelledPath.path).toBe(@labelledPath)
       
       it 'returns a LabelledPath when placement is internal', ->
         labelledPath = @draw(placement: 'internal')
@@ -75,18 +77,14 @@ define [
         @decorated = jasmine.createSpyObj('stencil', ['draw', 'redraw'])
         @decorated.draw.andReturn(@labelledPath)
         
-        @redraw = (properties) =>
+        @redraw = (properties = {}) =>
           stencil = createStencil(properties, @decorated)
           path = stencil.draw(@node)
           stencil.redraw(@node, path)
           path
       
-      it 'redraws via the decorated stencil when placement is none', ->
-        path = @redraw({ placement: "none" })
-        expect(@decorated.redraw).toHaveBeenCalledWith(@node, path)
-      
-      it 'redraws the decorated stencil with the correct path when the placement is not none', ->
-        @redraw({ placement: "internal" })
+      it 'redraws the decorated stencil with the correct path', ->
+        @redraw()
         expect(@decorated.redraw).toHaveBeenCalledWith(@node, @labelledPath)
       
       it 'redraws the label by passing properties', ->

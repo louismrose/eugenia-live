@@ -23,6 +23,14 @@ define [
         expect(path.label.position().x).toEqual(@labelled.bottomCenter().x)
         expect(path.label.position().y).toEqual(@labelled.bottomCenter().y + 20)         
 
+    describe 'redraw', ->
+      it 'should move the position of the label when placement changes', ->
+        path = @createLabelledPath(placement: 'internal')
+        path.redraw(placement: 'external')
+        
+        expect(path.label.position().x).toEqual(@labelled.bottomCenter().x)
+        expect(path.label.position().y).toEqual(@labelled.bottomCenter().y + 20)
+
     describe 'linkToViewModel', ->  
       beforeEach ->
         @viewModel = {}

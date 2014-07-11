@@ -16,6 +16,7 @@ This class is responsible for drawing labels, by using a Paper.js PointText.
           @_text.maximumLength = properties.length if properties.length
           @_paperItem.fillColor = properties.color
           @_paperItem.content = @_text.value()
+          @_paperItem.visible = properties.placement isnt "none"
         
         text: ->
           @_text.value()
