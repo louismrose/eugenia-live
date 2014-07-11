@@ -28,6 +28,21 @@ these default values.
         # Subclasses must implement this method    
         defaultSpecification: =>
           throw new Error("Instantiate a subclass rather than this class directly.")
+
+All Stencils should also provide a method for determining the properties needed for
+drawing a path that corresponds to any given drawing element.
+
+        # Subclasses must implement this method    
+        _properties: (drawingElement) =>
+          throw new Error("Instantiate a subclass rather than this class directly.")
+        
+To assist in keeping the view synchronised with the model, stencils can be used to
+redraw a path based on the current state of a drawing element. A stencil delegates
+most of the responsibility for redrawing to the path, after determining the latest
+property values for the drawing element.
+        
+        redraw: (drawingElement, path) ->
+          path.redraw(@_properties(drawingElement))
     
 Property values can contain Expressions that need to be evaluated in the context 
 of the Node (Link) which is to be rendered. For example, the content of a label 

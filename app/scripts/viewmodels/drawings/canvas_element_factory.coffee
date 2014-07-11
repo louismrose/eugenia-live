@@ -26,7 +26,10 @@ define [
     
     _updatePathOnPropertyChanges: (path, stencil, drawingElement) =>
       drawingElement.properties.bind("propertyChanged propertyRemoved", =>
-        newText = stencil.resolve(drawingElement, 'text')
-        path.setText(newText)
+        # Eventually redraw should supercede these lines (and we can perhaps make resolve private and delete setText?)        
+        # newText = stencil.resolve(drawingElement, 'text')
+        # path.setText(newText)
+        
+        stencil.redraw(drawingElement, path)
         @_canvas.updateDrawingCache()
       )

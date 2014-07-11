@@ -31,4 +31,25 @@ define [
       expect(path.width()).toBe(50)
       expect(path.height()).toBe(50)
 
+    it 'changing a property value that affects appearance propagates the change to the path', ->
+      shape = new NodeShape(
+        name: "Cell"
+        properties: [ "colour" ]
+        elements: [
+          figure: "ellipse"
+          fillColor: "${colour}"
+        ]
+      )
+      shape.save()
+      
+      node = new Node({ shape: shape.id })
+      
+      canvas = jasmine.createSpyObj('canvas', ['updateDrawingCache'])
+      factory = new CanvasElementFactory(canvas)
+      canvasElement = factory.createCanvasElementFor(node)
+      path = canvasElement._path
+      
+      node.properties.set("colour", "#808080")
+      
+      expect(path.fillColor().toCSS()).toBe("rgb(128,128,128)")
 

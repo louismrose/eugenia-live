@@ -3,12 +3,11 @@ This class is responsible for drawing rounded rectangular Paths, by using a Pape
 
     define [
       'paper'
-      'viewmodels/drawings/paths/path'
-    ], (paper, Path) ->
+      'viewmodels/drawings/paths/bounded'
+    ], (paper, Bounded) ->
 
-      class RoundedRectangle extends Path
-        constructor: (properties) ->
-          bounds = new paper.Rectangle(0, 0, properties.width, properties.height)
+      class RoundedRectangle extends Bounded
+        _createPaperItem: (bounds) =>
           borderRadius = new paper.Size(10, 10)
-          super(new paper.Path.RoundRectangle(bounds, borderRadius), properties)
+          new paper.Path.RoundRectangle(bounds, borderRadius)
     

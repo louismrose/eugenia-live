@@ -3,10 +3,9 @@ This class is responsible for drawing rectangular Paths, by using a Paper.js Rec
 
     define [
       'paper'
-      'viewmodels/drawings/paths/path'
-    ], (paper, Path) ->
+      'viewmodels/drawings/paths/bounded'
+    ], (paper, Bounded) ->
 
-      class Rectangle extends Path
-        constructor: (properties) ->
-          super(paper.Path.Rectangle(0, 0, properties.width, properties.height), properties)
-    
+      class Rectangle extends Bounded
+        _createPaperItem: (bounds) =>
+          new paper.Path.Rectangle(bounds)
