@@ -15,7 +15,12 @@ We draw a CompositeStencil by calling draw() on each of the child Stencils
 and storing the resulting Paths in a CompositePath.
     
         draw: (element) =>
-          new CompositePath(@_paths(element))
-    
-        _paths: (element) =>
-          stencil.draw(element) for stencil in @_stencils
+          @_paths = (stencil.draw(element) for stencil in @_stencils)
+          new CompositePath(@_paths)
+
+We redraw a CompositeStencil by delegating to each of the child Stencils,
+passing the paths that have been previously drawn.
+
+        redraw: (element) =>
+          for stencil, index in @_stencils
+            stencil.redraw(element, @_paths[index])

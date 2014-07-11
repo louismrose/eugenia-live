@@ -27,7 +27,7 @@ the `width` and `height`
           properties
           
         _width: (node) =>
-          @resolve(node, 'size.width')
+          @_resolve(node, 'size.width')
   
         _height: (node) =>
-          @resolve(node, 'size.height')
+          @_resolve(node, 'size.height')

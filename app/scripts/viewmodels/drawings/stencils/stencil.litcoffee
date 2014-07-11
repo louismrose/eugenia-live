@@ -49,18 +49,18 @@ of the Node (Link) which is to be rendered. For example, the content of a label
 might be defined as `"${forename} ${surname}"`, in which the `${forename}` and 
 `${surname}` placeholders should be replaced by the `forename` and `surname` 
 properties of the Node (Link) which is currently being rendered. To implement 
-this, we delegate to the `resolve` method in PropertySet.
+this, we delegate to the `@_resolve` method in PropertySet.
     
-        resolve: (element, key) =>
+        _resolve: (element, key) =>
           # When an option has a dynamic value, such as ${foo}
           # resolve it using the element's property set
-          element.properties.resolve(@value(key), @defaultValue(key))
+          element.properties.resolve(@_value(key), @_defaultValue(key))
 
-We also provide methods for obtaining the "raw" (unresolved) value of a 
+We also provide methods for obtaining the "raw" (un@_resolved) value of a 
 user-defined property, and the default value of a property.
           
-        value: (key) =>
+        _value: (key) =>
           @_specification.get(key)
           
-        defaultValue: (key) =>
+        _defaultValue: (key) =>
           @defaultSpecification().get(key)

@@ -26,5 +26,5 @@ according to the `color` and `style` properties.
           new Line(link.segments, @_properties(link))
         
         _properties: (link) =>
-          color: @resolve(link, 'color')
-          dashed: @resolve(link, 'style') is 'dash'
+          color: @_resolve(link, 'color')
+          dashed: @_resolve(link, 'style') is 'dash'

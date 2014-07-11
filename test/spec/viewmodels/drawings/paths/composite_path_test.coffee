@@ -15,7 +15,6 @@ define [
     it 'inserts the Paper.js items of the members into the group', ->
       expect(@path._paperItem.children).toEqual([@member1._paperItem, @member2._paperItem])
     
-    
     describe 'linkToViewModel', ->  
       beforeEach ->
         @viewModel = {}

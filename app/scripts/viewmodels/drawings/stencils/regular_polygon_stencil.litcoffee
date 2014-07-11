@@ -33,7 +33,7 @@ We update the properties method to return the existing properties plus the
           properties
     
         _sides: (node) ->
-          @resolve(node, 'sides')
+          @_resolve(node, 'sides')
       
         _radius: (node) ->
-          @resolve(node, 'radius')
+          @_resolve(node, 'radius')

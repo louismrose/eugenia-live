@@ -52,18 +52,46 @@ define [
         expect(@draw(placement: 'none')).toBe(@labelledPath)
       
       it 'returns a LabelledPath when placement is internal', ->
-        path = @draw(placement: 'internal')
-        expect(path.constructor.name).toBe('LabelledPath')
-        expect(path.labelledPath).toBe(@labelledPath)
+        labelledPath = @draw(placement: 'internal')
+        expect(labelledPath.constructor.name).toBe('LabelledPath')
+        expect(labelledPath.path).toBe(@labelledPath)
       
       it 'returns a LabelledPath when placement is external', ->
-        path = @draw(placement: 'external')
-        expect(path.constructor.name).toBe('LabelledPath')
-        expect(path.labelledPath).toBe(@labelledPath)
+        labelledPath = @draw(placement: 'external')
+        expect(labelledPath.constructor.name).toBe('LabelledPath')
+        expect(labelledPath.path).toBe(@labelledPath)
       
       it 'passes properties to LabelledPath', ->
         properties = { placement: 'external', color: 'green', text: 'foo', length: 255 }
         path = @draw(properties)
+        expect(path._properties).toEqual(properties)
+        
+    
+    describe 'redraw', ->
+      beforeEach ->
+        # Create Stencil to be decorated by the LabelledStencil
+        @node = new FakeNode
+        @labelledPath = new Rectangle(10, 20)
+        @decorated = jasmine.createSpyObj('stencil', ['draw', 'redraw'])
+        @decorated.draw.andReturn(@labelledPath)
+        
+        @redraw = (properties) =>
+          stencil = createStencil(properties, @decorated)
+          path = stencil.draw(@node)
+          stencil.redraw(@node, path)
+          path
+      
+      it 'redraws via the decorated stencil when placement is none', ->
+        path = @redraw({ placement: "none" })
+        expect(@decorated.redraw).toHaveBeenCalledWith(@node, path)
+      
+      it 'redraws the decorated stencil with the correct path when the placement is not none', ->
+        @redraw({ placement: "internal" })
+        expect(@decorated.redraw).toHaveBeenCalledWith(@node, @labelledPath)
+      
+      it 'redraws the label by passing properties', ->
+        properties = { placement: 'external', color: 'green', text: 'foo', length: 255 }
+        path = @redraw(properties)
         expect(path._properties).toEqual(properties)
 
     

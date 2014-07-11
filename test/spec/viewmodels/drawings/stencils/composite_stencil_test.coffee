@@ -6,9 +6,12 @@ define [
 
   describe 'CompositeStencil', ->
     beforeEach ->
-      @stencil1 = createRectangleStencilSpy()
-      @stencil2 = createEllipseStencilSpy()
-      @path = createCompositePath([@stencil1, @stencil2])
+      @path1 = new Rectangle(10, 20)
+      @path2 = new Ellipse(10, 20)
+      @stencil1 = createStencilSpy(@path1)
+      @stencil2 = createStencilSpy(@path2)
+      @stencil = new CompositeStencil([@stencil1, @stencil2])
+      @path = @stencil.draw({})
     
     it 'draws a CompositePath', ->
       expect(@path.constructor.name).toBe('CompositePath')
@@ -20,18 +23,16 @@ define [
     it 'resulting CompositePath contains a child for every stencil in array', ->
       expect(@path.members.length).toBe(2)
     
+    describe 'redraw', ->
+      it 'delegates to redraw on members', ->
+        element = { name: "Fake" }
+        @stencil.redraw(element, @path)
+        
+        expect(@stencil1.redraw).toHaveBeenCalledWith(element, @path1)
+        expect(@stencil2.redraw).toHaveBeenCalledWith(element, @path2)
     
-    createCompositePath = (stencils) ->  
-      composite = new CompositeStencil(stencils)
-      result = composite.draw({})
-
-    createRectangleStencilSpy = ->
-      createStencilSpy(new Rectangle(10, 20))
     
-    createEllipseStencilSpy = ->
-      createStencilSpy(new Ellipse(10, 20))
-
     createStencilSpy = (path) ->
-      stencil = jasmine.createSpyObj('stencil', ['draw'])
+      stencil = jasmine.createSpyObj('stencil', ['draw', 'redraw'])
       stencil.draw.andReturn(path)
       stencil

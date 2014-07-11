@@ -9,16 +9,16 @@ define [
     describe 'value', ->
       it 'returns undefined for unknown user-defined property', ->
         stencil = new TestStencil
-        expect(stencil.value('fillColor')).toBeUndefined()
+        expect(stencil._value('fillColor')).toBeUndefined()
     
     describe 'defaultValue', ->
       it 'returns undefined for unknown default property', ->
         stencil = new TestStencil
-        expect(stencil.defaultValue('fillColor')).toBeUndefined()
+        expect(stencil._defaultValue('fillColor')).toBeUndefined()
 
       it 'returns undefined for unknown default property even if it is user-defined', ->
         stencil = new TestStencil({}, fillColor: 'blue')
-        expect(stencil.defaultValue('fillColor')).toBeUndefined()
+        expect(stencil._defaultValue('fillColor')).toBeUndefined()
     
     describe 'on construction', ->        
       it 'overrides defaults with user-defined property values', ->
@@ -26,17 +26,17 @@ define [
         userDefined = { fillColor: 'blue' }
         stencil = new TestStencil(defaults, userDefined)
         
-        expect(stencil.value('fillColor')).toBe('blue')
+        expect(stencil._value('fillColor')).toBe('blue')
     
       it 'preserves defaults with no overriding user-defined property value', ->
         defaults  = { borderColor : 'black' }
         userDefined = { fillColor: 'blue' }
         stencil = new TestStencil(defaults, userDefined)
       
-        expect(stencil.value('borderColor')).toBe('black')
-        expect(stencil.value('fillColor')).toBe('blue')
+        expect(stencil._value('borderColor')).toBe('black')
+        expect(stencil._value('fillColor')).toBe('blue')
         
-    describe 'resolve', ->
+    describe '_resolve', ->
       beforeEach ->
         @properties = jasmine.createSpyObj('propertySet', ['resolve'])
         
@@ -48,7 +48,7 @@ define [
         stencil = new TestStencil(@defaults, @userDefined)
         
         @resolve = (property) =>
-          stencil.resolve(element, property)
+          stencil._resolve(element, property)
       
       it 'delegates resolution of user-defined properties to property set, passing correct default value', ->
         @resolve('width')

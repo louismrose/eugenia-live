@@ -8,6 +8,12 @@ This class is responsible for drawing regular polygon Paths, by using a Paper.js
 
       class RegularPolygon extends Path
         constructor: (properties) ->
-          origin = new paper.Point(0, 0)
-          super(new paper.Path.RegularPolygon(origin, properties.sides, properties.radius), properties)
+          super(@_createPaperItem(properties), properties)
     
+        redraw: (properties) =>
+          @remove()
+          @_paperItem = @_createPaperItem(properties)
+          super
+        
+        _createPaperItem: (properties) =>
+          new paper.Path.RegularPolygon(new paper.Point(0, 0), properties.sides, properties.radius)

@@ -24,5 +24,5 @@ group to the view model and, additionally, request that all of our members are
 linked to the same view model.
     
         linkToViewModel: (viewModel) =>
-          super(viewModel)
+          super
           member.linkToViewModel(viewModel) for member in @members

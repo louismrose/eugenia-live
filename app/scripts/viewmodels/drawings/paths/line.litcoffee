@@ -8,8 +8,8 @@ This class is responsible for drawing Lines, by using a Paper.js Path.
     ], (paper, PaperPathMover, Path) ->
 
       class Line extends Path
-        constructor: (segments, @_properties) ->
-          super(@_createPath(segments, @_properties.color, @_properties.dashed), @_properties)
+        constructor: (segments, properties) ->
+          super(new paper.Path(segments), properties)
       
           # TODO add logic to Path that trims the line at the
           # intersection with its start and end node, rather
@@ -18,12 +18,10 @@ This class is responsible for drawing Lines, by using a Paper.js Path.
 
 A Line can be dashed or solid, and we set a `dashArray` on the underlying Paper.js
 Path accordingly.
-    
-        _createPath: (segments, color, dashed) ->
-          path = new paper.Path(segments)
-          path.strokeColor = color
-          path.dashArray = [4, 4] if dashed
-          path
+        
+        redraw: (properties) =>
+          @_paperItem.strokeColor = properties.color
+          @_paperItem.dashArray = if properties.dashed then [4,4] else []
 
 A Line can be reshaped by moving its starting point, ending point, or both by the
 specified offset.
