@@ -13,6 +13,6 @@ The new architectures addresses all of theses issues by introducing the notion o
 
 The diagrams below summarise the new architecture. Broadly speaking, a command causes a change to some part of the model, which in turn causes an event to be triggered. An element of the viewmodel responds to this event by co-ordinating some change to corresponding part of the view. The responsibility for determining the appearance of a Node / Link is handled by a Stencil, whilst the responsibility for rendering the part of a view for a Node / Link is handled by a Path.
 
-![Four sequence diagrams that describe the way in which adding, deleting, moving and property updating of nodes / links are propagated to the view via the new viewmodel architecture](../../../../raw/master/doc/design/viewmodel.png)
+![Four sequence diagrams that describe the way in which adding, deleting, moving and property updating of nodes / links are propagated to the view via the new viewmodel architecture](https://raw.githubusercontent.com/louismrose/eugenia-live/rendering/doc/design/viewmodels.png)
 
 **Acknowledgments**: Thanks to Joost van Pinxten whose internship motivated this work and whose code inspired the new architecture.
