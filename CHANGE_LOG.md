@@ -1,7 +1,7 @@
 # Change Log
 
 ## v0.2.0 (July 2014)
-* Switched to a new (viewmodel-based) rendering engine, which is much more performant than the previous version.
+* Switched to a new ([viewmodel-based](doc/design/viewmodels.md)) rendering engine, which is much more performant than the previous version.
 * Added support for controlling the appearance of Nodes and Links via their
   properties, using `${}` syntax. For example, `width: "${rate}"`
 * Added syntax highlighting for defining palette items via CodeMirror.
