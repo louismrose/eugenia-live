@@ -1,23 +1,48 @@
-<div id="toolbox" class="well">
+<div id="toolbox" class="text-center">
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <span>Built-in</span>
+        </h4>
+      </div>
+      <div class="panel list-group">
+        <a href="#" class="list-group-item active" data-tool-name="select">Select</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <span>Nodes</span>
+        </h4>
+      </div>
+      <div class="panel list-group">
+        <% for ns in @palette().nodeShapes().all(): %>
+          <a href="#" class="list-group-item" data-tool-name="node" data-tool-shape="<%=ns.id%>"><%=ns.displayName()%></a>
+        <% end %>
+      </div>
+    </div>
+  </div>
 
-  <ul class="nav nav-list">
-    <li class="nav-header">Built-in</li>
-    <li class="active"><a href="#" data-tool-name="select">Select</i></a></li>
-  
-    <li class="nav-header">Nodes</li>
-    <% for ns in @palette().nodeShapes().all(): %>
-      <li><a href="#" data-tool-name="node" data-tool-shape="<%=ns.id%>"><%=ns.displayName()%></a></li>
-    <% end %>
-    <li><a href="#/drawings/<%=@id%>/nodes/new">New...</a></li>
-  
-    <li class="nav-header">Links</li>
-    <% for ls in @palette().linkShapes().all(): %>
-      <li><a href="#" data-tool-name="link" data-tool-shape="<%=ls.id%>"><%=ls.displayName()%></a></li>
-    <% end %>
-      <li><a href="#/drawings/<%=@id%>/links/new">New...</a></li>
-  </ul>
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <span>Links</span>
+        </h4>
+      </div>
+      <div class="panel list-group">
+        <% for ls in @palette().linkShapes().all(): %>
+          <a href="#" class="list-group-item" data-tool-name="link" data-tool-shape="<%=ls.id%>"><%=ls.displayName()%></a>
+        <% end %>
+      </div>
+    </div>
+  </div>
 
   <a id="palette-export" class="btn btn-primary" href="#/drawings/<%=@id%>/palette">
-    <i class="icon-download icon-white"></i> Export palette
+    <i class="glyphicon glyphicon-download"></i> Export palette
   </a>
 </div>

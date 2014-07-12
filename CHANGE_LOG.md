@@ -9,6 +9,7 @@
 * Removed raw Paper.js Paths as possible shapes.
 
 * Fixed a bug which caused additional lines to be rendered when a node and its links were moved.
+* Updated look-and-feel in line with Bootstrap v3.
 
 ### Development environment
 * Switched to Yeoman and Grunt rather than Spine's Hem to allow more flexibility in our development environment.

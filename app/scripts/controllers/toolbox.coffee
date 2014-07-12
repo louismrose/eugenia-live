@@ -50,8 +50,8 @@ define [
       @switchTo(link.data('toolName'))
       @currentTool.setParameter('shape', link.data('toolShape'))
     
-      $("#toolbox li.active").removeClass("active")
-      link.parent().addClass("active")
+      $("#toolbox .active").removeClass("active")
+      link.addClass("active")
       event.preventDefault()
     
     switchTo: (toolName) =>

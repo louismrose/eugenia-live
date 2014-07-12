@@ -5,7 +5,7 @@
     "requirejs": "~2.1.4",
     "modernizr": "~2.6.2",
     "jquery": "~1.9.1",
-    "bootstrap.css": "~2.3.2",
+    "bootstrap": "~3.2.0",
     "spine": "~1.1.0",
     "paper": "~0.9.9",
     "codemirror": "~3.15.0",

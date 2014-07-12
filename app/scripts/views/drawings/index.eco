@@ -1,6 +1,6 @@
-<div class="hero-unit">
-  <div class="row-fluid">
-    <div class="span6">
+<div class="jumbotron">
+  <div class="row">
+    <div class="col-sm-6">
       <h2>Rapidly design graphical DSLs</h2>
       <p>
          EuGENia Live allows you to quickly build a
@@ -10,12 +10,12 @@
          Eclipse development environment.
       </p>
       <p>
-        <a class="btn btn-medium" target="_blank" href="http://www.di.univaq.it/diruscio/sites/XM2012/xm2012_submission_6.pdf">Workshop Paper &raquo;</a>
-      	<a class="btn btn-medium" target="_blank" href="https://speakerdeck.com/louismrose/eugenia-live-a-flexible-graphical-modelling-tool">Presentation &raquo;</a>
-      	<a class="btn btn-medium" target="_blank" href="https://github.com/louismrose/eugenia-live/"  >Source &raquo;</a>
+        <a class="btn btn-default" target="_blank" href="http://www.di.univaq.it/diruscio/sites/XM2012/xm2012_submission_6.pdf">Workshop Paper &raquo;</a>
+      	<a class="btn btn-default" target="_blank" href="https://speakerdeck.com/louismrose/eugenia-live-a-flexible-graphical-modelling-tool">Presentation &raquo;</a>
+      	<a class="btn btn-default" target="_blank" href="https://github.com/louismrose/eugenia-live/"  >Source &raquo;</a>
       </p>
     </div>
-    <div class="span5 offset1" style="padding-top: 1em;">
+    <div class="col-sm-5 col-sm-offset-1" style="padding-top: 1em;">
       <div id="showcase" class="carousel slide">
         <div class="carousel-inner">
           <div class="active item">
@@ -34,46 +34,49 @@
   </div>
 </div>
 
-<div class="row-fluid">
-  <ul class="thumbnails">  
-    <li class="span4">
-      <div class="well" style="background-color: #dcdcdc;">
-        <form>
-		      <legend>Create a new drawing</legend>
-          <label>Name:</label>
-          <input id="name" name="name" type="text" class="span12" required>
-          <label class="select">Palette:</label>
-          <select id="palette" name="palette_specification_id" class="span12">
+<div id="thumbnails" class="row">
+  <div class="col-sm-4">
+    <div class="well" style="background-color: #dcdcdc;">
+      <form>
+        <legend>Create a new drawing</legend>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="palette_specification_id">Palette</label>
+          <select id="palette" name="palette_specification_id" class="form-control">
             <% for palette_spec in @palette_specs: %>
               <option value="<%=palette_spec.id%>"><%=palette_spec.name%></option>
             <% end %>
           </select>
-          <button id="new" class="btn btn-primary" type="submit" style="margin-top: 1.5em;">Go</button>
-          <a href="#" style="margin-top: 1.5em;" class="btn btn-link" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Your drawings are stored by your browser. They won't be available from other computers, or from other web browsers on the same computer." data-original-title="Local Storage">Where are drawings stored?</a>
-        </form>
-      </div>
-    </li>
+        </div>
+
+        <button id="new" class="btn btn-primary" type="submit" style="margin-top: 1em;">Go</button>
+        <a href="#" style="margin-top: 1.5em;" class="btn btn-link" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Your drawings are stored by your browser. They won't be available from other computers, or from other web browsers on the same computer." data-title="Local Storage">Where are drawings stored?</a>
+      </form>
+    </div>
+  </div>
   
-    <% for drawing, index in @drawings: %>
-    <li class="span4 well">
+  <% for drawing, index in @drawings: %>
+  <div class="col-sm-4">
+    <div class="well">
       <div style="margin-bottom: 10px;">
         <h3 style="margin-top: 0;"><%=drawing.name%></h3>
       </div>
       <div>
         <a href="#/drawings/<%=drawing.id%>">
-          <img src="<%=drawing.cache%>" style="background-color: white; border: 1px solid #ddd">
+          <img src="<%=drawing.cache%>" class="img-thumbnail">
         </a>
       </div>
       <div style="margin-top: 10px; text-align: right;">
         <button class="btn btn-danger delete" data-id="<%=drawing.id%>" style="display:inline;">Delete</button>
       </div>
-    </li>
-    <% if (index + 2) % 3 is 0: %>
-  </ul>
+    </div>
+  </div>
+  <% if (index + 2) % 3 is 0: %>
 </div>
-<div class="row-fluid">
-  <ul class="thumbnails">
+<div class="row">
     <% end %>
 <% end%>
-  </ul>
 </div>

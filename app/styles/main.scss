@@ -1,33 +1,16 @@
-$iconSpritePath: "../images/glyphicons-halflings.png";
-$iconWhiteSpritePath: "../images/glyphicons-halflings-white.png";
-
-body {
-  overflow-y: scroll;
-}
-
+// Hide inactive Spine.js controllers
 .stack > *:not(.active) {
   display: none;
 }
 
-.hero-unit {
+body {
+  overflow-y: scroll;
+  padding-top: 70px;
+  padding-bottom: 70px;
+}
+
+.jumbotron {
   padding: 30px 60px;
-  .carousel-caption {
-    h4, p {
-      color: #ddd;
-    }
-  }
-}
-
-.container-fluid {
-  padding-top: 50px;
-}
-
-#toolbox {
-  padding: 8px 0;
-  text-align: center;
-  ul {
-    text-align: left;
-  }
 }
 
 #canvas {
@@ -36,17 +19,10 @@ body {
 
 #selection {
   margin-top: 2em;
-  padding: 1em;
-  h6 {
-    padding-bottom: 0.5em;
-  }
-  #restore {
-    margin-left: 1em;
-  }
 }
 
-#palette-export {
-  margin-top: 2em;
+#export-palette-header {
+  margin-top: -1em;
 }
 
 ol.instructions {

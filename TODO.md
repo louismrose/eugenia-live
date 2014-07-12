@@ -77,8 +77,3 @@
 ## Tools
 * Port tool (use case: associating guests with tables in the seating plan DSL)
 * Compartment tool
-
-# Refactoring
-* Renderers are beginning to look anaemic -> separate presentation from domain model?
-* Update to latest versions of Hem and Spine
-* Update to latest version of Twitter bootstrap

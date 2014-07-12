@@ -1,7 +1,7 @@
 require.config
   paths:
     'jquery' : "../bower_components/jquery/jquery"
-    'bootstrap' : "../bower_components/bootstrap.css/js/bootstrap"
+    'bootstrap' : "../bower_components/bootstrap/dist/js/bootstrap"
     'paper' : "../bower_components/paper/dist/paper-core"
     'codemirror' : "../bower_components/codemirror/lib/codemirror"
     'codemirror.javascript' : "../bower_components/codemirror/mode/javascript/javascript"

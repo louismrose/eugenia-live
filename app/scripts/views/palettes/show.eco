@@ -1,9 +1,9 @@
-<div class="page-header">
+<div id="export-palette-header" class="page-header">
   <h1>Export your palette&nbsp;&nbsp;<small>Generate an Eclipse-based editor</small></h1>
 </div>
 
-<div class="row-fluid">
-  <div class="span8">
+<div class="row">
+  <div class="col-sm-8">
     <p>
       Follow the instructions below to generate a graphical editor from
       your EuGENia Live palette. The generated editor will integrate 

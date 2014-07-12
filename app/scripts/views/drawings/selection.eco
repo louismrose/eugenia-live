@@ -1,19 +1,14 @@
 <% unless @selection is undefined or $.isEmptyObject(@selection.properties.all()): %>
-  <h2><%= @selection.getShape().displayName()%> properties</h2>
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>Property</th>
-        <th>Value</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% for property,value of @selection.properties.all(): %>
-      <tr>
-        <td style="vertical-align:middle"><%=property%></td>
-        <td><input type="text" data-property="<%=property%>" value="<%=value%>" style="margin-bottom: 0"></td>
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <form class="form-horizontal" role="form">
+    <legend><%= @selection.getShape().displayName()%> properties</legend>
+    
+    <% for property,value of @selection.properties.all(): %>
+    <div class="form-group">
+      <label class="col-sm-2 control-label"><%=property%></label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" data-property="<%=property%>" value="<%=value%>">
+      </div>
+    </div>
+    <% end %>
+  </form>
 <% end %>

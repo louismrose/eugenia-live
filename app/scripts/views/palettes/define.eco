@@ -1,6 +1,6 @@
-<div id="<%=@verb%>" class="row-fluid">
+<div id="<%=@verb%>" class="row">
   <form>
-    <legend><%=@verb%> <%=@type%>
+    <legend style="border-bottom-width: 0"><%=@verb%> <%=@type%>
       <ul class="nav nav-pills" style="display: inline; float: right;">
         <li class="<%= 'active' if @notation is 'json' %>">
           <a data-notation="json" href="#">JSON</a>
@@ -11,21 +11,21 @@
       </ul>
     </legend>
     <fieldset>
-      <div class="row-fluid">
-        <div class="span6" style="padding-left: 20px">
+      <div class="row">
+        <div class="col-sm-6" style="padding-left: 20px">
           <label for="definition">Definition</label>
-          <textarea class="input-xlarge" style="width: 90%;" id="definition" name="definition" rows="12" required><%=@serialisation%></textarea>
+          <textarea class="input-lg" style="width: 90%;" id="definition" name="definition" rows="12" required><%=@serialisation%></textarea>
         </div>
-        <div class="span6" style="padding-right: 20px">
+        <div class="col-sm-6" style="padding-right: 20px">
           <p class="help-block">
             <label>For example:</label>
-            <textarea class="input-xlarge" style="width: 90%;" id="example" name="example" rows="12" required><%=@example%></textarea>
+            <textarea class="input-lg" style="width: 90%;" id="example" name="example" rows="12" required><%=@example%></textarea>
           </p>
         </div>
       </div>
       <div class="form-actions" style="padding-left: 20px;">
         <button type="submit" class="btn btn-primary"><%=@verb%> <%=@type%></button>
-		<button id="cancel" class="btn">Cancel</button>
+		<button id="cancel" class="btn btn-default">Cancel</button>
 		<% if @verb is 'Update': %>
 		<button id="delete" class="btn btn-danger" style="float:right;">Delete <%=@type%></button>
 		<% end %>	

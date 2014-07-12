@@ -1,8 +1,11 @@
-<div class="row-fluid">
-  <div id="toolbox" class="span2">
+<div class="row">
+  <div class="col-sm-2">
+    <div id="toolbox">
     
+    </div>
   </div>
-  <div class="span10">
+
+  <div class="col-sm-10">
     <div id="canvas" style="height:400px">
       <canvas id="drawing" width="1000" height="400"></canvas>
     </div>
