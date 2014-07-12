@@ -17,5 +17,5 @@
 * Updated to Paper.js v0.99
 * Added support for literate Coffeescript in our build environment, and started to document the codebase in this manner.
 
-## v0.1.0 (June 2013)
+## v0.1.0 (October 2013)
 * First stable release
