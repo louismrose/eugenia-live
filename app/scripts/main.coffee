@@ -35,6 +35,7 @@ require.config
       exports: "jsonlint"
     
     'spine':
+      deps: ["jquery"]
       exports: "Spine"
 
     'spine.manager':
