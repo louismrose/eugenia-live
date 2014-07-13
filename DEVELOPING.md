@@ -80,5 +80,20 @@ Adding a new development dependency
 Deploying
 =========
 
+Setting up for deployment
+-------------------------
+Follow these steps once to setup your local working copy ready for deployment:
+
+1. Run the heroku generator `yo heroku`. Select "Yes" when asked whether you'd like a new Git repository in the `dist` directory.
+2. Run `grunt build`.
+3. Add the heroku repository as a remote: `cd dist` then `heroku git:remote --app eugenialive`
+
+Deploying
+---------
+After following the setup instructions above, just:
+
 1. Run `grunt build`
-2. Contact Louis! (Documentation to follow)
+2. `cd dist`
+3. `git push heroku -f`
+
+**Important**: Don't run the `git push` command from the root directory for the app!
