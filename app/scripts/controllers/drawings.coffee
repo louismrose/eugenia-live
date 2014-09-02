@@ -1,6 +1,6 @@
 define [
   'spine'
-  'lib/substack'
+  'lib/spine/substack'
   'models/palette_specification'
   'models/drawing'
   'models/commands/commander'

@@ -1,6 +1,6 @@
 define [
   'spine'
-  'lib/substack'
+  'lib/spine/substack'
   'models/drawing'
   'models/node_shape'
   'models/link_shape'
