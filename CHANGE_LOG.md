@@ -1,5 +1,8 @@
 # Change Log
 
+## v0.2.1 (September 2014)
+* Fix [a regression](https://github.com/louismrose/eugenia-live/issues/11) that removed the hyperlinks for creating new types of node and link from the toolbox.
+
 ## v0.2.0 (July 2014)
 * Switched to a new ([viewmodel-based](doc/design/viewmodels.md)) rendering engine, which is much more performant than the previous version.
 * Added support for controlling the appearance of Nodes and Links via their
