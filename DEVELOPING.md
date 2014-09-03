@@ -4,7 +4,7 @@ Setup
 Tools
 -----
 
-1. Install Node 0.8.26 or later and NPM (by [installing Node.js](http://nodejs.org/)).
+1. Install Node 0.10.0 or later and NPM (by [installing Node.js](http://nodejs.org/)).
 2. Install Yeoman, Grunt and Bower: `(sudo) npm install -g yo grunt-cli bower`
 3. Install Phantom.js (used for tests): `brew update && brew install phantomjs`
 4. Install Ruby via RVM (used for converting SCSS into CSS) and bundler `gem install bundler`
